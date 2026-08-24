@@ -112,6 +112,152 @@ public class ExcelExportServiceTests
     }
 
     [Fact]
+    public void Export_CreatesStatementAndTwoDetailSheets()
+    {
+        using var temp = new TempDirectory();
+
+        var path = new ExcelExportService().Export(new MeasurementJournal(), Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+
+        Assert.Equal(
+            new[] { ExcelExportService.SheetName, ExcelExportService.LinearSheetName, ExcelExportService.PieceSheetName },
+            workbook.Worksheets.Select(s => s.Name).ToArray());
+    }
+
+    [Fact]
+    public void Export_LinearSheetCarriesEverythingStatementOmits()
+    {
+        // Ведомость по своей форме не показывает характеристику, участок, слой,
+        // файл DWG и разбивку длины — всё это должно быть в детализации.
+        using var _ = new CultureScope("ru-RU");
+        using var temp = new TempDirectory();
+
+        var journal = new MeasurementJournal();
+        journal.AddOrUpdateLinear(TestData.RectDuct(), "Кровля", "DUCT_1250x800_t0.9_Кровля", 10, 2, 3, Drawing);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+        var sheet = workbook.Worksheet(ExcelExportService.LinearSheetName);
+
+        Assert.Equal("Характеристика", sheet.Cell(2, 4).GetString());
+        Assert.Equal("Площадь, м²", sheet.Cell(2, 9).GetString());
+        Assert.Equal("Файл DWG", sheet.Cell(2, 13).GetString());
+
+        Assert.Equal(1, sheet.Cell(3, 1).GetValue<int>());
+        Assert.Equal("Воздуховод", sheet.Cell(3, 2).GetString());
+        Assert.Equal(TestData.RectDuct().Name, sheet.Cell(3, 3).GetString());
+        Assert.Equal("1250x800, 0,9 мм", sheet.Cell(3, 4).GetString());
+        Assert.Equal("м.п.", sheet.Cell(3, 5).GetString());
+        Assert.Equal(10, sheet.Cell(3, 6).GetValue<double>());
+        Assert.Equal(2, sheet.Cell(3, 7).GetValue<double>());
+        Assert.Equal(12, sheet.Cell(3, 8).GetValue<double>());
+        Assert.Equal(49.2, sheet.Cell(3, 9).GetValue<double>());
+        Assert.Equal(3, sheet.Cell(3, 10).GetValue<int>());
+        Assert.Equal("Кровля", sheet.Cell(3, 11).GetString());
+        Assert.Equal("DUCT_1250x800_t0.9_Кровля", sheet.Cell(3, 12).GetString());
+        Assert.Equal(Drawing, sheet.Cell(3, 13).GetString());
+        Assert.Equal(ExcelExportService.MeasuredValueMark, sheet.Cell(3, 14).GetString());
+    }
+
+    [Fact]
+    public void Export_LeavesAreaEmptyForPipesAndCables()
+    {
+        using var temp = new TempDirectory();
+        var journal = new MeasurementJournal();
+        journal.AddOrUpdateLinear(TestData.Pipe(), "", "PIPE_D89x4", 10, 0, 1, Drawing);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+
+        // Ноль читался бы как «замерили и получили ноль», поэтому ячейка пустая.
+        Assert.True(workbook.Worksheet(ExcelExportService.LinearSheetName).Cell(3, 9).IsEmpty());
+    }
+
+    [Fact]
+    public void Export_LinearSheetTotalsUseFormulas()
+    {
+        using var temp = new TempDirectory();
+        var journal = new MeasurementJournal();
+        journal.AddOrUpdateLinear(TestData.Pipe(), "", "PIPE_D89x4", 5.5, 0, 1, Drawing);
+        journal.AddOrUpdateLinear(TestData.RectDuct(), "", "DUCT_1250x800_t0.9", 10, 2, 3, Drawing);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+        var sheet = workbook.Worksheet(ExcelExportService.LinearSheetName);
+
+        // Трубы идут перед воздуховодами — тот же порядок, что в ведомости.
+        Assert.Equal(TestData.Pipe().Name, sheet.Cell(3, 3).GetString());
+        Assert.Equal(TestData.RectDuct().Name, sheet.Cell(4, 3).GetString());
+
+        Assert.Equal("ИТОГО", sheet.Cell(5, 1).GetString());
+        Assert.Equal("SUM(H3:H4)", sheet.Cell(5, 8).FormulaA1);
+        Assert.Equal(17.5, sheet.Cell(5, 8).GetValue<double>());
+        Assert.Equal(49.2, sheet.Cell(5, 9).GetValue<double>());
+    }
+
+    [Fact]
+    public void Export_PieceSheetGroupsByKindAndMarksManualValues()
+    {
+        using var temp = new TempDirectory();
+        var journal = new MeasurementJournal();
+        journal.AddOrUpdatePiece(TestData.Piece("Кран шаровой Dn15", kind: "Запорная арматура"), "", "PIECE_Dn15", 2, Drawing);
+        var manual = journal.AddOrUpdatePiece(TestData.Piece(), "Этаж 1", "PIECE_Dn15_Этаж 1", 4, Drawing);
+        manual.ManualQuantity = 7;
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+        var sheet = workbook.Worksheet(ExcelExportService.PieceSheetName);
+
+        // «Запорная арматура» перед «Фасонными изделиями трубопроводов».
+        Assert.Equal("Запорная арматура", sheet.Cell(3, 2).GetString());
+        Assert.Equal(2, sheet.Cell(3, 6).GetValue<int>());
+        Assert.Equal(ExcelExportService.MeasuredValueMark, sheet.Cell(3, 10).GetString());
+
+        Assert.Equal("Фасонные изделия трубопроводов", sheet.Cell(4, 2).GetString());
+        Assert.Equal(7, sheet.Cell(4, 6).GetValue<int>());
+        Assert.Equal("Этаж 1", sheet.Cell(4, 7).GetString());
+        Assert.Equal(ExcelExportService.ManualValueMark, sheet.Cell(4, 10).GetString());
+
+        Assert.Equal(9, sheet.Cell(5, 6).GetValue<double>());
+    }
+
+    [Fact]
+    public void Export_DetailSheetsShowOnlyCurrentDrawing()
+    {
+        using var temp = new TempDirectory();
+        var journal = new MeasurementJournal();
+        journal.AddOrUpdateLinear(TestData.Pipe(), "", "PIPE_D89x4", 10, 0, 1, Drawing);
+        journal.AddOrUpdateLinear(TestData.Cable(), "", "CABLE_3x2.5", 30, 0, 1, "другой.dwg");
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+        var sheet = workbook.Worksheet(ExcelExportService.LinearSheetName);
+
+        Assert.Equal(TestData.Pipe().Name, sheet.Cell(3, 3).GetString());
+        Assert.Equal("ИТОГО", sheet.Cell(4, 1).GetString());
+    }
+
+    [Fact]
+    public void Export_DetailSheetsKeepHeadersWhenNothingMeasured()
+    {
+        using var temp = new TempDirectory();
+
+        var path = new ExcelExportService().Export(new MeasurementJournal(), Drawing, temp.Combine("книга.xlsx"));
+
+        using var workbook = new XLWorkbook(path);
+
+        Assert.Equal("Тип", workbook.Worksheet(ExcelExportService.LinearSheetName).Cell(2, 2).GetString());
+        Assert.Equal("Вид изделия", workbook.Worksheet(ExcelExportService.PieceSheetName).Cell(2, 2).GetString());
+        Assert.True(workbook.Worksheet(ExcelExportService.LinearSheetName).Cell(3, 1).IsEmpty());
+    }
+
+    [Fact]
     public void Export_RejectsEmptyPath()
     {
         Assert.Throws<ArgumentException>(() => new ExcelExportService().Export(new MeasurementJournal(), Drawing, "  "));

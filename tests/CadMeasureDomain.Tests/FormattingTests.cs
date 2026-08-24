@@ -200,6 +200,50 @@ public class MeasurementRoundingTests
 }
 
 /// <summary>
+/// Площадь поверхности воздуховодов. Считается в квадратных метрах на метр
+/// длины, потому что длина записи меняется и после замера.
+/// </summary>
+public class DuctAreaCalculatorTests
+{
+    [Fact]
+    public void RectangularDuct_UsesPerimeter()
+    {
+        // (1250 + 800) * 2 / 1000 = 4,1 м² на метр длины.
+        Assert.Equal(4.1, DuctAreaCalculator.GetAreaPerMeterM2(TestData.RectDuct()), 6);
+    }
+
+    [Fact]
+    public void RoundDuct_UsesCircumference()
+    {
+        Assert.Equal(Math.PI * 200 / 1000.0, DuctAreaCalculator.GetAreaPerMeterM2(TestData.RoundDuct()), 6);
+    }
+
+    [Fact]
+    public void OtherClasses_HaveNoArea()
+    {
+        // У труб и кабелей колонка площади в выгрузке пустая.
+        Assert.Equal(0, DuctAreaCalculator.GetAreaPerMeterM2(TestData.Pipe()));
+        Assert.Equal(0, DuctAreaCalculator.GetAreaPerMeterM2(TestData.Cable()));
+        Assert.Equal(0, DuctAreaCalculator.GetAreaPerMeterM2(TestData.Piece()));
+        Assert.Equal(0, DuctAreaCalculator.GetAreaPerMeterM2(null));
+    }
+
+    [Fact]
+    public void DuctWithoutDimensions_HasNoArea()
+    {
+        Assert.Equal(0, DuctAreaCalculator.GetAreaPerMeterM2(TestData.RectDuct(width: null, height: null, sheet: null)));
+        Assert.Equal(0, DuctAreaCalculator.GetAreaPerMeterM2(TestData.RoundDuct(diameter: null, sheet: null)));
+    }
+
+    [Fact]
+    public void RoundArea_FollowsSameRuleAsLength()
+    {
+        Assert.Equal(0.13, MeasurementRounding.RoundArea(0.125));
+        Assert.Equal(49.2, MeasurementRounding.RoundArea(49.2));
+    }
+}
+
+/// <summary>
 /// Цвета слоёв. Диапазоны заданы ТЗ, а детерминированность нужна,
 /// чтобы один материал не менял цвет от сеанса к сеансу.
 /// </summary>

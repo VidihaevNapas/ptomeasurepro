@@ -415,10 +415,11 @@ public sealed class AcadMeasurementTableService
                     PluginSettings.TableTextHeightMm, CellAlignment.MiddleCenter, textStyleId);
                 SetCell(table, row, 1, item.MaterialName,
                     PluginSettings.TableTextHeightMm, CellAlignment.MiddleLeft, textStyleId);
+                SetLeftMargin(table, row, 1, PluginSettings.TableMaterialLeftMarginMm);
                 SetCell(table, row, 2, item.Unit,
                     PluginSettings.TableTextHeightMm, CellAlignment.MiddleCenter, textStyleId);
                 SetCell(table, row, 3, item.QuantityText,
-                    PluginSettings.TableTextHeightMm, CellAlignment.MiddleRight, textStyleId);
+                    PluginSettings.TableTextHeightMm, CellAlignment.MiddleCenter, textStyleId);
             }
         }
 
@@ -495,6 +496,26 @@ public sealed class AcadMeasurementTableService
         catch (AcadException)
         {
             // Стиль таблицы может запрещать переопределение — текст важнее оформления.
+        }
+    }
+
+    /// <summary>
+    /// Отступ текста от левой линии ячейки.
+    ///
+    /// Задаётся поячеечно: табличные <c>HorizontalCellMargin</c> и стиль таблицы
+    /// действуют сразу на все колонки, а отступ нужен только под наименование —
+    /// в отцентрованных колонках он бы просто съедал ширину.
+    /// </summary>
+    private static void SetLeftMargin(Table table, int row, int column, double margin)
+    {
+        try
+        {
+            table.Cells[row, column].Borders.Left.Margin = margin;
+        }
+        catch (AcadException)
+        {
+            // Стиль таблицы может запрещать переопределение полей —
+            // без отступа таблица останется читаемой.
         }
     }
 

@@ -88,8 +88,12 @@ public static class StatementBuilder
     private static double GetQuantity(MeasurementRecord record) =>
         record.IsPiece ? record.Quantity : record.LengthM;
 
-    /// <summary>Порядок групп: трубы, воздуховоды, кабели, штучные изделия.</summary>
-    private static int GetClassOrder(string? materialClass) => materialClass switch
+    /// <summary>
+    /// Порядок групп: трубы, воздуховоды, кабели, штучные изделия.
+    /// Публичный, потому что тем же порядком идут подробные листы выгрузки —
+    /// иначе ведомость и детализация в одном файле шли бы по-разному.
+    /// </summary>
+    public static int GetClassOrder(string? materialClass) => materialClass switch
     {
         MaterialClasses.Pipe => 0,
         MaterialClasses.Duct => 1,

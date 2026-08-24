@@ -16,7 +16,7 @@
   -->
 
   <PropertyGroup>
-    <PtoVersion>1.0.1</PtoVersion>
+    <PtoVersion>1.1.0</PtoVersion>
     <PtoProductName>PTO Measure Pro</PtoProductName>
     <PtoBundleName>PTOMeasurePro.bundle</PtoBundleName>
     <PtoCompany>ПТО</PtoCompany>

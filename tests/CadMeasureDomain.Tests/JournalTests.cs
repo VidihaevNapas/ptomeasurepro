@@ -64,6 +64,28 @@ public class MeasurementRecordTests
     }
 
     [Fact]
+    public void AreaM2_FollowsLength()
+    {
+        // Площадь обязана следовать за длиной: вертикальные участки и ручная
+        // правка меняют её уже после замера.
+        var record = new MeasurementRecord { AreaPerMeterM2 = 4.1, HorizontalLengthM = 10, VerticalLengthM = 2 };
+
+        Assert.Equal(49.2, record.AreaM2);
+
+        record.ManualLengthM = 20;
+
+        Assert.Equal(82, record.AreaM2);
+    }
+
+    [Fact]
+    public void AreaM2_IsZeroWhenMaterialHasNoArea()
+    {
+        var record = new MeasurementRecord { HorizontalLengthM = 10 };
+
+        Assert.Equal(0, record.AreaM2);
+    }
+
+    [Fact]
     public void StatementUnit_DependsOnClass()
     {
         Assert.Equal("м", new MeasurementRecord { MaterialClass = MaterialClasses.Pipe }.StatementUnit);
@@ -187,6 +209,31 @@ public class MeasurementJournalTests
         journal.AddOrUpdateLinear(pipe, "Этаж 1", "PIPE_D89x4_Этаж 1", 30, 0, 1, "другой.dwg");
 
         Assert.Equal(3, journal.Records.Count);
+    }
+
+    [Fact]
+    public void AddOrUpdateLinear_TakesAreaFromMaterial()
+    {
+        var journal = new MeasurementJournal();
+
+        var duct = journal.AddOrUpdateLinear(TestData.RectDuct(), "", "DUCT_1250x800_t0.9", 10, 0, 1, Drawing);
+        var pipe = journal.AddOrUpdateLinear(TestData.Pipe(), "", "PIPE_D89x4", 10, 0, 1, Drawing);
+
+        Assert.Equal(41, duct.AreaM2);
+        Assert.Equal(0, pipe.AreaM2);
+    }
+
+    [Fact]
+    public void AddOrUpdateLinear_RefreshesAreaAfterMaterialChange()
+    {
+        // Размеры позиции могли поменяться в реестре между пересчётами.
+        var journal = new MeasurementJournal();
+        journal.AddOrUpdateLinear(TestData.RectDuct(), "", "DUCT_1250x800_t0.9", 10, 0, 1, Drawing);
+
+        var resized = TestData.RectDuct(width: 500, height: 300);
+        var record = journal.AddOrUpdateLinear(resized, "", "DUCT_500x300_t0.9", 10, 0, 1, Drawing);
+
+        Assert.Equal(16, record.AreaM2);
     }
 
     [Fact]

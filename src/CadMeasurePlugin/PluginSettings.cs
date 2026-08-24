@@ -170,6 +170,14 @@ public static class PluginSettings
     /// <summary>Ширина колонки «Кол-во», мм.</summary>
     public const double TableValueColumnWidthMm = 2600.0;
 
+    /// <summary>
+    /// Отступ текста от левой линии таблицы в колонке наименования, мм.
+    /// Без него длинные наименования прилипают к рамке и таблицу тяжело читать.
+    /// Задаётся только этой колонке: остальные отцентрованы, и отступ в них
+    /// не виден.
+    /// </summary>
+    public const double TableMaterialLeftMarginMm = 150.0;
+
     /// <summary>Имя палитры.</summary>
     public const string PaletteTitle = "PTO Measure Pro";
 

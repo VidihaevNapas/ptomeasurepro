@@ -22,6 +22,7 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
 {
     private double _horizontalLengthM;
     private double _verticalLengthM;
+    private double _areaPerMeterM2;
     private double? _manualLengthM;
     private int _polylineCount;
     private int _scannedQuantity;
@@ -120,6 +121,28 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
     [JsonIgnore]
     public double LengthM =>
         MeasurementRounding.RoundLength(ManualLengthM ?? HorizontalLengthM + VerticalLengthM);
+
+    /// <summary>
+    /// Удельная площадь поверхности, м² на метр длины. Заполняется по материалу
+    /// при пересчёте (см. <see cref="Services.DuctAreaCalculator"/>); у труб,
+    /// кабелей и штучных изделий равна нулю.
+    ///
+    /// Хранится коэффициент, а не готовая площадь: длина записи меняется
+    /// и после замера — вертикальными участками и ручной правкой, — а площадь
+    /// обязана следовать за ней.
+    /// </summary>
+    public double AreaPerMeterM2
+    {
+        get => _areaPerMeterM2;
+        set { if (SetField(ref _areaPerMeterM2, value)) OnPropertyChanged(nameof(AreaM2)); }
+    }
+
+    /// <summary>
+    /// Площадь поверхности, м². Ноль означает, что площадь для этого материала
+    /// не считается — в выгрузке такая ячейка остаётся пустой.
+    /// </summary>
+    [JsonIgnore]
+    public double AreaM2 => MeasurementRounding.RoundArea(AreaPerMeterM2 * LengthM);
 
     /// <summary>Количество кругов-маркеров, найденных сканированием.</summary>
     public int ScannedQuantity
@@ -229,6 +252,7 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
     {
         OnPropertyChanged(nameof(LengthM));
         OnPropertyChanged(nameof(QuantityDisplay));
+        OnPropertyChanged(nameof(AreaM2));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

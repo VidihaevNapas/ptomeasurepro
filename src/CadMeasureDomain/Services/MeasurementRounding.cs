@@ -26,4 +26,17 @@ public static class MeasurementRounding
     /// </summary>
     public static double RoundLength(double meters) =>
         Math.Round(meters, LengthDecimals, MidpointRounding.AwayFromZero);
+
+    /// <summary>Знаков после запятой в площади: 0,01 м².</summary>
+    public const int AreaDecimals = 2;
+
+    /// <summary>Формат площади для текстовых ячеек.</summary>
+    public const string AreaFormat = "N2";
+
+    /// <summary>
+    /// Округлить площадь в квадратных метрах до 0,01.
+    /// Правило то же, что у длины: округляется итог, а не сомножители.
+    /// </summary>
+    public static double RoundArea(double squareMeters) =>
+        Math.Round(squareMeters, AreaDecimals, MidpointRounding.AwayFromZero);
 }

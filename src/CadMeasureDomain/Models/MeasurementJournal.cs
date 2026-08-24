@@ -59,6 +59,9 @@ public sealed class MeasurementJournal
         // (см. MeasurementRounding), иначе ошибка копилась бы на каждой полилинии.
         record.HorizontalLengthM = horizontalLengthM;
         record.VerticalLengthM = verticalLengthM;
+        // Удельная площадь берётся из материала при каждом пересчёте: размеры
+        // позиции могли поменяться в реестре между замерами.
+        record.AreaPerMeterM2 = Services.DuctAreaCalculator.GetAreaPerMeterM2(material);
         record.PolylineCount = polylineCount;
         record.UpdatedAt = DateTime.Now;
 
