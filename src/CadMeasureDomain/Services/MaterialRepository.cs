@@ -259,7 +259,13 @@ public sealed class MaterialRepository
             WidthMm = source.WidthMm,
             HeightMm = source.HeightMm,
             SheetThicknessMm = source.SheetThicknessMm,
-            NominalDiameterMm = source.NominalDiameterMm
+            NominalDiameterMm = source.NominalDiameterMm,
+            // Характеристики кабеля и вид штучного изделия копируются наравне
+            // с остальными: без них копия кабеля теряла бы сечение и получала
+            // другое имя слоя, а копия фасонной части — чужой вид изделия.
+            CoreCount = source.CoreCount,
+            CrossSectionMm2 = source.CrossSectionMm2,
+            PieceKind = source.PieceKind
         };
     }
 
