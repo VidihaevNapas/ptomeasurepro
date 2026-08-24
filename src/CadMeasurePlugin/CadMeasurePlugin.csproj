@@ -1,0 +1,166 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Номер версии продукта — единственный источник, см. Version.props. -->
+  <Import Project="..\..\Version.props" />
+
+  <PropertyGroup>
+    <!-- AutoCAD 2025 работает на .NET 8. Другой TargetFramework он не загрузит. -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>CadMeasurePlugin</RootNamespace>
+    <AssemblyName>CadMeasurePlugin</AssemblyName>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+
+    <!-- Плагин — библиотека, а не приложение.
+         Версия приходит из Version.props, здесь её не дублируем. -->
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+    <!--
+      Ключевой параметр для плагинов на .NET 8: генерирует .deps.json и кладёт
+      рядом с dll все зависимости из NuGet (ClosedXML и его пакеты), чтобы
+      AutoCAD нашёл их при NETLOAD.
+    -->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+
+    <!-- AutoCAD сам грузит свои сборки; их копия в выходной папке приводит к конфликту типов. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <!-- Путь установки AutoCAD 2025 (со слешем на конце). Меняется здесь либо
+         через параметр сборки: dotnet build -p:AcadInstallDir="D:\...\AutoCAD 2025\" -->
+    <AcadInstallDir Condition="'$(AcadInstallDir)' == ''">C:\Program Files\Autodesk\AutoCAD 2025\</AcadInstallDir>
+
+    <!--
+      MSB3277: сборки AutoCAD собраны против System.Drawing 4.0.0.0, а .NET 8 даёт 8.0.0.0.
+      Внутри AutoCAD конфликта нет — он сам разруливает свои зависимости,
+      поэтому предупреждение понижаем до сообщения, чтобы не прятало настоящие проблемы.
+    -->
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3277</MSBuildWarningsAsMessages>
+
+    <!-- Манифест пакета автозагрузки AutoCAD. -->
+    <PackageContentsPath>$(MSBuildProjectDirectory)\Package\PackageContents.xml</PackageContentsPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CadMeasureDomain\CadMeasureDomain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Сборки AutoCAD 2025 из стандартной установки.
+      Если AutoCAD установлен в другую папку — поменяй AcadInstallDir ниже.
+      Private=false обязателен: эти dll НЕ должны копироваться в выходную папку,
+      иначе AutoCAD загрузит второй экземпляр типов и плагин упадёт.
+    -->
+    <Reference Include="acmgd">
+      <HintPath>$(AcadInstallDir)acmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>$(AcadInstallDir)acdbmgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="accoremgd">
+      <HintPath>$(AcadInstallDir)accoremgd.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AcWindows">
+      <HintPath>$(AcadInstallDir)AcWindows.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="AdWindows">
+      <HintPath>$(AcadInstallDir)AdWindows.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Стартовый реестр материалов. Внутри bundle он лежит ТОЛЬКО как шаблон:
+      при первом запуске копируется в %APPDATA%\PTOMeasurePro и дальше плагин
+      работает с той копией. Благодаря этому обновление bundle не трогает
+      правки пользователя.
+    -->
+    <None Update="materials.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <!-- Манифест пакета автозагрузки. В выходную папку не копируется:
+         он кладётся в корень bundle, а не в Contents. -->
+    <None Include="Package\PackageContents.xml" />
+  </ItemGroup>
+
+  <Target Name="ПроверкаAutoCAD" BeforeTargets="ResolveAssemblyReferences">
+    <Warning Condition="!Exists('$(AcadInstallDir)acmgd.dll')"
+             Text="Не найден acmgd.dll по пути '$(AcadInstallDir)'. Укажи свой путь установки AutoCAD 2025 в свойстве AcadInstallDir." />
+  </Target>
+
+  <!--
+    Версия в PackageContents.xml должна совпадать с PtoVersion из Version.props.
+    Иначе AutoCAD показал бы в списке приложений одну версию, а плагин
+    сообщал бы другую, и понять, что реально стоит у пользователя, стало бы нечем.
+  -->
+  <Target Name="ПроверкаВерсииBundle" BeforeTargets="Build">
+    <Error Condition="!Exists('$(PackageContentsPath)')"
+           Text="Не найден манифест пакета: $(PackageContentsPath)" />
+
+    <XmlPeek XmlInputPath="$(PackageContentsPath)" Query="/ApplicationPackage/@AppVersion">
+      <Output TaskParameter="Result" ItemName="BundleAppVersion" />
+    </XmlPeek>
+
+    <XmlPeek XmlInputPath="$(PackageContentsPath)" Query="//ComponentEntry/@Version">
+      <Output TaskParameter="Result" ItemName="BundleComponentVersion" />
+    </XmlPeek>
+
+    <Error Condition="'@(BundleAppVersion)' != '$(PtoVersion)'"
+           Text="PackageContents.xml: AppVersion='@(BundleAppVersion)', а в Version.props PtoVersion='$(PtoVersion)'. Приведи номера к одному значению." />
+
+    <Error Condition="'@(BundleComponentVersion)' != '$(PtoVersion)'"
+           Text="PackageContents.xml: ComponentEntry Version='@(BundleComponentVersion)', а в Version.props PtoVersion='$(PtoVersion)'. Приведи номера к одному значению." />
+  </Target>
+
+  <!--
+    Сборка пакета для распространения:
+      dotnet build CadMeasure.sln -c Release -p:Platform=x64 -t:Bundle
+
+    Результат: dist\PTOMeasurePro.bundle\ — папка, которую установщик целиком
+    копирует в %PROGRAMDATA%\Autodesk\ApplicationPlugins.
+
+    Сборки AutoCAD (acmgd, acdbmgd, accoremgd, AcWindows, AdWindows) в пакет
+    не попадают: у ссылок стоит Private=false, и в выходной папке их нет.
+    Цель дополнительно это проверяет.
+  -->
+  <Target Name="Bundle" DependsOnTargets="Build">
+    <PropertyGroup>
+      <BundleRoot>$(MSBuildProjectDirectory)\..\..\dist\$(PtoBundleName)</BundleRoot>
+      <BundleContents>$(BundleRoot)\Contents</BundleContents>
+    </PropertyGroup>
+
+    <!-- Чистим целиком: иначе dll от прошлой версии останутся в пакете. -->
+    <RemoveDir Directories="$(BundleRoot)" />
+    <MakeDir Directories="$(BundleContents)" />
+
+    <ItemGroup>
+      <!-- .pdb и .xml нужны при отладке и в IDE, в пакете для пользователя — нет. -->
+      <BundlePayload Include="$(OutputPath)**\*.*" Exclude="$(OutputPath)**\*.pdb;$(OutputPath)**\*.xml" />
+      <AcadAssemblyInOutput Include="$(OutputPath)ac*mgd.dll;$(OutputPath)Ac*.dll;$(OutputPath)Ad*.dll" />
+    </ItemGroup>
+
+    <Error Condition="'@(AcadAssemblyInOutput)' != ''"
+           Text="В выходной папке оказались сборки AutoCAD (@(AcadAssemblyInOutput)). В bundle их быть не должно — проверь Private=false у ссылок." />
+
+    <Copy SourceFiles="@(BundlePayload)"
+          DestinationFiles="@(BundlePayload->'$(BundleContents)\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+    <Copy SourceFiles="$(PackageContentsPath)" DestinationFolder="$(BundleRoot)" />
+
+    <Message Importance="high" Text=" " />
+    <Message Importance="high" Text="Пакет $(PtoProductName) $(PtoVersion) собран:" />
+    <Message Importance="high" Text="  $(BundleRoot)" />
+    <Message Importance="high" Text="Установка: скопировать эту папку в %PROGRAMDATA%\Autodesk\ApplicationPlugins" />
+  </Target>
+
+</Project>

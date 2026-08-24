@@ -1,0 +1,3915 @@
+[
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀57x3",
+    "Unit": "м.п.",
+    "DiameterMm": 57,
+    "WallThicknessMm": 3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀57x3",
+    "Unit": "м.п.",
+    "DiameterMm": 57,
+    "WallThicknessMm": 3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀57x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 57,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀57x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 57,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀76x3",
+    "Unit": "м.п.",
+    "DiameterMm": 76,
+    "WallThicknessMm": 3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀76x3",
+    "Unit": "м.п.",
+    "DiameterMm": 76,
+    "WallThicknessMm": 3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀76x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 76,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀76x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 76,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀89x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 89,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀89x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 89,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀89x4",
+    "Unit": "м.п.",
+    "DiameterMm": 89,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀89x4",
+    "Unit": "м.п.",
+    "DiameterMm": 89,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀108x4",
+    "Unit": "м.п.",
+    "DiameterMm": 108,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀108x4",
+    "Unit": "м.п.",
+    "DiameterMm": 108,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀108x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 108,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀108x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 108,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀133x4",
+    "Unit": "м.п.",
+    "DiameterMm": 133,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀133x4",
+    "Unit": "м.п.",
+    "DiameterMm": 133,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀133x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 133,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀133x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 133,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀159x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 159,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀159x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 159,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀159x5",
+    "Unit": "м.п.",
+    "DiameterMm": 159,
+    "WallThicknessMm": 5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀159x5",
+    "Unit": "м.п.",
+    "DiameterMm": 159,
+    "WallThicknessMm": 5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀219x6",
+    "Unit": "м.п.",
+    "DiameterMm": 219,
+    "WallThicknessMm": 6
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀219x6",
+    "Unit": "м.п.",
+    "DiameterMm": 219,
+    "WallThicknessMm": 6
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀273x7",
+    "Unit": "м.п.",
+    "DiameterMm": 273,
+    "WallThicknessMm": 7
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀273x7",
+    "Unit": "м.п.",
+    "DiameterMm": 273,
+    "WallThicknessMm": 7
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀325x8",
+    "Unit": "м.п.",
+    "DiameterMm": 325,
+    "WallThicknessMm": 8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀325x8",
+    "Unit": "м.п.",
+    "DiameterMm": 325,
+    "WallThicknessMm": 8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀377x9",
+    "Unit": "м.п.",
+    "DiameterMm": 377,
+    "WallThicknessMm": 9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀377x9",
+    "Unit": "м.п.",
+    "DiameterMm": 377,
+    "WallThicknessMm": 9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная оцинкованная ⌀426x9",
+    "Unit": "м.п.",
+    "DiameterMm": 426,
+    "WallThicknessMm": 9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная электросварная прямошовная ⌀426x9",
+    "Unit": "м.п.",
+    "DiameterMm": 426,
+    "WallThicknessMm": 9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn15 (⌀21,3x2,8)",
+    "Unit": "м.п.",
+    "DiameterMm": 21.3,
+    "WallThicknessMm": 2.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn15 (⌀21,3x2,8)",
+    "Unit": "м.п.",
+    "DiameterMm": 21.3,
+    "WallThicknessMm": 2.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn20 (⌀26,8x2,8)",
+    "Unit": "м.п.",
+    "DiameterMm": 26.8,
+    "WallThicknessMm": 2.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn20 (⌀26,8x2,8)",
+    "Unit": "м.п.",
+    "DiameterMm": 26.8,
+    "WallThicknessMm": 2.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn25 (⌀33,5x3,2)",
+    "Unit": "м.п.",
+    "DiameterMm": 33.5,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn25 (⌀33,5x3,2)",
+    "Unit": "м.п.",
+    "DiameterMm": 33.5,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn32 (⌀42,3x3,2)",
+    "Unit": "м.п.",
+    "DiameterMm": 42.3,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn32 (⌀42,3x3,2)",
+    "Unit": "м.п.",
+    "DiameterMm": 42.3,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn40 (⌀48x3,5)",
+    "Unit": "м.п.",
+    "DiameterMm": 48,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn40 (⌀48x3,5)",
+    "Unit": "м.п.",
+    "DiameterMm": 48,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn50 (⌀60x3,5)",
+    "Unit": "м.п.",
+    "DiameterMm": 60,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn50 (⌀60x3,5)",
+    "Unit": "м.п.",
+    "DiameterMm": 60,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn65 (⌀75,5x4)",
+    "Unit": "м.п.",
+    "DiameterMm": 75.5,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn65 (⌀75,5x4)",
+    "Unit": "м.п.",
+    "DiameterMm": 75.5,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn80 (⌀88,5x4)",
+    "Unit": "м.п.",
+    "DiameterMm": 88.5,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn80 (⌀88,5x4)",
+    "Unit": "м.п.",
+    "DiameterMm": 88.5,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная оцинкованная Dn100 (⌀114x4,5)",
+    "Unit": "м.п.",
+    "DiameterMm": 114,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба стальная водогазопроводная Dn100 (⌀114x4,5)",
+    "Unit": "м.п.",
+    "DiameterMm": 114,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀15x1",
+    "Unit": "м.п.",
+    "DiameterMm": 15,
+    "WallThicknessMm": 1
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀18x1",
+    "Unit": "м.п.",
+    "DiameterMm": 18,
+    "WallThicknessMm": 1
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀22x1",
+    "Unit": "м.п.",
+    "DiameterMm": 22,
+    "WallThicknessMm": 1
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀28x1,5",
+    "Unit": "м.п.",
+    "DiameterMm": 28,
+    "WallThicknessMm": 1.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀35x1,5",
+    "Unit": "м.п.",
+    "DiameterMm": 35,
+    "WallThicknessMm": 1.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀42x1,5",
+    "Unit": "м.п.",
+    "DiameterMm": 42,
+    "WallThicknessMm": 1.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба медная ⌀54x2",
+    "Unit": "м.п.",
+    "DiameterMm": 54,
+    "WallThicknessMm": 2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀20x3,4",
+    "Unit": "м.п.",
+    "DiameterMm": 20,
+    "WallThicknessMm": 3.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀25x4,2",
+    "Unit": "м.п.",
+    "DiameterMm": 25,
+    "WallThicknessMm": 4.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀32x5,4",
+    "Unit": "м.п.",
+    "DiameterMm": 32,
+    "WallThicknessMm": 5.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀40x6,7",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 6.7
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀50x8,3",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 8.3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀63x10,5",
+    "Unit": "м.п.",
+    "DiameterMm": 63,
+    "WallThicknessMm": 10.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀75x12,5",
+    "Unit": "м.п.",
+    "DiameterMm": 75,
+    "WallThicknessMm": 12.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀90x15",
+    "Unit": "м.п.",
+    "DiameterMm": 90,
+    "WallThicknessMm": 15
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN20 ⌀110x18,3",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 18.3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN10 ⌀20x2,3",
+    "Unit": "м.п.",
+    "DiameterMm": 20,
+    "WallThicknessMm": 2.3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN10 ⌀25x2,8",
+    "Unit": "м.п.",
+    "DiameterMm": 25,
+    "WallThicknessMm": 2.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN10 ⌀32x3,6",
+    "Unit": "м.п.",
+    "DiameterMm": 32,
+    "WallThicknessMm": 3.6
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN10 ⌀40x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN10 ⌀50x5,6",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 5.6
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R PN10 ⌀63x7,1",
+    "Unit": "м.п.",
+    "DiameterMm": 63,
+    "WallThicknessMm": 7.1
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R армированная стекловолокном ⌀20x3,4",
+    "Unit": "м.п.",
+    "DiameterMm": 20,
+    "WallThicknessMm": 3.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R армированная стекловолокном ⌀25x4,2",
+    "Unit": "м.п.",
+    "DiameterMm": 25,
+    "WallThicknessMm": 4.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R армированная стекловолокном ⌀32x5,4",
+    "Unit": "м.п.",
+    "DiameterMm": 32,
+    "WallThicknessMm": 5.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R армированная стекловолокном ⌀40x6,7",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 6.7
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R армированная стекловолокном ⌀50x8,3",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 8.3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба полипропиленовая PP-R армированная стекловолокном ⌀63x10,5",
+    "Unit": "м.п.",
+    "DiameterMm": 63,
+    "WallThicknessMm": 10.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба из сшитого полиэтилена PE-X ⌀16x2",
+    "Unit": "м.п.",
+    "DiameterMm": 16,
+    "WallThicknessMm": 2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба из сшитого полиэтилена PE-X ⌀20x2",
+    "Unit": "м.п.",
+    "DiameterMm": 20,
+    "WallThicknessMm": 2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба из сшитого полиэтилена PE-X ⌀25x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 25,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба из сшитого полиэтилена PE-X ⌀32x4,4",
+    "Unit": "м.п.",
+    "DiameterMm": 32,
+    "WallThicknessMm": 4.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба из сшитого полиэтилена PE-X ⌀40x5,5",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 5.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба металлопластиковая PE-X/AL/PE-X ⌀16x2",
+    "Unit": "м.п.",
+    "DiameterMm": 16,
+    "WallThicknessMm": 2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба металлопластиковая PE-X/AL/PE-X ⌀20x2",
+    "Unit": "м.п.",
+    "DiameterMm": 20,
+    "WallThicknessMm": 2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба металлопластиковая PE-X/AL/PE-X ⌀25x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 25,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба металлопластиковая PE-X/AL/PE-X ⌀32x4,4",
+    "Unit": "м.п.",
+    "DiameterMm": 32,
+    "WallThicknessMm": 4.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба металлопластиковая PE-X/AL/PE-X ⌀40x5,5",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 5.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀32x2",
+    "Unit": "м.п.",
+    "DiameterMm": 32,
+    "WallThicknessMm": 2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀40x2,4",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 2.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀50x3",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀63x3,8",
+    "Unit": "м.п.",
+    "DiameterMm": 63,
+    "WallThicknessMm": 3.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀75x4,5",
+    "Unit": "м.п.",
+    "DiameterMm": 75,
+    "WallThicknessMm": 4.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀90x5,4",
+    "Unit": "м.п.",
+    "DiameterMm": 90,
+    "WallThicknessMm": 5.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀110x6,6",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 6.6
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀160x9,5",
+    "Unit": "м.п.",
+    "DiameterMm": 160,
+    "WallThicknessMm": 9.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба ПНД ПЭ100 SDR17 ⌀225x13,4",
+    "Unit": "м.п.",
+    "DiameterMm": 225,
+    "WallThicknessMm": 13.4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПВХ раструбная ⌀40x1,8",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 1.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПВХ раструбная ⌀50x1,8",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 1.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПВХ раструбная ⌀75x1,9",
+    "Unit": "м.п.",
+    "DiameterMm": 75,
+    "WallThicknessMm": 1.9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПВХ раструбная ⌀110x2,2",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 2.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПВХ раструбная ⌀110x3,2",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПВХ раструбная ⌀160x4",
+    "Unit": "м.п.",
+    "DiameterMm": 160,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПП бесшумная ⌀40x1,8",
+    "Unit": "м.п.",
+    "DiameterMm": 40,
+    "WallThicknessMm": 1.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПП бесшумная ⌀50x1,8",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 1.8
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПП бесшумная ⌀75x1,9",
+    "Unit": "м.п.",
+    "DiameterMm": 75,
+    "WallThicknessMm": 1.9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПП бесшумная ⌀110x2,2",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 2.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПП бесшумная ⌀110x3,2",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная ПП бесшумная ⌀160x4",
+    "Unit": "м.п.",
+    "DiameterMm": 160,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная наружная ПВХ SN4 ⌀110x3,2",
+    "Unit": "м.п.",
+    "DiameterMm": 110,
+    "WallThicknessMm": 3.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная наружная ПВХ SN4 ⌀160x4,7",
+    "Unit": "м.п.",
+    "DiameterMm": 160,
+    "WallThicknessMm": 4.7
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная наружная ПВХ SN4 ⌀200x5,9",
+    "Unit": "м.п.",
+    "DiameterMm": 200,
+    "WallThicknessMm": 5.9
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная наружная ПВХ SN4 ⌀250x7,3",
+    "Unit": "м.п.",
+    "DiameterMm": 250,
+    "WallThicknessMm": 7.3
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба канализационная наружная ПВХ SN4 ⌀315x9,2",
+    "Unit": "м.п.",
+    "DiameterMm": 315,
+    "WallThicknessMm": 9.2
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба чугунная безраструбная SML ⌀50x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 50,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба чугунная безраструбная SML ⌀80x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 80,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба чугунная безраструбная SML ⌀100x3,5",
+    "Unit": "м.п.",
+    "DiameterMm": 100,
+    "WallThicknessMm": 3.5
+  },
+  {
+    "Class": "Pipe",
+    "Name": "Труба чугунная безраструбная SML ⌀150x4",
+    "Unit": "м.п.",
+    "DiameterMm": 150,
+    "WallThicknessMm": 4
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,5 мм, 100х150",
+    "Unit": "м.п.",
+    "WidthMm": 100,
+    "HeightMm": 150,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,5 мм, 150х150",
+    "Unit": "м.п.",
+    "WidthMm": 150,
+    "HeightMm": 150,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,5 мм, 150х250",
+    "Unit": "м.п.",
+    "WidthMm": 150,
+    "HeightMm": 250,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,5 мм, 200х200",
+    "Unit": "м.п.",
+    "WidthMm": 200,
+    "HeightMm": 200,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,5 мм, 250х150",
+    "Unit": "м.п.",
+    "WidthMm": 250,
+    "HeightMm": 150,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,5 мм, 250х250",
+    "Unit": "м.п.",
+    "WidthMm": 250,
+    "HeightMm": 250,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 300х150",
+    "Unit": "м.п.",
+    "WidthMm": 300,
+    "HeightMm": 150,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 300х200",
+    "Unit": "м.п.",
+    "WidthMm": 300,
+    "HeightMm": 200,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 300х300",
+    "Unit": "м.п.",
+    "WidthMm": 300,
+    "HeightMm": 300,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 400х200",
+    "Unit": "м.п.",
+    "WidthMm": 400,
+    "HeightMm": 200,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 400х250",
+    "Unit": "м.п.",
+    "WidthMm": 400,
+    "HeightMm": 250,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 400х400",
+    "Unit": "м.п.",
+    "WidthMm": 400,
+    "HeightMm": 400,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 500х250",
+    "Unit": "м.п.",
+    "WidthMm": 500,
+    "HeightMm": 250,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 500х300",
+    "Unit": "м.п.",
+    "WidthMm": 500,
+    "HeightMm": 300,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 500х500",
+    "Unit": "м.п.",
+    "WidthMm": 500,
+    "HeightMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 600х300",
+    "Unit": "м.п.",
+    "WidthMm": 600,
+    "HeightMm": 300,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 600х400",
+    "Unit": "м.п.",
+    "WidthMm": 600,
+    "HeightMm": 400,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 600х500",
+    "Unit": "м.п.",
+    "WidthMm": 600,
+    "HeightMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 700х400",
+    "Unit": "м.п.",
+    "WidthMm": 700,
+    "HeightMm": 400,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 700х500",
+    "Unit": "м.п.",
+    "WidthMm": 700,
+    "HeightMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 800х400",
+    "Unit": "м.п.",
+    "WidthMm": 800,
+    "HeightMm": 400,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 800х500",
+    "Unit": "м.п.",
+    "WidthMm": 800,
+    "HeightMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 800х800",
+    "Unit": "м.п.",
+    "WidthMm": 800,
+    "HeightMm": 800,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 900х500",
+    "Unit": "м.п.",
+    "WidthMm": 900,
+    "HeightMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 1000х500",
+    "Unit": "м.п.",
+    "WidthMm": 1000,
+    "HeightMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 1000х600",
+    "Unit": "м.п.",
+    "WidthMm": 1000,
+    "HeightMm": 600,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,7 мм, 1000х800",
+    "Unit": "м.п.",
+    "WidthMm": 1000,
+    "HeightMm": 800,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 1200х600",
+    "Unit": "м.п.",
+    "WidthMm": 1200,
+    "HeightMm": 600,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 1200х800",
+    "Unit": "м.п.",
+    "WidthMm": 1200,
+    "HeightMm": 800,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 1250х800",
+    "Unit": "м.п.",
+    "WidthMm": 1250,
+    "HeightMm": 800,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 1400х800",
+    "Unit": "м.п.",
+    "WidthMm": 1400,
+    "HeightMm": 800,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 1600х800",
+    "Unit": "м.п.",
+    "WidthMm": 1600,
+    "HeightMm": 800,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 1600х1000",
+    "Unit": "м.п.",
+    "WidthMm": 1600,
+    "HeightMm": 1000,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод прямоугольный из оцинкованной стали класса В, 0,9 мм, 2000х1000",
+    "Unit": "м.п.",
+    "WidthMm": 2000,
+    "HeightMm": 1000,
+    "SheetThicknessMm": 0.9
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀100",
+    "Unit": "м.п.",
+    "DiameterMm": 100,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀125",
+    "Unit": "м.п.",
+    "DiameterMm": 125,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀140",
+    "Unit": "м.п.",
+    "DiameterMm": 140,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀160",
+    "Unit": "м.п.",
+    "DiameterMm": 160,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀180",
+    "Unit": "м.п.",
+    "DiameterMm": 180,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀200",
+    "Unit": "м.п.",
+    "DiameterMm": 200,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀225",
+    "Unit": "м.п.",
+    "DiameterMm": 225,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,5 мм, ⌀250",
+    "Unit": "м.п.",
+    "DiameterMm": 250,
+    "SheetThicknessMm": 0.5
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀280",
+    "Unit": "м.п.",
+    "DiameterMm": 280,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀315",
+    "Unit": "м.п.",
+    "DiameterMm": 315,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀355",
+    "Unit": "м.п.",
+    "DiameterMm": 355,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀400",
+    "Unit": "м.п.",
+    "DiameterMm": 400,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀450",
+    "Unit": "м.п.",
+    "DiameterMm": 450,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀500",
+    "Unit": "м.п.",
+    "DiameterMm": 500,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀560",
+    "Unit": "м.п.",
+    "DiameterMm": 560,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀630",
+    "Unit": "м.п.",
+    "DiameterMm": 630,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀710",
+    "Unit": "м.п.",
+    "DiameterMm": 710,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀800",
+    "Unit": "м.п.",
+    "DiameterMm": 800,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 0,7 мм, ⌀900",
+    "Unit": "м.п.",
+    "DiameterMm": 900,
+    "SheetThicknessMm": 0.7
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 1 мм, ⌀1000",
+    "Unit": "м.п.",
+    "DiameterMm": 1000,
+    "SheetThicknessMm": 1
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 1 мм, ⌀1120",
+    "Unit": "м.п.",
+    "DiameterMm": 1120,
+    "SheetThicknessMm": 1
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод круглый спирально-навивной из оцинкованной стали, 1 мм, ⌀1250",
+    "Unit": "м.п.",
+    "DiameterMm": 1250,
+    "SheetThicknessMm": 1
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод гибкий теплоизолированный ⌀100",
+    "Unit": "м.п.",
+    "DiameterMm": 100
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод гибкий теплоизолированный ⌀125",
+    "Unit": "м.п.",
+    "DiameterMm": 125
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод гибкий теплоизолированный ⌀160",
+    "Unit": "м.п.",
+    "DiameterMm": 160
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод гибкий теплоизолированный ⌀200",
+    "Unit": "м.п.",
+    "DiameterMm": 200
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод гибкий теплоизолированный ⌀250",
+    "Unit": "м.п.",
+    "DiameterMm": 250
+  },
+  {
+    "Class": "Duct",
+    "Name": "Воздуховод гибкий теплоизолированный ⌀315",
+    "Unit": "м.п.",
+    "DiameterMm": 315
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 2х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 2х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 3х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 3х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 3х4",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 3х6",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 3х10",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х4",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х6",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х10",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х16",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 16
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х25",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 25
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х35",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 35
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 4х50",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 50
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х4",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х6",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х10",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х16",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 16
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х25",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 25
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х35",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 35
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х50",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 50
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х70",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 70
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-LS 5х95",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 95
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 2х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 2х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 3х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 3х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 3х4",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 3х6",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 3х10",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х4",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х6",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х10",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х16",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 16
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х25",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 25
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х35",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 35
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 4х50",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 50
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х4",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х6",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х10",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х16",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 16
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х25",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 25
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х35",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 35
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х50",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 50
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х70",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 70
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ВВГнг(А)-FRLS 5х95",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 95
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 2х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 2х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 3х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 3х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 3х4",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 3х6",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 3х10",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х4",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х6",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х10",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х16",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 16
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х25",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 25
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х35",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 35
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 4х50",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 50
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х4",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х6",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х10",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х16",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 16
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х25",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 25
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х35",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 35
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х50",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 50
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х70",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 70
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель ПвВГнг(А)-LS 5х95",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 95
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 2х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 2х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 3х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 3х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 3х4",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 3х6",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 3х10",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 4х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 4х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 4х4",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 4х6",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 4х10",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 5х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 5х2,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 2.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 5х4",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 4
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 5х6",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 6
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель NYM 5х10",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 10
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 2х0,75",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 0.75
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 2х1",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 2х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 3х0,75",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 0.75
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 3х1",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 1
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 3х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 3,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 4х0,75",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 0.75
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 4х1",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 4х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 5х1",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 1
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 5х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 5,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 7х1",
+    "Unit": "м.п.",
+    "CoreCount": 7,
+    "CrossSectionMm2": 1
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 7х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 7,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 10х1",
+    "Unit": "м.п.",
+    "CoreCount": 10,
+    "CrossSectionMm2": 1
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель контрольный КВВГнг(А)-LS 10х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 10,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель огнестойкий КПСнг(А)-FRLS 2х0,75",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 0.75
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель огнестойкий КПСнг(А)-FRLS 2х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 2,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель огнестойкий КПСнг(А)-FRLS 4х0,75",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 0.75
+  },
+  {
+    "Class": "Cable",
+    "Name": "Кабель огнестойкий КПСнг(А)-FRLS 4х1,5",
+    "Unit": "м.п.",
+    "CoreCount": 4,
+    "CrossSectionMm2": 1.5
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀57",
+    "Unit": "шт.",
+    "NominalDiameterMm": 57,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀57",
+    "Unit": "шт.",
+    "NominalDiameterMm": 57,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀57",
+    "Unit": "шт.",
+    "NominalDiameterMm": 57,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀76",
+    "Unit": "шт.",
+    "NominalDiameterMm": 76,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀76",
+    "Unit": "шт.",
+    "NominalDiameterMm": 76,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀76",
+    "Unit": "шт.",
+    "NominalDiameterMm": 76,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀89",
+    "Unit": "шт.",
+    "NominalDiameterMm": 89,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀89",
+    "Unit": "шт.",
+    "NominalDiameterMm": 89,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀89",
+    "Unit": "шт.",
+    "NominalDiameterMm": 89,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀108",
+    "Unit": "шт.",
+    "NominalDiameterMm": 108,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀108",
+    "Unit": "шт.",
+    "NominalDiameterMm": 108,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀108",
+    "Unit": "шт.",
+    "NominalDiameterMm": 108,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀133",
+    "Unit": "шт.",
+    "NominalDiameterMm": 133,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀133",
+    "Unit": "шт.",
+    "NominalDiameterMm": 133,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀133",
+    "Unit": "шт.",
+    "NominalDiameterMm": 133,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀159",
+    "Unit": "шт.",
+    "NominalDiameterMm": 159,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀159",
+    "Unit": "шт.",
+    "NominalDiameterMm": 159,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀159",
+    "Unit": "шт.",
+    "NominalDiameterMm": 159,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀219",
+    "Unit": "шт.",
+    "NominalDiameterMm": 219,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀219",
+    "Unit": "шт.",
+    "NominalDiameterMm": 219,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀219",
+    "Unit": "шт.",
+    "NominalDiameterMm": 219,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀273",
+    "Unit": "шт.",
+    "NominalDiameterMm": 273,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀273",
+    "Unit": "шт.",
+    "NominalDiameterMm": 273,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀273",
+    "Unit": "шт.",
+    "NominalDiameterMm": 273,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 90°, ⌀325",
+    "Unit": "шт.",
+    "NominalDiameterMm": 325,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод стальной крутоизогнутый 45°, ⌀325",
+    "Unit": "шт.",
+    "NominalDiameterMm": 325,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник стальной равнопроходный, ⌀325",
+    "Unit": "шт.",
+    "NominalDiameterMm": 325,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀76",
+    "Unit": "шт.",
+    "NominalDiameterMm": 76,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀89",
+    "Unit": "шт.",
+    "NominalDiameterMm": 89,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀108",
+    "Unit": "шт.",
+    "NominalDiameterMm": 108,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀133",
+    "Unit": "шт.",
+    "NominalDiameterMm": 133,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀159",
+    "Unit": "шт.",
+    "NominalDiameterMm": 159,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀219",
+    "Unit": "шт.",
+    "NominalDiameterMm": 219,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход стальной концентрический, ⌀273",
+    "Unit": "шт.",
+    "NominalDiameterMm": 273,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод резьбовой 90°, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник резьбовой, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Муфта резьбовая, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Сгон резьбовой, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод канализационный 90°, ⌀50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник канализационный 87°, ⌀50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Ревизия канализационная, ⌀50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод канализационный 90°, ⌀110",
+    "Unit": "шт.",
+    "NominalDiameterMm": 110,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник канализационный 87°, ⌀110",
+    "Unit": "шт.",
+    "NominalDiameterMm": 110,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Ревизия канализационная, ⌀110",
+    "Unit": "шт.",
+    "NominalDiameterMm": 110,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод канализационный 90°, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник канализационный 87°, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Ревизия канализационная, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия трубопроводов"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой муфтовый, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый муфтовый, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный муфтовый, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан балансировочный ручной, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой муфтовый, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый муфтовый, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный муфтовый, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан балансировочный ручной, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой муфтовый, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый муфтовый, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный муфтовый, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан балансировочный ручной, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой муфтовый, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый муфтовый, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный муфтовый, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан балансировочный ручной, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой муфтовый, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый муфтовый, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный муфтовый, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан балансировочный ручной, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой муфтовый, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый муфтовый, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный муфтовый, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан балансировочный ручной, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Затвор дисковый поворотный межфланцевый, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Задвижка чугунная фланцевая, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фильтр сетчатый фланцевый, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан обратный межфланцевый, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой со сгоном (американка), Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой со сгоном (американка), Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Кран шаровой со сгоном (американка), Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Воздухоотводчик автоматический, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан предохранительный, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Запорная арматура"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn15",
+    "Unit": "шт.",
+    "NominalDiameterMm": 15,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn20",
+    "Unit": "шт.",
+    "NominalDiameterMm": 20,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn25",
+    "Unit": "шт.",
+    "NominalDiameterMm": 25,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn32",
+    "Unit": "шт.",
+    "NominalDiameterMm": 32,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn40",
+    "Unit": "шт.",
+    "NominalDiameterMm": 40,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn50",
+    "Unit": "шт.",
+    "NominalDiameterMm": 50,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn65",
+    "Unit": "шт.",
+    "NominalDiameterMm": 65,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn80",
+    "Unit": "шт.",
+    "NominalDiameterMm": 80,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn150",
+    "Unit": "шт.",
+    "NominalDiameterMm": 150,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фланец стальной плоский приварной Ру16, Dn300",
+    "Unit": "шт.",
+    "NominalDiameterMm": 300,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Заглушка фланцевая Ру16, Dn300",
+    "Unit": "шт.",
+    "NominalDiameterMm": 300,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Прокладка паронитовая, Dn300",
+    "Unit": "шт.",
+    "NominalDiameterMm": 300,
+    "PieceKind": "Фланцы и заглушки"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀315",
+    "Unit": "шт.",
+    "NominalDiameterMm": 315,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀315",
+    "Unit": "шт.",
+    "NominalDiameterMm": 315,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀315",
+    "Unit": "шт.",
+    "NominalDiameterMm": 315,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀315",
+    "Unit": "шт.",
+    "NominalDiameterMm": 315,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀315",
+    "Unit": "шт.",
+    "NominalDiameterMm": 315,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀400",
+    "Unit": "шт.",
+    "NominalDiameterMm": 400,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀400",
+    "Unit": "шт.",
+    "NominalDiameterMm": 400,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀400",
+    "Unit": "шт.",
+    "NominalDiameterMm": 400,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀400",
+    "Unit": "шт.",
+    "NominalDiameterMm": 400,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀400",
+    "Unit": "шт.",
+    "NominalDiameterMm": 400,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀500",
+    "Unit": "шт.",
+    "NominalDiameterMm": 500,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀500",
+    "Unit": "шт.",
+    "NominalDiameterMm": 500,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀500",
+    "Unit": "шт.",
+    "NominalDiameterMm": 500,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀500",
+    "Unit": "шт.",
+    "NominalDiameterMm": 500,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀500",
+    "Unit": "шт.",
+    "NominalDiameterMm": 500,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Отвод круглый 90°, ⌀630",
+    "Unit": "шт.",
+    "NominalDiameterMm": 630,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Тройник круглый, ⌀630",
+    "Unit": "шт.",
+    "NominalDiameterMm": 630,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Переход круглый, ⌀630",
+    "Unit": "шт.",
+    "NominalDiameterMm": 630,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан воздушный регулирующий круглый, ⌀630",
+    "Unit": "шт.",
+    "NominalDiameterMm": 630,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Дроссель-клапан круглый, ⌀630",
+    "Unit": "шт.",
+    "NominalDiameterMm": 630,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Диффузор приточный регулируемый, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Анемостат вытяжной, ⌀100",
+    "Unit": "шт.",
+    "NominalDiameterMm": 100,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Диффузор приточный регулируемый, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Анемостат вытяжной, ⌀125",
+    "Unit": "шт.",
+    "NominalDiameterMm": 125,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Диффузор приточный регулируемый, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Анемостат вытяжной, ⌀160",
+    "Unit": "шт.",
+    "NominalDiameterMm": 160,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Диффузор приточный регулируемый, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Анемостат вытяжной, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Диффузор приточный регулируемый, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Анемостат вытяжной, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан противопожарный нормально открытый, ⌀200",
+    "Unit": "шт.",
+    "NominalDiameterMm": 200,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан противопожарный нормально открытый, ⌀250",
+    "Unit": "шт.",
+    "NominalDiameterMm": 250,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан противопожарный нормально открытый, ⌀315",
+    "Unit": "шт.",
+    "NominalDiameterMm": 315,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан противопожарный нормально открытый, ⌀400",
+    "Unit": "шт.",
+    "NominalDiameterMm": 400,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Клапан противопожарный нормально открытый, ⌀500",
+    "Unit": "шт.",
+    "NominalDiameterMm": 500,
+    "PieceKind": "Фасонные изделия вентиляции"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Насос циркуляционный с мокрым ротором",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Насос циркуляционный сдвоенный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Насосная станция повышения давления",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Бак расширительный мембранный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Теплообменник пластинчатый разборный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Узел учёта тепловой энергии",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Коллектор распределительный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Шкаф коллекторный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Радиатор стальной панельный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Конвектор внутрипольный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Установка приточная канальная",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Установка приточно-вытяжная с рекуперацией",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Вентилятор канальный круглый",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Вентилятор крышный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Вентилятор дымоудаления",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Фанкойл канальный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Блок наружный VRF",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Блок внутренний VRF",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Водонагреватель электрический накопительный",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Счётчик воды крыльчатый",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  },
+  {
+    "Class": "Piece",
+    "Name": "Щит автоматики вентиляции",
+    "Unit": "шт.",
+    "PieceKind": "Оборудование"
+  }
+]

@@ -1,0 +1,24 @@
+# Нормализация переводов строк: в репозитории — LF, в рабочей копии — как принято в ОС.
+# Без этого Git ругается на каждый файл при коммите с Windows.
+* text=auto
+
+# Явно текстовые файлы проекта.
+*.cs      text diff=csharp
+*.csproj  text
+*.sln     text eol=crlf
+*.props   text
+*.xaml    text
+*.xml     text
+*.json    text
+*.md      text
+*.ps1     text eol=crlf
+*.gitignore text
+*.editorconfig text
+
+# Двоичные — не трогать.
+*.dll     binary
+*.pdb     binary
+*.xlsx    binary
+*.dwg     binary
+*.ttf     binary
+*.ico     binary

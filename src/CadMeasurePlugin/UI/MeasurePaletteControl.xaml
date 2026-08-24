@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="CadMeasurePlugin.UI.MeasurePaletteControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinWidth="380"
+             Background="#FFF3F3F3"
+             Foreground="#FF1E1E1E"
+             FontSize="12">
+
+    <UserControl.Resources>
+        <Style x:Key="BlockHeader" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0,0,0,4" />
+            <Setter Property="Foreground" Value="#FF303030" />
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="Margin" Value="0,0,4,4" />
+            <Setter Property="MinWidth" Value="110" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- ================= МАТЕРИАЛ И УЧАСТОК ================= -->
+        <GroupBox Grid.Row="0" Header="Материал и участок" Padding="6" Margin="0,0,0,6">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                           x:Name="SelectedMaterialText"
+                           Text="Материал не выбран"
+                           TextWrapping="Wrap"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,6" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                           x:Name="LayerInfoText"
+                           Foreground="#FF6B6B6B"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,6" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="Участок:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,6,0" />
+                <TextBox Grid.Row="2" Grid.Column="1"
+                         x:Name="SectionBox"
+                         Padding="3"
+                         VerticalAlignment="Center"
+                         ToolTip="Зона / часть проекта. Можно менять в любой момент."
+                         TextChanged="SectionBox_TextChanged" />
+                <Button Grid.Row="2" Grid.Column="2"
+                        Content="Выбрать материал"
+                        Padding="10,4"
+                        Margin="6,0,0,0"
+                        Click="SelectMaterial_Click" />
+            </Grid>
+        </GroupBox>
+
+        <!-- ================= ЗАМЕР ================= -->
+        <GroupBox Grid.Row="1" Header="Замер" Padding="6" Margin="0,0,0,6">
+            <StackPanel>
+                <WrapPanel>
+                    <!-- Текст меняется на «Начать подсчет» для штучных изделий. -->
+                    <Button x:Name="StartMeasureButton"
+                            Content="Начать замер"
+                            Style="{StaticResource ActionButton}"
+                            MinWidth="140"
+                            FontWeight="Bold"
+                            Click="StartDrawing_Click" />
+                    <!-- Вертикальные участки бессмысленны для штучных: кнопки гасятся. -->
+                    <Button x:Name="RiseButton"
+                            Content="Подъём"
+                            Style="{StaticResource ActionButton}"
+                            MinWidth="80"
+                            ToolTip="Добавить вертикальный участок вверх (длина в мм)"
+                            Click="Rise_Click" />
+                    <Button x:Name="DropButton"
+                            Content="Опуск"
+                            Style="{StaticResource ActionButton}"
+                            MinWidth="80"
+                            ToolTip="Добавить вертикальный участок вниз (длина в мм)"
+                            Click="Drop_Click" />
+                    <Button x:Name="ResetVerticalButton"
+                            Content="Сбросить вертикальные"
+                            Style="{StaticResource ActionButton}"
+                            ToolTip="Обнулить накопленные подъёмы и опуски для текущего материала и участка"
+                            Click="ResetVertical_Click" />
+                </WrapPanel>
+                <CheckBox x:Name="ShowLengthLabelsCheck"
+                          Content="Показывать длину участков"
+                          Margin="0,4,0,0"
+                          ToolTip="Подписывать длиной новые замерные полилинии. Уже созданные подписи не трогаются"
+                          Checked="ShowLengthLabels_Changed"
+                          Unchecked="ShowLengthLabels_Changed" />
+
+                <TextBlock x:Name="VerticalTotalsText"
+                           Foreground="#FF6B6B6B"
+                           TextWrapping="Wrap"
+                           Margin="0,2,0,0" />
+            </StackPanel>
+        </GroupBox>
+
+        <!-- ================= НИЖНИЙ БЛОК: журнал ================= -->
+        <GroupBox Grid.Row="2" Padding="6" Margin="0,0,0,6">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="JournalHeaderText" Text="Журнал замеров" FontWeight="Bold" />
+                    <TextBlock x:Name="AutoRefreshText"
+                               Margin="10,0,0,0"
+                               Foreground="#FF3C7D3C"
+                               ToolTip="Журнал пересчитывается сам после изменений чертежа, журнала и реестра материалов" />
+                </StackPanel>
+            </GroupBox.Header>
+
+            <!--
+                Двойной клик по строке выбирает её материал (см. JournalGrid_MouseDoubleClick).
+                Обработчик не помечает событие обработанным, поэтому штатное
+                редактирование ячейки по двойному клику продолжает работать.
+            -->
+            <DataGrid x:Name="JournalGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="False"
+                      SelectionMode="Single"
+                      SelectionUnit="Cell"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserSortColumns="True"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="All"
+                      RowHeaderWidth="0"
+                      EnableRowVirtualization="True"
+                      AlternatingRowBackground="#FFF7F7F7"
+                      ColumnWidth="Auto"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      MouseDoubleClick="JournalGrid_MouseDoubleClick"
+                      BeginningEdit="JournalGrid_BeginningEdit"
+                      CellEditEnding="JournalGrid_CellEditEnding">
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip"
+                                Value="Двойной клик — сделать материал строки текущим" />
+                        <Style.Triggers>
+                            <!-- Строка с ручным значением больше не следует за чертежом. -->
+                            <DataTrigger Binding="{Binding HasManualValue}" Value="True">
+                                <Setter Property="Background" Value="#FFFFF6E0" />
+                                <Setter Property="ToolTip"
+                                        Value="Значение задано вручную и не пересчитывается по чертежу. Очисти ячейку, чтобы вернуть измеренное." />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <!--
+                    Столбцы «Тип» и «Характеристика» намеренно не выводятся:
+                    и класс, и размеры уже содержатся в наименовании материала.
+                    В модели они остаются и попадают в Excel.
+
+                    Все редактируемые колонки привязаны OneWay: запись значения
+                    идёт не через привязку, а через JournalEditService в
+                    CellEditEnding. Иначе смена материала или участка меняла бы
+                    только текст в таблице, не трогая слой и геометрию.
+                -->
+                <DataGrid.Columns>
+                    <DataGridComboBoxColumn x:Name="MaterialColumn"
+                                            Header="Наименование материала"
+                                            Width="300"
+                                            SelectedValueBinding="{Binding MaterialName, Mode=OneWay}">
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox">
+                                <!-- Позиций сотни: разрешаем набор с клавиатуры для быстрого поиска. -->
+                                <Setter Property="IsEditable" Value="True" />
+                                <Setter Property="IsTextSearchEnabled" Value="True" />
+                                <Setter Property="IsTextSearchCaseSensitive" Value="False" />
+                                <Setter Property="StaysOpenOnEdit" Value="True" />
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
+
+                    <!--
+                        Единица и количество идут сразу за наименованием.
+                        Колонка одна на оба класса: у линейных материалов это
+                        длина в метрах и «м», у штучных — число изделий и «шт».
+                        Раздельные «Длина» и «Количество» всегда наполовину пустовали.
+                    -->
+                    <DataGridTextColumn Header="Ед. изм."
+                                        Binding="{Binding StatementUnit, Mode=OneWay}"
+                                        Width="70"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn x:Name="QuantityColumn"
+                                        Header="Кол-во"
+                                        Binding="{Binding QuantityDisplay, Mode=OneWay}"
+                                        Width="90" />
+
+                    <DataGridTextColumn x:Name="SectionColumn"
+                                        Header="Участок"
+                                        Binding="{Binding Section, Mode=OneWay}"
+                                        Width="130" />
+                    <!-- Слой и файл DWG вычисляются, руками их не правят. -->
+                    <DataGridTextColumn Header="Слой"
+                                        Binding="{Binding LayerName, Mode=OneWay}"
+                                        Width="180"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Header="Файл DWG"
+                                        Binding="{Binding DrawingFileName, Mode=OneWay}"
+                                        Width="150"
+                                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <!-- ================= КНОПКИ УПРАВЛЕНИЯ ================= -->
+        <StackPanel Grid.Row="3">
+            <WrapPanel>
+                <Button Content="Очистить журнал"
+                        Style="{StaticResource ActionButton}"
+                        MinWidth="150"
+                        ToolTip="Очищает только записи текущей сессии. Чертёж, слои, подписи и материалы остаются на месте"
+                        Click="ClearJournal_Click" />
+                <Button Content="Вставить таблицу замеров"
+                        Style="{StaticResource ActionButton}"
+                        MinWidth="185"
+                        ToolTip="Вставить в чертёж таблицы AutoCAD по журналу. Дальше они обновляются автоматически"
+                        Click="InsertTable_Click" />
+                <Button Content="Экспорт в Excel"
+                        Style="{StaticResource ActionButton}"
+                        FontWeight="Bold"
+                        Click="Export_Click" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,2,0,0">
+                <Button Content="Показать только слои замеров"
+                        Style="{StaticResource ActionButton}"
+                        MinWidth="190"
+                        ToolTip="Выключает все прочие слои чертежа"
+                        Click="IsolateLayers_Click" />
+                <Button Content="Показать все слои"
+                        Style="{StaticResource ActionButton}"
+                        MinWidth="140"
+                        ToolTip="Возвращает исходную видимость слоёв"
+                        Click="RestoreLayers_Click" />
+            </WrapPanel>
+        </StackPanel>
+
+        <!-- ================= СТРОКА СОСТОЯНИЯ ================= -->
+        <Border Grid.Row="4" Background="#FFE6E6E6" Padding="6,4" Margin="0,4,0,0">
+            <TextBlock x:Name="StatusText"
+                       Text="Готово."
+                       TextWrapping="Wrap"
+                       Foreground="#FF303030" />
+        </Border>
+    </Grid>
+</UserControl>

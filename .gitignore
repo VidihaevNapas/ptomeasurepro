@@ -1,0 +1,35 @@
+# ---- Артефакты сборки .NET ----
+# Пересобираются из исходников, в историю не нужны.
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# Готовый пакет для установки: собирается целью Bundle.
+dist/
+
+# ---- Visual Studio / Rider / VS Code ----
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.csproj.user
+
+# ---- NuGet ----
+*.nupkg
+packages/
+.nuget/
+
+# ---- Прочее ----
+*.log
+Thumbs.db
+desktop.ini
+
+# ---- Что НЕ игнорируется ----
+# materials.json в src/CadMeasurePlugin — это стартовый реестр (шаблон),
+# он часть исходников и должен быть в репозитории.
+# Рабочий реестр пользователя лежит в %APPDATA%\PTOMeasurePro и сюда не попадает.

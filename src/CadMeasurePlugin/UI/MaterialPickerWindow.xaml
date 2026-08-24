@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="CadMeasurePlugin.UI.MaterialPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Выбор материала"
+        Height="640" Width="900"
+        MinHeight="440" MinWidth="680"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="#FFF3F3F3"
+        Foreground="#FF1E1E1E"
+        FontSize="12">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="12,5" />
+            <Setter Property="MinWidth" Value="90" />
+            <Setter Property="Margin" Value="0,0,4,0" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Классы материалов. Вкладки заполняются в code-behind по MaterialClasses.All -->
+        <TabControl Grid.Row="0"
+                    x:Name="ClassTabs"
+                    Margin="0,0,0,8"
+                    SelectionChanged="ClassTabs_SelectionChanged" />
+
+        <!-- Поиск -->
+        <Grid Grid.Row="1" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Поиск:" VerticalAlignment="Center" Margin="0,0,6,0" />
+            <TextBox Grid.Column="1"
+                     x:Name="SearchBox"
+                     Padding="4,3"
+                     ToolTip="Поиск по наименованию внутри активной вкладки"
+                     TextChanged="SearchBox_TextChanged" />
+            <Button Grid.Column="2" Content="Сброс" MinWidth="70" Click="ResetSearch_Click" />
+            <TextBlock Grid.Column="3"
+                       x:Name="FoundCountText"
+                       VerticalAlignment="Center"
+                       Margin="10,0,0,0"
+                       Foreground="#FF6B6B6B" />
+        </Grid>
+
+        <!--
+            Только «Наименование»: класс и размеры уже содержатся в нём,
+            остальные поля остаются в модели и попадают в Excel.
+        -->
+        <ListView Grid.Row="2"
+                  x:Name="MaterialsList"
+                  SelectionMode="Single"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  MouseDoubleClick="MaterialsList_MouseDoubleClick"
+                  SelectionChanged="MaterialsList_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Наименование" Width="820"
+                                    DisplayMemberBinding="{Binding Name}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Кнопки -->
+        <Grid Grid.Row="3" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Content="Добавить материал"
+                        MinWidth="145"
+                        ToolTip="Создать новую позицию реестра с нуля"
+                        Click="AddMaterial_Click" />
+                <Button x:Name="CopyMaterialButton"
+                        Content="Копировать выбранный"
+                        MinWidth="165"
+                        IsEnabled="False"
+                        ToolTip="Создать новую позицию на основе выделенной (копируются все поля)"
+                        Click="CopyMaterial_Click" />
+                <Button x:Name="DeleteMaterialButton"
+                        Content="Удалить материал"
+                        MinWidth="135"
+                        IsEnabled="False"
+                        ToolTip="Удалить позицию из реестра вместе с её замерами и геометрией"
+                        Click="DeleteMaterial_Click" />
+            </StackPanel>
+
+            <TextBlock Grid.Column="1"
+                       x:Name="SelectedText"
+                       VerticalAlignment="Center"
+                       Margin="12,0,12,0"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="#FF444444" />
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button x:Name="OkButton" Content="Выбрать" IsDefault="True" IsEnabled="False" Click="Ok_Click" />
+                <Button Content="Отмена" IsCancel="True" Margin="0" Click="Cancel_Click" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

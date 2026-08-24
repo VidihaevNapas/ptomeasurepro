@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Манифест пакета автозагрузки AutoCAD (ApplicationPlugins).
+
+  Устанавливается как:
+    %PROGRAMDATA%\Autodesk\ApplicationPlugins\PTOMeasurePro.bundle\PackageContents.xml
+
+  AutoCAD сам сканирует ApplicationPlugins при запуске, читает этот файл
+  и загружает ModuleName — команда NETLOAD пользователю не нужна.
+
+  ВАЖНО о версиях:
+    • AppVersion (пакет) и Version (компонент) должны совпадать со свойством
+      PtoVersion из Version.props. Сборка это проверяет и падает при расхождении.
+    • SeriesMin/SeriesMax — серии AutoCAD, а не годы:
+        R25.0 = AutoCAD 2025, R25.1 = AutoCAD 2026.
+      Обе серии работают на .NET 8, поэтому одна сборка net8.0-windows
+      подходит для обеих. Отдельного атрибута «версия .NET» в схеме
+      PackageContents нет — требование .NET 8 обеспечивается именно
+      нижней границей серии R25.0 (в AutoCAD 2024 и старше был .NET Framework,
+      и туда пакет намеренно не загрузится).
+    • ProductCode должен меняться от версии к версии, UpgradeCode — никогда:
+      по нему установщик опознаёт, что ставится обновление того же продукта.
+-->
+<ApplicationPackage
+    SchemaVersion="1.0"
+    AutodeskProduct="AutoCAD"
+    ProductType="Application"
+    Name="PTO Measure Pro"
+    AppVersion="1.0.0"
+    Description="Замер трубопроводов, воздуховодов, кабельной продукции и штучных изделий с автоматическим журналом и выгрузкой в Excel"
+    Author="ПТО"
+    ProductCode="{7B4E2A61-3C90-4D18-9F52-0A6B8C1D3E74}"
+    UpgradeCode="{2F9C6D40-5B17-42A8-8E63-4D1A7B0C9F25}">
+
+  <CompanyDetails
+      Name="ПТО"
+      Url=""
+      Email="" />
+
+  <!--
+    Требования уровня пакета. SupportPath добавляется в пути поиска AutoCAD,
+    чтобы ресурсы из Contents находились без абсолютных путей.
+  -->
+  <RuntimeRequirements
+      OS="Win64"
+      Platform="AutoCAD*"
+      SeriesMin="R25.0"
+      SeriesMax="R25.1"
+      SupportPath="./Contents" />
+
+  <Components Description="PTO Measure Pro — модуль замеров">
+
+    <RuntimeRequirements
+        OS="Win64"
+        Platform="AutoCAD*"
+        SeriesMin="R25.0"
+        SeriesMax="R25.1" />
+
+    <!--
+      ModuleName — путь ВНУТРИ bundle, всегда через ./Contents/.
+      Зависимости (CadMeasureDomain.dll, ClosedXML и его пакеты) лежат рядом
+      и подхватываются резолвером из PluginExtensionApplication.
+
+      LoadOnAutoCADStartup="True" — плагин грузится при старте AutoCAD.
+      LoadOnCommandInvocation="False" — отложенная загрузка по команде выключена
+      намеренно: палитре нужен реестр материалов уже на старте сессии.
+    -->
+    <ComponentEntry
+        AppName="PTO Measure Pro"
+        Version="1.0.0"
+        ModuleName="./Contents/CadMeasurePlugin.dll"
+        AppDescription="Замеры ПТО: журнал по чертежу и экспорт в Excel"
+        LoadOnAutoCADStartup="True"
+        LoadOnCommandInvocation="False">
+
+      <!--
+        Список команд носит справочный характер: при LoadOnAutoCADStartup="True"
+        сборка уже загружена, и команды регистрируются её атрибутами
+        CommandMethod. Блок оставлен, чтобы команды были видны в описании пакета.
+      -->
+      <Commands GroupName="PTOMEASUREPRO">
+        <Command Global="CMP"       Local="CMP"       HelpTopic="Открыть палитру замеров" />
+        <Command Global="ЗАМЕРЫ"    Local="ЗАМЕРЫ"    HelpTopic="Открыть палитру замеров" />
+        <Command Global="CMPDRAW"   Local="CMPDRAW"   HelpTopic="Режим рисования замерных полилиний" />
+        <Command Global="CMPRELOAD" Local="CMPRELOAD" HelpTopic="Перечитать реестр материалов" />
+        <Command Global="CMPHELP"   Local="CMPHELP"   HelpTopic="Справка по командам плагина" />
+      </Commands>
+
+    </ComponentEntry>
+  </Components>
+
+</ApplicationPackage>

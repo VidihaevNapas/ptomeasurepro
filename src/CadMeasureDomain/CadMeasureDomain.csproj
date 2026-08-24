@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Номер версии продукта — единственный источник, см. Version.props. -->
+  <Import Project="..\..\Version.props" />
+
+  <PropertyGroup>
+    <!-- Доменный слой: ничего не знает про AutoCAD, только модели/сервисы/Excel. -->
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>CadMeasureDomain</RootNamespace>
+    <AssemblyName>CadMeasureDomain</AssemblyName>
+    <Platforms>x64</Platforms>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Чтение/запись .xlsx без установленного Excel. -->
+    <PackageReference Include="ClosedXML" Version="0.104.1" />
+  </ItemGroup>
+
+</Project>

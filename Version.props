@@ -1,0 +1,46 @@
+<Project>
+
+  <!--
+    ЕДИНСТВЕННОЕ место, где меняется номер версии продукта.
+
+    Отсюда он попадает:
+      • в AssemblyVersion / FileVersion / AssemblyInformationalVersion обеих сборок;
+      • в PluginSettings.PluginVersion (читается из атрибута сборки во время работы);
+      • в проверку соответствия с PackageContents.xml (цель ПроверкаВерсииBundle
+        в CadMeasurePlugin.csproj) — сборка упадёт, если номера разойдутся.
+
+    Порядок выпуска новой версии:
+      1. поменять PtoVersion здесь;
+      2. поменять AppVersion и Version в src\CadMeasurePlugin\Package\PackageContents.xml;
+      3. dotnet build CadMeasure.sln -c Release -p:Platform=x64 -t:Bundle
+  -->
+
+  <PropertyGroup>
+    <PtoVersion>1.0.0</PtoVersion>
+    <PtoProductName>PTO Measure Pro</PtoProductName>
+    <PtoBundleName>PTOMeasurePro.bundle</PtoBundleName>
+    <PtoCompany>ПТО</PtoCompany>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--
+      IDE0005 («неиспользуемый using») работает только при включённой генерации
+      XML-документации. CS1591 при этом гасим: публичные члены задокументированы
+      там, где это осмысленно, а требовать комментарий к каждому — шум.
+    -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- AssemblyVersion держим на X.Y.0.0: смена ревизии не должна ломать привязки. -->
+    <Version>$(PtoVersion)</Version>
+    <AssemblyVersion>$(PtoVersion).0</AssemblyVersion>
+    <FileVersion>$(PtoVersion).0</FileVersion>
+    <InformationalVersion>$(PtoVersion)</InformationalVersion>
+    <Product>$(PtoProductName)</Product>
+    <Company>$(PtoCompany)</Company>
+  </PropertyGroup>
+
+</Project>
