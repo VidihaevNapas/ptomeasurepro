@@ -26,7 +26,7 @@
     AutodeskProduct="AutoCAD"
     ProductType="Application"
     Name="PTO Measure Pro"
-    AppVersion="1.0.0"
+    AppVersion="1.0.1"
     Description="Замер трубопроводов, воздуховодов, кабельной продукции и штучных изделий с автоматическим журналом и выгрузкой в Excel"
     Author="ПТО"
     ProductCode="{7B4E2A61-3C90-4D18-9F52-0A6B8C1D3E74}"
@@ -67,7 +67,7 @@
     -->
     <ComponentEntry
         AppName="PTO Measure Pro"
-        Version="1.0.0"
+        Version="1.0.1"
         ModuleName="./Contents/CadMeasurePlugin.dll"
         AppDescription="Замеры ПТО: журнал по чертежу и экспорт в Excel"
         LoadOnAutoCADStartup="True"
