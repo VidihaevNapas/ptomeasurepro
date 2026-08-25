@@ -23,6 +23,14 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
     private double _horizontalLengthM;
     private double _verticalLengthM;
     private double _areaPerMeterM2;
+    private int? _specificationItemId;
+    private double? _specificationQuantity;
+    private string _specificationFileName = string.Empty;
+    private string _mark = string.Empty;
+    private string _equipmentCode = string.Empty;
+    private string _manufacturer = string.Empty;
+    private bool _materialMissing;
+    private bool _specificationEditedManually;
     private double? _manualLengthM;
     private int _polylineCount;
     private int _scannedQuantity;
@@ -148,7 +156,13 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
     public int ScannedQuantity
     {
         get => _scannedQuantity;
-        set { if (SetField(ref _scannedQuantity, value)) OnPropertyChanged(nameof(QuantityDisplay)); }
+        set
+        {
+            if (!SetField(ref _scannedQuantity, value)) return;
+
+            OnPropertyChanged(nameof(QuantityDisplay));
+            NotifyMeasuredQuantityChanged();
+        }
     }
 
     /// <summary>
@@ -165,6 +179,7 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
             OnPropertyChanged(nameof(Quantity));
             OnPropertyChanged(nameof(QuantityDisplay));
             OnPropertyChanged(nameof(HasManualValue));
+            NotifyMeasuredQuantityChanged();
         }
     }
 
@@ -200,6 +215,108 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
     public string QuantityDisplay => IsPiece
         ? Quantity.ToString(CultureInfo.CurrentCulture)
         : LengthM.ToString(MeasurementRounding.LengthFormat, CultureInfo.CurrentCulture);
+
+    // ======================= Привязка к спецификации =======================
+
+    /// <summary>
+    /// Номер позиции первоначальной спецификации, если запись ей соответствует.
+    /// Null означает замер, которого в спецификации нет, — такое бывает
+    /// сплошь и рядом и само по себе не ошибка.
+    /// </summary>
+    public int? SpecificationItemId
+    {
+        get => _specificationItemId;
+        set
+        {
+            if (!SetField(ref _specificationItemId, value)) return;
+
+            OnPropertyChanged(nameof(IsFromSpecification));
+            OnPropertyChanged(nameof(SpecificationDifference));
+        }
+    }
+
+    /// <summary>Имя файла спецификации, из которой пришла позиция.</summary>
+    public string SpecificationFileName
+    {
+        get => _specificationFileName;
+        set => SetField(ref _specificationFileName, value);
+    }
+
+    /// <summary>Марка из спецификации.</summary>
+    public string Mark
+    {
+        get => _mark;
+        set => SetField(ref _mark, value);
+    }
+
+    /// <summary>Код оборудования из спецификации.</summary>
+    public string EquipmentCode
+    {
+        get => _equipmentCode;
+        set => SetField(ref _equipmentCode, value);
+    }
+
+    /// <summary>Изготовитель из спецификации.</summary>
+    public string Manufacturer
+    {
+        get => _manufacturer;
+        set => SetField(ref _manufacturer, value);
+    }
+
+    /// <summary>Проектное количество по спецификации.</summary>
+    public double? SpecificationQuantity
+    {
+        get => _specificationQuantity;
+        set { if (SetField(ref _specificationQuantity, value)) OnPropertyChanged(nameof(SpecificationDifference)); }
+    }
+
+    /// <summary>Запись соответствует строке спецификации.</summary>
+    [JsonIgnore]
+    public bool IsFromSpecification => SpecificationItemId.HasValue;
+
+    /// <summary>
+    /// Поля спецификации в этой строке правились вручную.
+    ///
+    /// Палитра помечает такие строки: данные в них введены человеком, а не
+    /// прочитаны из файла спецификации, и при перезагрузке файла их придётся
+    /// вводить заново.
+    /// </summary>
+    public bool SpecificationEditedManually
+    {
+        get => _specificationEditedManually;
+        set => SetField(ref _specificationEditedManually, value);
+    }
+
+    /// <summary>
+    /// Наименованию строки не нашлось материала в реестре.
+    ///
+    /// Такое бывает у позиций спецификации: проектировщик пишет наименование
+    /// по-своему. Замерять такую строку нечем — слой строится по материалу
+    /// реестра, — поэтому она помечается, а замер по ней не начинается,
+    /// пока человек не привяжет материал.
+    /// </summary>
+    public bool MaterialMissing
+    {
+        get => _materialMissing;
+        set => SetField(ref _materialMissing, value);
+    }
+
+    /// <summary>
+    /// Замеренное количество в единицах записи: метры у линейных материалов,
+    /// штуки у штучных. Одно свойство на оба случая — так свод по
+    /// спецификации не разбирается в классах.
+    /// </summary>
+    [JsonIgnore]
+    public double MeasuredQuantity => IsPiece ? Quantity : LengthM;
+
+    /// <summary>
+    /// Расхождение с проектом: замерено минус по спецификации.
+    /// Null, если позиции в спецификации нет — сравнивать не с чем.
+    /// </summary>
+    [JsonIgnore]
+    public double? SpecificationDifference => SpecificationQuantity is null
+        ? null
+        : MeasurementRounding.RoundLength(MeasuredQuantity - SpecificationQuantity.Value);
 
     /// <summary>Участок / зона / часть проекта.</summary>
     public string Section
@@ -247,12 +364,53 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
             (section ?? string.Empty).Trim().ToUpperInvariant(),
             (drawingFileName ?? string.Empty).Trim().ToUpperInvariant());
 
+    /// <summary>
+    /// Снять привязку к спецификации, оставив саму запись и её замер.
+    ///
+    /// Нужно при перезагрузке спецификации: позиции, которой в новом файле
+    /// нет, соответствовать больше нечему, но замер по чертежу от этого
+    /// не перестаёт быть верным.
+    /// </summary>
+    public void ClearSpecificationBinding()
+    {
+        SpecificationItemId = null;
+        SpecificationFileName = string.Empty;
+        SpecificationQuantity = null;
+        Mark = string.Empty;
+        EquipmentCode = string.Empty;
+        Manufacturer = string.Empty;
+    }
+
+    /// <summary>
+    /// Обнулить всё, что пришло из чертежа: длины, количество и число полилиний.
+    ///
+    /// Нужно позициям спецификации, под которыми не осталось геометрии:
+    /// такая строка — план работ, её нельзя удалять, но и показывать
+    /// прежний замер она больше не вправе. Ручное значение не трогается:
+    /// оно введено человеком и по правилам журнала переживает пересчёты.
+    /// </summary>
+    public void ResetMeasuredValues()
+    {
+        HorizontalLengthM = 0;
+        VerticalLengthM = 0;
+        ScannedQuantity = 0;
+        PolylineCount = 0;
+    }
+
     /// <summary>Длина складывается из нескольких полей — уведомляем обо всех производных.</summary>
     private void NotifyLengthChanged()
     {
         OnPropertyChanged(nameof(LengthM));
         OnPropertyChanged(nameof(QuantityDisplay));
         OnPropertyChanged(nameof(AreaM2));
+        NotifyMeasuredQuantityChanged();
+    }
+
+    /// <summary>Замеренное количество и расхождение с проектом — производные от него.</summary>
+    private void NotifyMeasuredQuantityChanged()
+    {
+        OnPropertyChanged(nameof(MeasuredQuantity));
+        OnPropertyChanged(nameof(SpecificationDifference));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

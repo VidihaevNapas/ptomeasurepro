@@ -4,6 +4,27 @@ using CadMeasureDomain.Tools;
 
 namespace CadMeasurePlugin.Services;
 
+/// <summary>Что произошло при загрузке или перезагрузке спецификации.</summary>
+/// <param name="Specification">Принятая спецификация.</param>
+/// <param name="Previous">Прежняя спецификация сессии, либо null при первой загрузке.</param>
+/// <param name="MaterialsCreated">Сколько материалов заведено в реестре.</param>
+/// <param name="MaterialsSkipped">Сколько позиций пропущено из-за нераспознанной единицы.</param>
+/// <param name="RecordsRebound">Сколько записей журнала привязано к новым позициям.</param>
+/// <param name="RecordsUnbound">Сколько записей потеряло привязку: позиции нет в новом файле.</param>
+/// <param name="Log">Строки для командной строки AutoCAD.</param>
+public sealed record SpecificationLoadResult(
+    Specification Specification,
+    Specification? Previous,
+    int MaterialsCreated,
+    int MaterialsSkipped,
+    int RecordsRebound,
+    int RecordsUnbound,
+    IReadOnlyList<string> Log)
+{
+    /// <summary>Загрузка поверх уже действующей спецификации.</summary>
+    public bool IsReload => Previous is not null;
+}
+
 /// <summary>
 /// Состояние сессии замеров: реестр материалов, журнал, инструменты, слои.
 ///
@@ -108,6 +129,111 @@ public sealed class MeasureSession
 
     /// <summary>Папка, в которой лежит dll плагина (…\PTOMeasurePro.bundle\Contents).</summary>
     public static string PluginDirectory => PluginPaths.PluginDirectory;
+
+    // ======================= Первоначальная спецификация =======================
+
+    /// <summary>
+    /// Загруженная спецификация проекта, либо null. Живёт столько же, сколько
+    /// сессия, поэтому переход между чертежами её не сбрасывает — именно так
+    /// и набираются столбцы «Подсчёт по &lt;файл&gt;» по нескольким DWG.
+    /// </summary>
+    public Specification? Specification { get; private set; }
+
+    /// <summary>Спецификация загружена.</summary>
+    public bool HasSpecification => Specification is not null;
+
+    /// <summary>
+    /// Какие столбцы спецификации показывать в таблице журнала: заголовок → показывать.
+    ///
+    /// Живёт в сессии, а не в настройках пользователя: это про текущую работу
+    /// («сейчас мешает — убрал»), а не про постоянное предпочтение. Палитру
+    /// можно закрыть и открыть заново — выбор сохранится до закрытия AutoCAD.
+    /// </summary>
+    public Dictionary<string, bool> SpecificationColumnVisibility { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Принять импортированную спецификацию: завести недостающие материалы,
+    /// связать с ней журнал и запомнить её на сессию.
+    ///
+    /// Записи журнала при этом не создаются: какие позиции брать в работу,
+    /// решает пользователь в окне импорта.
+    /// </summary>
+    /// <returns>Что произошло — для вывода в командную строку AutoCAD.</returns>
+    public SpecificationLoadResult LoadSpecification(Specification specification)
+    {
+        ArgumentNullException.ThrowIfNull(specification);
+
+        var previous = Specification;
+        var log = new List<string>();
+
+        // 1. Материалы. Позиции, которых нет в реестре, заводятся сразу —
+        //    иначе замерять спецификацию было бы нечем.
+        var sync = SpecificationRegistrySync.EnsureMaterials(Materials, specification);
+        log.AddRange(sync.Log);
+
+        // 2. Журнал. При перезагрузке привязки пересобираются: старые номера
+        //    позиций указывали бы не на те строки нового файла.
+        var (rebound, unbound) = Journal.RebindToSpecification(specification);
+
+        // 3. Записи, замеренные до импорта, тоже связываем — иначе их подсчёт
+        //    не попал бы в свод.
+        foreach (var record in Journal.Records)
+        {
+            if (record.IsFromSpecification) continue;
+
+            var item = specification.FindByName(record.MaterialName);
+            if (item is null) continue;
+
+            MeasurementJournal.BindToSpecification(record, item, specification.FileName);
+            rebound++;
+        }
+
+        Specification = specification;
+        JournalService.Specification = specification;
+
+        if (previous is not null)
+            log.Add($"Спецификация перезапущена: {previous.FileName} → {specification.FileName}");
+
+        return new SpecificationLoadResult(
+            specification,
+            previous,
+            sync.Created.Count,
+            sync.Skipped.Count,
+            rebound,
+            unbound,
+            log);
+    }
+
+    /// <summary>
+    /// Материал реестра, соответствующий позиции спецификации, либо null,
+    /// если наименования не совпали. Пока материала нет, замерять позицию
+    /// нечем: слой строится по материалу реестра.
+    /// </summary>
+    public Material? FindMaterialFor(SpecificationItem item) =>
+        item is null ? null : Materials.FindByName(item.Name);
+
+    /// <summary>
+    /// Перенести позиции спецификации в журнал текущего чертежа.
+    /// Возвращает количество созданных и обновлённых записей.
+    /// </summary>
+    public int AddSpecificationItemsToJournal(IEnumerable<SpecificationItem> items)
+    {
+        ArgumentNullException.ThrowIfNull(items);
+
+        if (Specification is null)
+            throw new InvalidOperationException("Спецификация не загружена.");
+
+        var drawing = Workspace.CurrentDrawingFileName;
+        var added = 0;
+
+        foreach (var item in items)
+        {
+            Journal.AddFromSpecification(item, Specification.FileName, drawing, FindMaterialFor(item));
+            added++;
+        }
+
+        return added;
+    }
 
     /// <summary>Загрузить реестр материалов. Вызывается один раз в начале сессии.</summary>
     public void EnsureMaterialsLoaded()

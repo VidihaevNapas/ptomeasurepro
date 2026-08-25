@@ -30,6 +30,9 @@ public sealed class ExcelExportService
     /// <summary>Лист детализации по штучным изделиям.</summary>
     public const string PieceSheetName = "Штучные изделия";
 
+    /// <summary>Лист свода по первоначальной спецификации.</summary>
+    public const string SpecificationSheetName = "Спецификация";
+
     /// <summary>Пометка строки, значение которой задано вручную.</summary>
     public const string ManualValueMark = "вручную";
 
@@ -122,19 +125,42 @@ public sealed class ExcelExportService
     /// <param name="journal">Журнал замеров.</param>
     /// <param name="drawingFileName">Чертёж, по которому строится выгрузка.</param>
     /// <param name="path">Куда сохранить файл.</param>
-    public string Export(MeasurementJournal journal, string drawingFileName, string path)
+    /// <param name="specification">
+    /// Первоначальная спецификация, если она загружена. С ней в книге
+    /// появляется четвёртый лист — свод «спецификация × чертежи».
+    /// </param>
+    /// <param name="options">
+    /// Состав книги: какие листы, столбцы и строки выгружать.
+    /// null — вся книга целиком.
+    /// </param>
+    public string Export(
+        MeasurementJournal journal,
+        string drawingFileName,
+        string path,
+        Specification? specification = null,
+        SpecificationExportOptions? options = null)
     {
         ArgumentNullException.ThrowIfNull(journal);
         if (string.IsNullOrWhiteSpace(path))
             throw new ArgumentException("Не задан путь к файлу экспорта.", nameof(path));
 
+        options ??= SpecificationExportOptions.Default;
+        if (!options.HasAnySheet)
+            throw new ArgumentException("Не выбрано ни одного листа выгрузки.", nameof(options));
+
         var rows = StatementBuilder.Build(journal, drawingFileName);
         var records = journal.GetRecordsForDrawing(drawingFileName ?? string.Empty);
 
         using var workbook = new XLWorkbook();
-        WriteStatement(workbook.Worksheets.Add(SheetName), rows);
-        WriteLinearDetails(workbook.Worksheets.Add(LinearSheetName), records);
-        WritePieceDetails(workbook.Worksheets.Add(PieceSheetName), records);
+
+        if (options.IncludeStatement) WriteStatement(workbook.Worksheets.Add(SheetName), rows);
+        if (options.IncludeLinearDetails) WriteLinearDetails(workbook.Worksheets.Add(LinearSheetName), records);
+        if (options.IncludePieceDetails) WritePieceDetails(workbook.Worksheets.Add(PieceSheetName), records);
+
+        // Свод по спецификации идёт последним листом: ведомость и детализация
+        // существуют всегда, а спецификацию загружают не в каждом проекте.
+        if (specification is not null && options.IncludeSpecification)
+            WriteSpecification(workbook.Worksheets.Add(SpecificationSheetName), journal, specification, options);
 
         workbook.SaveAs(path);
         return path;
@@ -293,6 +319,125 @@ public sealed class ExcelExportService
         sheet.Column(3).Style.Alignment.WrapText = true;
     }
 
+    // ======================= Спецификация =======================
+
+    /// <summary>
+    /// Описание одного столбца листа «Спецификация».
+    /// Столбцы собираются по настройкам выгрузки, поэтому и заголовок,
+    /// и способ получения значения хранятся вместе — иначе при выключении
+    /// столбца поехали бы индексы ячеек.
+    /// </summary>
+    /// <param name="Header">Заголовок.</param>
+    /// <param name="NumberFormat">Формат числа; null — текстовый столбец.</param>
+    /// <param name="Value">Значение для строки свода.</param>
+    /// <param name="Width">Ширина столбца.</param>
+    private sealed record SpecificationSheetColumn(
+        string Header,
+        string? NumberFormat,
+        Func<SpecificationSummaryRow, object?> Value,
+        double Width);
+
+    private static List<SpecificationSheetColumn> BuildSpecificationColumns(
+        IReadOnlyList<string> drawings,
+        SpecificationExportOptions options)
+    {
+        var columns = new List<SpecificationSheetColumn>();
+
+        if (options.Has(SpecificationColumn.Number))
+            columns.Add(new("п/п", null, r => r.Item.Number, 6));
+        if (options.Has(SpecificationColumn.Name))
+            columns.Add(new("Наименование материала", null, r => r.Item.Name, 50));
+        if (options.Has(SpecificationColumn.Mark))
+            columns.Add(new("Марка", null, r => r.Item.Mark, 18));
+        if (options.Has(SpecificationColumn.EquipmentCode))
+            columns.Add(new("Код оборудования", null, r => r.Item.EquipmentCode, 18));
+        if (options.Has(SpecificationColumn.Manufacturer))
+            columns.Add(new("Изготовитель", null, r => r.Item.Manufacturer, 22));
+        if (options.Has(SpecificationColumn.Unit))
+            columns.Add(new("Ед. изм.", null, r => r.Item.Unit, 10));
+        if (options.Has(SpecificationColumn.Quantity))
+            columns.Add(new("Кол-во по спецификации", "0.00", r => r.Item.Quantity, 16));
+
+        foreach (var drawing in drawings)
+        {
+            var key = drawing;
+            columns.Add(new(
+                SpecificationSummaryBuilder.BuildCountColumnHeader(key),
+                "0.00",
+                // Ноль, а не пустая ячейка: столбец подсчёта суммируется
+                // и вычитается, и дырки в нём ломали бы формулы.
+                r => r.ByDrawing.TryGetValue(key, out var counted) ? counted : 0d,
+                16));
+        }
+
+        if (options.Has(SpecificationColumn.Total))
+            columns.Add(new("Всего подсчитано", "0.00", r => r.Total, 16));
+        if (options.Has(SpecificationColumn.Difference))
+            columns.Add(new("Расхождение", "0.00", r => r.Difference, 16));
+
+        return columns;
+    }
+
+    private static void WriteSpecification(
+        IXLWorksheet sheet,
+        MeasurementJournal journal,
+        Specification specification,
+        SpecificationExportOptions options)
+    {
+        var drawings = SpecificationSummaryBuilder.GetDrawingColumns(journal);
+        if (options.Drawings is not null)
+            drawings = drawings.Where(options.Drawings.Contains).ToList();
+
+        var summary = SpecificationSummaryBuilder.Build(journal, specification);
+
+        // «Только проверенные»: строки без единого замера в выгрузку не идут.
+        if (options.OnlyMeasured)
+            summary = summary.Where(r => r.IsMeasured && r.Total > 0).ToList();
+
+        var columns = BuildSpecificationColumns(drawings, options);
+        if (columns.Count == 0) return;
+
+        var title = $"Спецификация {specification.FileName}: проект и подсчёт по чертежам" +
+                    (options.OnlyMeasured ? " (только проверенные позиции)" : string.Empty);
+
+        WriteTitle(sheet, title, columns.Count);
+        WriteHeader(sheet, columns.Select(c => c.Header).ToList());
+
+        var row = 3;
+        foreach (var line in summary)
+        {
+            for (var i = 0; i < columns.Count; i++)
+            {
+                var column = columns[i];
+                var cell = sheet.Cell(row, i + 1);
+                var value = column.Value(line);
+
+                if (column.NumberFormat is null) cell.Value = value?.ToString() ?? string.Empty;
+                else SetNumber(cell, Convert.ToDouble(value), column.NumberFormat);
+            }
+
+            // Позиция с нераспознанной единицей замеру не поддаётся —
+            // её видно сразу, чтобы не искать причину пустого подсчёта.
+            if (!line.Item.IsSupported)
+                sheet.Range(row, 1, row, columns.Count).Style.Fill.BackgroundColor = XLColor.LightYellow;
+
+            row++;
+        }
+
+        var firstNumeric = columns.FindIndex(c => c.NumberFormat is not null);
+        var lastNumeric = columns.FindLastIndex(c => c.NumberFormat is not null);
+
+        if (firstNumeric >= 0)
+            WriteTotals(sheet, summary.Count, columns.Count, firstNumeric + 1, lastNumeric + 1);
+
+        FinishSheet(sheet, summary.Count, columns.Count, hasTotals: firstNumeric >= 0);
+
+        for (var i = 0; i < columns.Count; i++) sheet.Column(i + 1).Width = columns[i].Width;
+
+        var nameColumn = columns.FindIndex(c => c.Header == "Наименование материала");
+        if (nameColumn >= 0) sheet.Column(nameColumn + 1).Style.Alignment.WrapText = true;
+    }
+
     // ======================= Общее оформление =======================
 
     private static void WriteTitle(IXLWorksheet sheet, string title, int columnCount)
@@ -337,8 +482,13 @@ public sealed class ExcelExportService
         var lastDataRow = dataRowCount + 2;
         var totalsRow = lastDataRow + 1;
 
-        sheet.Cell(totalsRow, 1).Value = "ИТОГО";
-        sheet.Range(totalsRow, 1, totalsRow, firstNumericColumn - 1).Merge();
+        // Подпись «ИТОГО» ставится в текстовой части строки. Если текстовых
+        // столбцов не выбрано вовсе, подписывать нечего — остаются только суммы.
+        if (firstNumericColumn > 1)
+        {
+            sheet.Cell(totalsRow, 1).Value = "ИТОГО";
+            sheet.Range(totalsRow, 1, totalsRow, firstNumericColumn - 1).Merge();
+        }
 
         for (var column = firstNumericColumn; column <= lastNumericColumn; column++)
         {

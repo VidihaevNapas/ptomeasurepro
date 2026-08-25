@@ -1,0 +1,75 @@
+<Window x:Class="CadMeasurePlugin.UI.SpecificationExportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Параметры экспорта спецификации"
+        Height="620"
+        Width="560"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        FontFamily="Segoe UI"
+        FontSize="12">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Листы книги" Padding="6">
+            <StackPanel>
+                <CheckBox x:Name="StatementSheetCheck" Content="Ведомость" IsChecked="True" Margin="0,2" />
+                <CheckBox x:Name="LinearSheetCheck" Content="Линейные материалы (детализация)" IsChecked="True" Margin="0,2" />
+                <CheckBox x:Name="PieceSheetCheck" Content="Штучные изделия (детализация)" IsChecked="True" Margin="0,2" />
+                <CheckBox x:Name="SpecificationSheetCheck" Content="Спецификация (свод по чертежам)" IsChecked="True" Margin="0,2"
+                          Checked="SpecificationSheet_Changed" Unchecked="SpecificationSheet_Changed" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="Строки спецификации" Padding="6" Margin="0,6,0,0">
+            <StackPanel>
+                <RadioButton x:Name="AllItemsRadio" Content="Все позиции" IsChecked="True" Margin="0,2" />
+                <RadioButton x:Name="OnlyMeasuredRadio" Content="Только проверенные позиции (по которым что-то замерено)" Margin="0,2" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox x:Name="ColumnsGroup" Grid.Row="2" Header="Столбцы листа «Спецификация»" Padding="6" Margin="0,6,0,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <ItemsControl x:Name="ColumnsList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding Title}" IsChecked="{Binding IsVisible, Mode=TwoWay}" Margin="2" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock x:Name="DrawingsHeader"
+                               Text="Подсчёты по чертежам:"
+                               FontWeight="Bold"
+                               Margin="0,8,0,2" />
+                    <ItemsControl x:Name="DrawingsList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding Title}" IsChecked="{Binding IsVisible, Mode=TwoWay}" Margin="2" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+
+        <TextBlock Grid.Row="3"
+                   Text="Столбцы, скрытые в таблице журнала, на выгрузку не влияют: состав книги задаётся только здесь."
+                   TextWrapping="Wrap"
+                   Foreground="#FF6B6B6B"
+                   Margin="0,8,0,0" />
+
+        <WrapPanel Grid.Row="4" HorizontalAlignment="Right" Margin="0,8,0,0">
+            <Button Content="Экспортировать" Width="130" Height="28" Margin="0,0,6,0" IsDefault="True" Click="Ok_Click" />
+            <Button Content="Отмена" Width="110" Height="28" IsCancel="True" />
+        </WrapPanel>
+    </Grid>
+</Window>

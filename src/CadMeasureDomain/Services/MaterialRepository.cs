@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -57,6 +58,16 @@ public sealed class MaterialRepository
     /// <summary>Загружен ли реестр.</summary>
     public bool IsLoaded { get; private set; }
 
+    /// <summary>
+    /// Что было сделано с нечитаемым файлом реестра, либо null, если всё
+    /// прочиталось штатно. Сообщение выводится пользователю: молча подменить
+    /// реестр нельзя — человек должен знать, что его файл отложен в сторону.
+    /// </summary>
+    public string? RecoveryMessage { get; private set; }
+
+    /// <summary>Файл реестра оказался испорченным и был отложен в резервную копию.</summary>
+    public bool WasRecovered => RecoveryMessage is not null;
+
     /// <summary>Человекочитаемое описание источника реестра.</summary>
     public string SourceDescription => Source switch
     {
@@ -86,25 +97,20 @@ public sealed class MaterialRepository
         _materials.Clear();
         LoadedFrom = null;
         Source = MaterialRegistrySource.None;
+        RecoveryMessage = null;
 
         // 1. Реестр рядом с чертежом — под конкретный объект.
         if (!string.IsNullOrWhiteSpace(locations.DrawingDirectory))
         {
             var drawingRegistry = Path.Combine(locations.DrawingDirectory, FileName);
-            if (File.Exists(drawingRegistry))
-            {
-                Apply(drawingRegistry, MaterialRegistrySource.DrawingFolder);
+            if (File.Exists(drawingRegistry) && TryApply(drawingRegistry, MaterialRegistrySource.DrawingFolder))
                 return;
-            }
         }
 
         // 2. Пользовательский реестр — основной. Он вне bundle и переживает обновление.
         var userRegistry = Path.Combine(locations.UserDataDirectory, FileName);
-        if (File.Exists(userRegistry))
-        {
-            Apply(userRegistry, MaterialRegistrySource.UserData);
+        if (File.Exists(userRegistry) && TryApply(userRegistry, MaterialRegistrySource.UserData))
             return;
-        }
 
         // 3. Первый запуск: разворачиваем пользовательский реестр.
         Directory.CreateDirectory(locations.UserDataDirectory);
@@ -132,12 +138,88 @@ public sealed class MaterialRepository
         OnChanged();
     }
 
+    /// <summary>
+    /// Прочитать реестр и, если файл испорчен, отложить его в резервную копию.
+    ///
+    /// Возвращает false, когда файл не удалось разобрать: вызывающий переходит
+    /// к следующему варианту (пользовательский реестр, затем шаблон). Молча
+    /// перезаписать испорченный файл нельзя — в нём могут быть позиции,
+    /// которых больше нигде нет, и человек должен иметь возможность вытащить
+    /// их руками.
+    ///
+    /// Ловится только ошибка разбора. Занятый или недоступный файл — это не
+    /// повреждение: подменять его резервной копией значило бы терять рабочий
+    /// реестр из-за временной блокировки, поэтому такая ошибка идёт наверх.
+    /// </summary>
+    private bool TryApply(string path, MaterialRegistrySource source)
+    {
+        try
+        {
+            Apply(path, source);
+            return true;
+        }
+        catch (JsonException ex)
+        {
+            _materials.Clear();
+
+            var backup = CreateBackup(path);
+            RecoveryMessage =
+                $"Файл реестра «{path}» не читается ({ex.Message.Trim()}). " +
+                $"Он сохранён как «{backup}» и заменён новым — исправь его в текстовом редакторе " +
+                "и верни на место, если там были нужные позиции.";
+
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Отложить файл в резервную копию рядом с оригиналом:
+    /// materials.json → materials.broken-20260825-231500.json.
+    ///
+    /// Именно перемещение, а не копирование: испорченный файл должен уйти
+    /// с рабочего пути, иначе следующая попытка загрузки снова упрётся в него.
+    /// Уже существующие копии не перезаписываются.
+    /// </summary>
+    public static string CreateBackup(string path)
+    {
+        var directory = Path.GetDirectoryName(path) ?? string.Empty;
+        var name = Path.GetFileNameWithoutExtension(path);
+        var extension = Path.GetExtension(path);
+        var stamp = DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
+
+        var backup = Path.Combine(directory, $"{name}.broken-{stamp}{extension}");
+
+        var index = 2;
+        while (File.Exists(backup))
+            backup = Path.Combine(directory, $"{name}.broken-{stamp}_{index++}{extension}");
+
+        File.Move(path, backup);
+        return backup;
+    }
+
     /// <summary>Перезагрузить реестр из того же файла.</summary>
     public void Reload()
     {
         if (string.IsNullOrEmpty(LoadedFrom) || !File.Exists(LoadedFrom)) return;
 
-        var items = ReadFile(LoadedFrom);
+        List<Material> items;
+        try
+        {
+            items = ReadFile(LoadedFrom);
+        }
+        catch (JsonException ex)
+        {
+            // Здесь файл НЕ откладывается в резервную копию, в отличие от Load:
+            // рабочий реестр уже есть в памяти, а файл может быть открыт
+            // в редакторе на середине правки. Отобрать его у человека —
+            // худшее, что можно сделать в этот момент.
+            RecoveryMessage =
+                $"Файл реестра «{LoadedFrom}» не читается ({ex.Message.Trim()}). " +
+                "Реестр оставлен прежним — исправь файл и повтори обновление.";
+            return;
+        }
+
+        RecoveryMessage = null;
         _materials.Clear();
         _materials.AddRange(items);
 
@@ -204,6 +286,54 @@ public sealed class MaterialRepository
     }
 
     /// <summary>
+    /// Добавить сразу несколько материалов и записать файл ОДИН раз.
+    ///
+    /// Нужно при заведении позиций из спецификации: там их бывают сотни,
+    /// а поштучный <see cref="Add"/> переписывал бы materials.json на каждой.
+    /// Проверки те же, что при одиночном добавлении, и выполняются до записи:
+    /// если хотя бы одна позиция не проходит, файл не трогается вовсе.
+    /// </summary>
+    /// <returns>Добавленные материалы в порядке следования.</returns>
+    public IReadOnlyList<Material> AddRange(IEnumerable<Material> materials)
+    {
+        ArgumentNullException.ThrowIfNull(materials);
+        EnsureLoaded();
+
+        var incoming = materials.ToList();
+        if (incoming.Count == 0) return Array.Empty<Material>();
+
+        foreach (var material in incoming)
+        {
+            Normalize(material);
+            Validate(material, except: null);
+
+            // Дубликаты внутри самой пачки: FindByName их ещё не видит,
+            // потому что в списке реестра они появятся только ниже.
+            if (incoming.Count(m => string.Equals(m.Name, material.Name, StringComparison.OrdinalIgnoreCase)) > 1)
+                throw new InvalidOperationException(
+                    $"В добавляемом наборе наименование «{material.Name}» встречается больше одного раза.");
+        }
+
+        var restorePoint = _materials.Count;
+        _materials.AddRange(incoming);
+
+        try
+        {
+            Save(_materials, LoadedFrom!);
+        }
+        catch
+        {
+            // Файл не записался — откатываем всю пачку, чтобы список
+            // в памяти не разошёлся с materials.json.
+            _materials.RemoveRange(restorePoint, _materials.Count - restorePoint);
+            throw;
+        }
+
+        OnChanged();
+        return incoming;
+    }
+
+    /// <summary>
     /// Удалить материал из реестра и записать materials.json.
     ///
     /// Связанные записи журнала и полилинии здесь НЕ трогаются: реестр про
@@ -265,7 +395,9 @@ public sealed class MaterialRepository
             // другое имя слоя, а копия фасонной части — чужой вид изделия.
             CoreCount = source.CoreCount,
             CrossSectionMm2 = source.CrossSectionMm2,
-            PieceKind = source.PieceKind
+            PieceKind = source.PieceKind,
+            Mark = source.Mark,
+            Manufacturer = source.Manufacturer
         };
     }
 

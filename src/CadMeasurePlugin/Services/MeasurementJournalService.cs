@@ -54,6 +54,16 @@ public sealed class MeasurementJournalService
         _materials = materials ?? throw new ArgumentNullException(nameof(materials));
     }
 
+    /// <summary>
+    /// Загруженная первоначальная спецификация, либо null.
+    ///
+    /// Задаётся сессией при импорте. Пока она есть, каждая новая запись
+    /// журнала проверяется по ней: если наименование материала совпало
+    /// с позицией проекта, запись получает привязку и её замер попадает
+    /// в столбец подсчёта по текущему чертежу.
+    /// </summary>
+    public Specification? Specification { get; set; }
+
     /// <summary>Журнал изменился в результате сканирования или удаления.</summary>
     public event EventHandler? JournalChanged;
 
@@ -119,13 +129,14 @@ public sealed class MeasurementJournalService
             if (existing is null) created++;
             else updated++;
 
+            MeasurementRecord record;
             if (material.Class == MaterialClasses.Piece)
             {
-                _journal.AddOrUpdatePiece(material, section, layer, scan.MarkerCount, drawing);
+                record = _journal.AddOrUpdatePiece(material, section, layer, scan.MarkerCount, drawing);
             }
             else
             {
-                _journal.AddOrUpdateLinear(
+                record = _journal.AddOrUpdateLinear(
                     material,
                     section,
                     layer,
@@ -134,6 +145,8 @@ public sealed class MeasurementJournalService
                     scan.PolylineCount,
                     drawing);
             }
+
+            BindToSpecificationIfMatched(record);
         }
 
         // 4. Записи без геометрии.
@@ -151,14 +164,43 @@ public sealed class MeasurementJournalService
     /// </summary>
     private int RemoveRecordsWithoutGeometry(string drawing, HashSet<string> layersWithGeometry)
     {
-        var doomed = _journal.GetRecordsForDrawing(drawing)
+        var withoutGeometry = _journal.GetRecordsForDrawing(drawing)
             .Where(r => !layersWithGeometry.Contains(r.LayerName))
             .ToList();
 
-        foreach (var record in doomed)
-            RemoveRecordAndVerticals(record);
+        var removed = 0;
+        foreach (var record in withoutGeometry)
+        {
+            // Строка спецификации остаётся в журнале даже без геометрии:
+            // это позиция проекта, которую ещё предстоит замерить, и удалять
+            // её при каждом пересчёте значило бы стирать план работ.
+            // Подсчёт при этом обнуляется — замера действительно нет.
+            if (record.IsFromSpecification)
+            {
+                record.ResetMeasuredValues();
+                continue;
+            }
 
-        return doomed.Count;
+            RemoveRecordAndVerticals(record);
+            removed++;
+        }
+
+        return removed;
+    }
+
+    /// <summary>
+    /// Связать запись со строкой спецификации, если наименование материала
+    /// в ней есть. Без привязки подсчёт некуда положить: столбец
+    /// «Подсчёт по &lt;файл&gt;» строится по номеру позиции.
+    /// </summary>
+    private void BindToSpecificationIfMatched(MeasurementRecord record)
+    {
+        if (Specification is null || record.IsFromSpecification) return;
+
+        var item = Specification.FindByName(record.MaterialName);
+        if (item is null) return;
+
+        MeasurementJournal.BindToSpecification(record, item, Specification.FileName);
     }
 
     // ======================= Удаление =======================
@@ -209,6 +251,23 @@ public sealed class MeasurementJournalService
 
         if (records.Count > 0) OnJournalChanged();
         return records.Count;
+    }
+
+    /// <summary>
+    /// Удалить одну запись журнала по требованию пользователя.
+    ///
+    /// Геометрия чертежа не трогается: журнал выводится из чертежа, и если
+    /// под записью остались полилинии, она вернётся при ближайшем пересчёте —
+    /// об этом пользователя предупреждает палитра. Осмысленно удалять строки,
+    /// оставшиеся от спецификации или от уже стёртой геометрии.
+    /// </summary>
+    public bool RemoveRecord(MeasurementRecord record)
+    {
+        if (record is null) return false;
+
+        RemoveRecordAndVerticals(record);
+        OnJournalChanged();
+        return true;
     }
 
     /// <summary>

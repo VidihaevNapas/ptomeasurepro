@@ -1,6 +1,8 @@
 ﻿using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using CadMeasureDomain.Models;
 using CadMeasureDomain.Services;
@@ -28,6 +30,11 @@ public partial class MeasurePaletteControl : UserControl
 {
     private readonly MeasureSession _session = MeasureSession.Instance;
     private readonly JournalWatcher _watcher;
+    private readonly ContextMenu _moreMenu;
+
+    // Пункты меню «Ещё», состояние которых меняется по ходу работы.
+    private MenuItem? _showLabelsMenuItem;
+    private MenuItem? _resetVerticalMenuItem;
 
     // Инициализируется значением true (а не в теле конструктора): разметка
     // задаёт Text ещё во время InitializeComponent, и события сработали бы
@@ -52,7 +59,11 @@ public partial class MeasurePaletteControl : UserControl
         RefreshMaterialColumnSource();
 
         SectionBox.Text = _session.Section;
-        ShowLengthLabelsCheck.IsChecked = PluginSettings.ShowPolylineLengthLabels;
+        _moreMenu = BuildMoreMenu();
+        ApplyHeaderContextMenu();
+
+        ApplySpecificationColumnVisibility();
+        UpdateSpecificationHeader();
 
         // Журнал пересчитывается сам: следим за завершением команд AutoCAD
         // и за изменениями реестра.
@@ -130,8 +141,107 @@ public partial class MeasurePaletteControl : UserControl
     }
 
     /// <summary>Наполнить выпадающий список колонки «Материал» наименованиями реестра.</summary>
-    private void RefreshMaterialColumnSource() =>
+    private void RefreshMaterialColumnSource()
+    {
         MaterialColumn.ItemsSource = _session.JournalEdit.GetMaterialNames();
+    }
+
+    // ======================= Фильтры журнала =======================
+
+    // Действующий фильтр. Живёт в полях, а не в элементах палитры: сам фильтр
+    // вызывается из контекстного меню таблицы и на панели ничего не занимает.
+    private string? _filterMaterial;
+    private int? _filterSpecificationNumber;
+
+    /// <summary>Фильтр включён — часть строк журнала скрыта.</summary>
+    private bool IsFilterActive => _filterMaterial is not null || _filterSpecificationNumber is not null;
+
+    private void OpenJournalFilter_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Фильтр журнала", () =>
+        {
+            var window = new JournalFilterWindow(
+                _session.JournalEdit.GetMaterialNames(),
+                _session.Specification,
+                _filterMaterial,
+                _filterSpecificationNumber);
+
+            if (!AcadUiHelper.ShowDialogOverAcad(window)) return;
+
+            _filterMaterial = window.Material;
+            _filterSpecificationNumber = window.SpecificationNumber;
+
+            ApplyJournalFilter();
+        });
+    }
+
+    private void ResetJournalFilter_Click(object sender, RoutedEventArgs e)
+    {
+        if (!IsFilterActive)
+        {
+            SetStatus("Фильтр не включён — в таблице и так все записи.");
+            return;
+        }
+
+        _filterMaterial = null;
+        _filterSpecificationNumber = null;
+
+        ApplyJournalFilter();
+    }
+
+    /// <summary>
+    /// Пересобрать предикат представления журнала.
+    ///
+    /// Фильтруется представление, а не сама коллекция: журнал остаётся полным,
+    /// пересчёт по чертежу продолжает работать со всеми записями, а скрытые
+    /// строки никуда не деваются из Excel и ведомости.
+    /// </summary>
+    private void ApplyJournalFilter()
+    {
+        var view = CollectionViewSource.GetDefaultView(JournalGrid.ItemsSource);
+        if (view is null) return;
+
+        if (!IsFilterActive)
+        {
+            view.Filter = null;
+            view.Refresh();
+
+            UpdateJournalHeader();
+            SetStatus("Фильтр журнала снят: показаны все записи.");
+            return;
+        }
+
+        var material = _filterMaterial;
+        var specificationNumber = _filterSpecificationNumber;
+
+        view.Filter = candidate =>
+        {
+            if (candidate is not MeasurementRecord record) return false;
+
+            var byMaterial = material is null ||
+                             string.Equals(record.MaterialName, material, StringComparison.OrdinalIgnoreCase);
+            var bySpecification = specificationNumber is null ||
+                                  record.SpecificationItemId == specificationNumber;
+
+            return byMaterial && bySpecification;
+        };
+
+        view.Refresh();
+        UpdateJournalHeader();
+
+        var parts = new List<string>();
+        if (material is not null) parts.Add($"материал «{material}»");
+        if (specificationNumber is not null) parts.Add($"позиция спецификации №{specificationNumber}");
+
+        SetStatus($"Фильтр журнала: {string.Join(", ", parts)}. Записи скрыты только в таблице — " +
+                  "в ведомость и Excel попадают все.");
+    }
+
+    /// <summary>Сколько строк реально показано в таблице при включённом фильтре.</summary>
+    private int VisibleRecordCount() =>
+        CollectionViewSource.GetDefaultView(JournalGrid.ItemsSource) is { } view
+            ? view.Cast<object>().Count()
+            : _session.Journal.Records.Count;
 
     // ======================= Правка журнала в таблице =======================
 
@@ -151,10 +261,21 @@ public partial class MeasurePaletteControl : UserControl
             var material = _session.Materials.FindByName(record.MaterialName);
             if (material is null)
             {
-                AcadUiHelper.ShowWarning(this,
-                    $"Материала «{record.MaterialName}» больше нет в реестре.");
+                record.MaterialMissing = true;
+
+                // Для позиции спецификации это штатная ситуация: проектировщик
+                // пишет наименование по-своему. Замер по такой строке начать
+                // нельзя — сначала её нужно привязать к позиции реестра.
+                AcadUiHelper.ShowWarning(this, record.IsFromSpecification
+                    ? $"Позиции спецификации «{record.MaterialName}» не найден материал в реестре.\n\n" +
+                      "Замер по ней невозможен: слой строится по материалу реестра.\n" +
+                      "Выбери подходящую позицию в колонке наименования — либо добавь материал в реестр " +
+                      "через окно выбора материала."
+                    : $"Материала «{record.MaterialName}» больше нет в реестре.");
                 return;
             }
+
+            record.MaterialMissing = false;
 
             // Участок берём из строки: слой материала зависит от него,
             // иначе активировался бы слой другого участка.
@@ -184,7 +305,43 @@ public partial class MeasurePaletteControl : UserControl
     /// Пока открыт редактор ячейки, пересчёт журнала приостановлен: он
     /// пересоздаёт и удаляет строки, и правка потерялась бы прямо под руками.
     /// </summary>
-    private void JournalGrid_BeginningEdit(object? sender, DataGridBeginningEditEventArgs e) => _watcher.Suspend();
+    private void JournalGrid_BeginningEdit(object? sender, DataGridBeginningEditEventArgs e)
+    {
+        // Поля спецификации правятся только там, где импорт их не прочитал:
+        // перебивать данные, которые в файле есть, значит тихо разойтись
+        // с проектом. Уже поправленную вручную ячейку править можно —
+        // человек имеет право исправить свою же опечатку.
+        var field = FieldOf(e.Column);
+        if (field is not null && e.Row.Item is MeasurementRecord record)
+        {
+            var editable = record.IsFromSpecification &&
+                           (record.SpecificationEditedManually ||
+                            SpecificationManualEdit.IsUnread(record, field.Value));
+
+            if (!editable)
+            {
+                e.Cancel = true;
+                SetStatus(record.IsFromSpecification
+                    ? $"Поле «{SpecificationManualEdit.ToRussian(field.Value)}» прочитано из спецификации — правка запрещена."
+                    : "Строка не связана со спецификацией: править её поля незачем.");
+                return;
+            }
+        }
+
+        _watcher.Suspend();
+    }
+
+    /// <summary>Поле спецификации, которое правит эта колонка, либо null.</summary>
+    private SpecificationField? FieldOf(DataGridColumn column)
+    {
+        if (ReferenceEquals(column, SpecificationMarkColumn)) return SpecificationField.Mark;
+        if (ReferenceEquals(column, SpecificationCodeColumn)) return SpecificationField.EquipmentCode;
+        if (ReferenceEquals(column, SpecificationManufacturerColumn)) return SpecificationField.Manufacturer;
+        if (ReferenceEquals(column, SpecificationUnitColumn)) return SpecificationField.Unit;
+        if (ReferenceEquals(column, SpecificationQuantityColumn)) return SpecificationField.Quantity;
+
+        return null;
+    }
 
     /// <summary>
     /// Применить правку ячейки.
@@ -202,6 +359,15 @@ public partial class MeasurePaletteControl : UserControl
 
             var edit = _session.JournalEdit;
             var text = ReadEditorText(e.EditingElement);
+
+            // Поля спецификации меняются в самой записи и в позиции проекта:
+            // геометрии они не касаются, поэтому JournalEditService здесь ни при чём.
+            var field = FieldOf(e.Column);
+            if (field is not null)
+            {
+                ApplySpecificationEdit(record, field.Value, text);
+                return;
+            }
 
             var result =
                 ReferenceEquals(e.Column, MaterialColumn) ? edit.ChangeMaterial(record, text) :
@@ -348,6 +514,12 @@ public partial class MeasurePaletteControl : UserControl
             return;
         }
 
+        if (repo.WasRecovered)
+        {
+            SetStatus(repo.RecoveryMessage!);
+            return;
+        }
+
         SetStatus($"Реестр материалов ({repo.SourceDescription}): {repo.LoadedFrom}. " +
                   $"Позиций: {repo.Materials.Count}.");
     }
@@ -358,9 +530,17 @@ public partial class MeasurePaletteControl : UserControl
         var total = _session.Journal.Records.Count;
         var inCurrent = _session.Journal.GetRecordsForDrawing(current).Count;
 
-        JournalHeaderText.Text =
-            $"Журнал замеров — записей всего: {total} (в текущем чертеже «{current}»: {inCurrent})";
+        // При включённом фильтре в заголовке сказано, что видно не всё:
+        // иначе скрытые строки принимают за пропавшие.
+        JournalHeaderText.Text = IsFilterActive
+            ? $"Журнал замеров — показано {VisibleRecordCount()} из {total} (фильтр включён)"
+            : $"Журнал замеров — записей всего: {total} (в текущем чертеже «{current}»: {inCurrent})";
 
+        JournalHeaderText.Foreground = IsFilterActive
+            ? System.Windows.Media.Brushes.SaddleBrown
+            : System.Windows.Media.Brushes.Black;
+
+        UpdateSpecificationHeader();
     }
 
     /// <summary>Обновить блок «выбран материал», имя слоя и вертикальные участки.</summary>
@@ -435,7 +615,7 @@ public partial class MeasurePaletteControl : UserControl
 
         RiseButton.IsEnabled = !isPiece;
         DropButton.IsEnabled = !isPiece;
-        ResetVerticalButton.IsEnabled = !isPiece;
+        if (_resetVerticalMenuItem is not null) _resetVerticalMenuItem.IsEnabled = !isPiece;
     }
 
     /// <summary>
@@ -448,7 +628,7 @@ public partial class MeasurePaletteControl : UserControl
 
         Run("Показывать длину участков", () =>
         {
-            var enabled = ShowLengthLabelsCheck.IsChecked == true;
+            var enabled = (sender as MenuItem)?.IsChecked == true;
             PluginSettings.ShowPolylineLengthLabels = enabled;
 
             SetStatus(enabled
@@ -685,18 +865,537 @@ public partial class MeasurePaletteControl : UserControl
                 return;
             }
 
+            // Со спецификацией состав книги настраивается: листы, строки
+            // и столбцы свода. Без неё настраивать нечего — экспорт идёт сразу.
+            SpecificationExportOptions? options = null;
+            if (_session.HasSpecification)
+            {
+                var parameters = new SpecificationExportWindow(
+                    SpecificationSummaryBuilder.GetDrawingColumns(_session.Journal));
+
+                if (!AcadUiHelper.ShowDialogOverAcad(parameters))
+                {
+                    SetStatus("Экспорт отменён.");
+                    return;
+                }
+
+                options = parameters.Options;
+            }
+
             // Запасная папка — «Документы\PTO Measure Pro», а не папка плагина:
             // bundle заменяется при обновлении, и выгрузки из него исчезли бы.
             var path = ExcelExportService.BuildExportPath(
                 AcadWorkspace.GetCurrentDrawingFullPath(),
                 PluginPaths.ExportFallbackDirectory);
 
-            _session.ExcelExport.Export(_session.Journal, drawing, path);
+            _session.ExcelExport.Export(_session.Journal, drawing, path, _session.Specification, options);
 
             SetStatus($"Экспорт готов: {path}. Перед выгрузкой: {scan.ToRussian()}.");
-            AcadUiHelper.ShowInfo(this, $"Файл создан:\n{path}\n\nПеред выгрузкой журнал обновлён: {scan.ToRussian()}.");
+
+            // Окно немодальное: из него открывают книгу и возвращаются
+            // к чертежу, не закрывая его.
+            AcadUiHelper.ShowOverAcad(new ExportResultWindow(
+                path,
+                $"Перед выгрузкой журнал обновлён: {scan.ToRussian()}."));
         });
     }
+
+    /// <summary>Применить ручную правку поля спецификации и записать её в журнал событий.</summary>
+    private void ApplySpecificationEdit(MeasurementRecord record, SpecificationField field, string text)
+    {
+        try
+        {
+            var log = SpecificationManualEdit.Apply(record, _session.Specification, field, text);
+            if (log is null) return;
+
+            WriteToCommandLine(new[] { log });
+            SetStatus(log);
+
+            // Правка меняет журнал, но не геометрию — таблицы в чертеже
+            // обновляем сами, как и при других ручных правках.
+            RefreshDrawingTables();
+        }
+        catch (InvalidOperationException ex)
+        {
+            AcadUiHelper.ShowWarning(this, ex.Message);
+            SetStatus($"Правка отклонена: {ex.Message}");
+        }
+    }
+
+    // ======================= Столбцы таблицы =======================
+
+    /// <summary>Столбцы, видимостью которых управляет пользователь.</summary>
+    private IReadOnlyList<(string Title, DataGridColumn Column)> OptionalColumns => new[]
+    {
+        ("п/п", (DataGridColumn)SpecificationNumberColumn),
+        ("Кол-во (спец.)", SpecificationQuantityColumn),
+        ("Расхождение", SpecificationDifferenceColumn),
+        ("Марка", SpecificationMarkColumn),
+        ("Код оборудования", SpecificationCodeColumn),
+        ("Изготовитель", SpecificationManufacturerColumn),
+        ("Ед. изм. (спец.)", SpecificationUnitColumn),
+        ("Участок", SectionColumn),
+        ("Слой", LayerColumn),
+        ("Файл DWG", DrawingColumn)
+    };
+
+    /// <summary>
+    /// Столбцы, показанные по умолчанию.
+    ///
+    /// Без спецификации журнал ведётся по чертежу, и важны слой, участок и DWG.
+    /// Со спецификацией на первый план выходит сверка с проектом: номер позиции,
+    /// проектное количество и расхождение, а служебные столбцы чертежа
+    /// уходят в «Настроить столбцы». Марка, код и изготовитель скрыты всегда:
+    /// они справочные и нужны раз в сто замеров.
+    /// </summary>
+    private IReadOnlyCollection<string> DefaultVisibleColumns => _session.HasSpecification
+        ? new[] { "п/п", "Кол-во (спец.)", "Расхождение", "Участок" }
+        : new[] { "Участок", "Слой", "Файл DWG" };
+
+    private void ConfigureSpecificationColumns_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Настройка столбцов", () =>
+        {
+            var window = new ColumnVisibilityWindow(
+                OptionalColumns.Select(c => (c.Title, c.Column.Visibility == Visibility.Visible)));
+
+            if (!AcadUiHelper.ShowDialogOverAcad(window)) return;
+
+            foreach (var (title, visible) in window.ColumnVisibility)
+            {
+                _session.SpecificationColumnVisibility[title] = visible;
+
+                var column = OptionalColumns.FirstOrDefault(c => c.Title == title).Column;
+                if (column is not null)
+                    column.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            var hidden = window.ColumnVisibility.Count(v => !v.Value);
+            SetStatus(hidden == 0
+                ? "Показаны все столбцы таблицы."
+                : $"Скрыто столбцов: {hidden}. На выгрузку в Excel это не влияет.");
+        });
+    }
+
+    /// <summary>
+    /// Расставить видимость столбцов: сначала значения по умолчанию для текущего
+    /// режима работы, поверх — то, что пользователь выбрал в этой сессии.
+    /// Настройка живёт в сессии, а не в файле: она про текущую работу,
+    /// а не про постоянные предпочтения.
+    /// </summary>
+    private void ApplySpecificationColumnVisibility()
+    {
+        foreach (var (title, column) in OptionalColumns)
+        {
+            var visible = _session.SpecificationColumnVisibility.TryGetValue(title, out var stored)
+                ? stored
+                : DefaultVisibleColumns.Contains(title);
+
+            column.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
+
+    // ======================= Действия над записью журнала =======================
+
+    /// <summary>Запись под курсором, либо null с объяснением в строке состояния.</summary>
+    private MeasurementRecord? CurrentRecord()
+    {
+        if (JournalGrid.CurrentItem is MeasurementRecord record) return record;
+
+        SetStatus("Сначала выбери строку журнала.");
+        return null;
+    }
+
+    private void ShowInDrawing_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Показать в чертеже", () =>
+        {
+            var record = CurrentRecord();
+            if (record is null) return;
+
+            if (string.IsNullOrWhiteSpace(record.LayerName))
+            {
+                AcadUiHelper.ShowInfo(this, "У строки нет слоя: она заведена из спецификации и ещё не замерена.");
+                return;
+            }
+
+            var selected = _session.Workspace.SelectLayerEntities(record.LayerName);
+            if (selected == 0)
+            {
+                SetStatus($"На слое «{record.LayerName}» ничего не выбрано: он пуст, выключен или заморожен.");
+                return;
+            }
+
+            AcadUiHelper.FocusDrawingArea();
+            SetStatus($"Выбрано объектов на слое «{record.LayerName}»: {selected}.");
+        });
+    }
+
+    private void EditSpecificationRow_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Правка данных спецификации", () =>
+        {
+            var record = CurrentRecord();
+            if (record is null) return;
+
+            if (!record.IsFromSpecification)
+            {
+                AcadUiHelper.ShowInfo(this,
+                    "Строка не связана со спецификацией — править в ней нечего.\n\n" +
+                    "Привяжи её к позиции проекта через контекстное меню.");
+                return;
+            }
+
+            // Ставим курсор в первую ячейку, которую разрешено править:
+            // искать её глазами среди скрытых столбцов — занятие на любителя.
+            var target = OptionalColumns
+                .Select(c => c.Column)
+                .FirstOrDefault(column =>
+                {
+                    var field = FieldOf(column);
+                    return field is not null &&
+                           column.Visibility == Visibility.Visible &&
+                           (record.SpecificationEditedManually ||
+                            SpecificationManualEdit.IsUnread(record, field.Value));
+                });
+
+            if (target is null)
+            {
+                AcadUiHelper.ShowInfo(this,
+                    "Все поля спецификации в этой строке прочитаны из файла — править их нельзя.\n\n" +
+                    "Правка нужна там, где импорт не смог разобрать данные.");
+                return;
+            }
+
+            JournalGrid.CurrentCell = new DataGridCellInfo(record, target);
+            JournalGrid.BeginEdit();
+        });
+    }
+
+    private void BindToSpecification_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Привязка к спецификации", () =>
+        {
+            var record = CurrentRecord();
+            if (record is null) return;
+
+            var specification = _session.Specification;
+            if (specification is null)
+            {
+                AcadUiHelper.ShowInfo(this, "Спецификация не загружена — привязывать не к чему.");
+                return;
+            }
+
+            var window = new SpecificationPickWindow(specification);
+            if (!AcadUiHelper.ShowDialogOverAcad(window) || window.SelectedItem is null) return;
+
+            MeasurementJournal.BindToSpecification(record, window.SelectedItem, specification.FileName);
+            ApplySpecificationColumnVisibility();
+
+            var log = $"Запись «{record.MaterialName}» привязана к позиции п/п {window.SelectedItem.Number}";
+            WriteToCommandLine(new[] { log });
+            SetStatus(log + ".");
+        });
+    }
+
+    private void UnbindFromSpecification_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Отвязка от спецификации", () =>
+        {
+            var record = CurrentRecord();
+            if (record is null) return;
+
+            if (!record.IsFromSpecification)
+            {
+                SetStatus("Строка и так не связана со спецификацией.");
+                return;
+            }
+
+            var number = record.SpecificationItemId;
+            record.ClearSpecificationBinding();
+
+            // Замер остаётся: он сделан по чертежу и от потери привязки
+            // верным быть не перестаёт.
+            var log = $"Запись «{record.MaterialName}» отвязана от позиции п/п {number}";
+            WriteToCommandLine(new[] { log });
+            SetStatus(log + ". Замер сохранён.");
+        });
+    }
+
+    private void DeleteRecord_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Удаление записи", () =>
+        {
+            var record = CurrentRecord();
+            if (record is null) return;
+
+            if (!AcadUiHelper.Confirm(
+                    $"Удалить из журнала запись «{record.MaterialName}»" +
+                    (string.IsNullOrWhiteSpace(record.Section) ? string.Empty : $", участок «{record.Section}»") +
+                    "?\n\nГеометрия в чертеже останется на месте — удаляется только строка журнала. " +
+                    "Если под ней есть полилинии, запись вернётся при ближайшем пересчёте."))
+                return;
+
+            _session.JournalService.RemoveRecord(record);
+
+            SetStatus($"Запись «{record.MaterialName}» удалена из журнала.");
+            UpdateJournalHeader();
+            RefreshDrawingTables();
+        });
+    }
+
+    // ======================= Второстепенные действия =======================
+
+    /// <summary>
+    /// Меню второстепенных действий. Собирается в коде, а не в разметке:
+    /// обработчики событий внутри ресурсов и стилей WPF привязать не может,
+    /// и палитра падала бы при загрузке.
+    /// </summary>
+    private ContextMenu BuildMoreMenu()
+    {
+        var menu = new ContextMenu();
+
+        menu.Items.Add(MenuItemWith("Вставить таблицу замеров в чертёж", InsertTable_Click));
+
+        _showLabelsMenuItem = new MenuItem { Header = "Подписывать длину новых полилиний", IsCheckable = true };
+        _showLabelsMenuItem.Checked += ShowLengthLabels_Changed;
+        _showLabelsMenuItem.Unchecked += ShowLengthLabels_Changed;
+        menu.Items.Add(_showLabelsMenuItem);
+
+        _resetVerticalMenuItem = MenuItemWith("Сбросить вертикальные участки", ResetVertical_Click);
+        menu.Items.Add(_resetVerticalMenuItem);
+
+        menu.Items.Add(new Separator());
+        menu.Items.Add(MenuItemWith("Показать только слои замеров", IsolateLayers_Click));
+        menu.Items.Add(MenuItemWith("Показать все слои", RestoreLayers_Click));
+
+        menu.Items.Add(new Separator());
+        menu.Items.Add(MenuItemWith("Настроить столбцы таблицы", ConfigureSpecificationColumns_Click));
+        menu.Items.Add(MenuItemWith("Очистить журнал", ClearJournal_Click));
+
+        menu.Items.Add(new Separator());
+        var diagnostics = new MenuItem { Header = "Диагностика" };
+        diagnostics.Items.Add(MenuItemWith("Реестр материалов и пути", ShowDiagnostics_Click));
+        diagnostics.Items.Add(MenuItemWith("Пересчитать журнал по чертежу", RescanJournal_Click));
+        menu.Items.Add(diagnostics);
+
+        return menu;
+    }
+
+    /// <summary>Меню заголовков таблицы: по правой кнопке — настройка столбцов.</summary>
+    private void ApplyHeaderContextMenu()
+    {
+        var menu = new ContextMenu();
+        menu.Items.Add(MenuItemWith("Настроить столбцы таблицы", ConfigureSpecificationColumns_Click));
+
+        var style = new Style(typeof(DataGridColumnHeader));
+        style.Setters.Add(new Setter(PaddingProperty, new Thickness(4, 3, 4, 3)));
+        style.Setters.Add(new Setter(ContextMenuProperty, menu));
+
+        JournalGrid.ColumnHeaderStyle = style;
+    }
+
+    private static MenuItem MenuItemWith(string header, RoutedEventHandler handler)
+    {
+        var item = new MenuItem { Header = header };
+        item.Click += handler;
+        return item;
+    }
+
+    private void More_Click(object sender, RoutedEventArgs e)
+    {
+        // Состояние переключателя подписей берём из настроек: меню создаётся
+        // один раз, а настройку могли поменять командой.
+        if (_showLabelsMenuItem is not null)
+        {
+            _suppressEvents = true;
+            _showLabelsMenuItem.IsChecked = PluginSettings.ShowPolylineLengthLabels;
+            _suppressEvents = false;
+        }
+
+        // Меню открывается у кнопки, а не у курсора: так оно ведёт себя
+        // предсказуемо и не выпрыгивает за край палитры.
+        _moreMenu.PlacementTarget = MoreButton;
+        _moreMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Top;
+        _moreMenu.IsOpen = true;
+    }
+
+    private void ShowDiagnostics_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Диагностика", () =>
+        {
+            var repository = _session.Materials;
+            var specification = _session.Specification;
+
+            AcadUiHelper.ShowInfo(this,
+                $"Версия: {PluginSettings.PluginVersion}\n" +
+                $"Пакет: {PluginPaths.PluginDirectory}\n" +
+                $"Данные пользователя: {PluginPaths.UserDataDirectory}\n\n" +
+                $"Реестр материалов ({repository.SourceDescription}): {repository.LoadedFrom}\n" +
+                $"Позиций в реестре: {repository.Materials.Count}\n\n" +
+                $"Спецификация: {(specification is null ? "не загружена" : $"{specification.FileName}, позиций {specification.Items.Count}")}\n" +
+                $"Записей журнала: {_session.Journal.Records.Count}\n" +
+                $"Текущий чертёж: {_session.Journal.CurrentDrawingFileName}");
+        });
+    }
+
+    private void RescanJournal_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Пересчёт журнала", () =>
+        {
+            _session.SyncCurrentDrawing();
+            var scan = _session.ScanDrawing();
+
+            UpdateJournalHeader();
+            SetStatus($"Журнал пересчитан: {scan.ToRussian()}.");
+        });
+    }
+
+    // ======================= Первоначальная спецификация =======================
+
+    private void LoadSpecification_Click(object sender, RoutedEventArgs e) => ImportSpecification();
+
+    private void ReloadSpecification_Click(object sender, RoutedEventArgs e)
+    {
+        // Пока спецификации не было, кнопка ведёт себя как обычная загрузка.
+        if (_session.HasSpecification &&
+            !AcadUiHelper.Confirm(
+                "Загрузить новую спецификацию поверх текущей? " +
+                "Текущие привязки позиций к журналу будут пересозданы."))
+        {
+            SetStatus("Перезагрузка спецификации отменена.");
+            return;
+        }
+
+        ImportSpecification();
+    }
+
+    private void ImportSpecification()
+    {
+        Run("Загрузка спецификации", () =>
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Первоначальная спецификация",
+                Filter = "Книга Excel (*.xlsx)|*.xlsx|Все файлы (*.*)|*.*",
+                CheckFileExists = true
+            };
+
+            if (dialog.ShowDialog() != true) return;
+
+            var specification = SpecificationImporter.Import(dialog.FileName);
+            if (specification.Items.Count == 0)
+            {
+                AcadUiHelper.ShowWarning(this,
+                    "В файле не нашлось ни одной позиции.\n\n" +
+                    "Ожидаемый порядок колонок: п/п, наименование, марка, код оборудования, " +
+                    "изготовитель, единица измерения, количество.");
+                SetStatus("Спецификация не загружена: позиций не найдено.");
+                return;
+            }
+
+            // Заводит недостающие материалы в реестре и пересобирает привязки
+            // журнала; что именно произошло — уходит в командную строку AutoCAD.
+            var result = _session.LoadSpecification(specification);
+            WriteToCommandLine(result.Log);
+
+            ShowSpecificationColumns();
+            RefreshMaterialColumnSource();
+            // Список позиций для фильтра берётся из сессии в момент вызова —
+            // заранее наполнять нечего.
+
+            if (result.MaterialsCreated > 0 || result.MaterialsSkipped > 0 || result.RecordsUnbound > 0)
+            {
+                AcadUiHelper.ShowInfo(this,
+                    (result.MaterialsCreated > 0 ? $"Заведено материалов в реестре: {result.MaterialsCreated}.\n" : string.Empty) +
+                    (result.MaterialsSkipped > 0 ? $"Пропущено позиций с нераспознанной единицей: {result.MaterialsSkipped}.\n" : string.Empty) +
+                    (result.RecordsRebound > 0 ? $"Записей журнала перепривязано: {result.RecordsRebound}.\n" : string.Empty) +
+                    (result.RecordsUnbound > 0 ? $"Записей осталось без привязки: {result.RecordsUnbound} — их позиций нет в новом файле.\n" : string.Empty));
+            }
+
+            // Какие позиции взять в работу, решает пользователь: спецификация
+            // на сотни строк превратила бы журнал в свалку, если тащить всё
+            // без спроса. Сама спецификация при этом остаётся целой — по ней
+            // строится свод в Excel.
+            // Владельца окну назначает ShowDialogOverAcad по хэндлу главного
+            // окна AutoCAD: палитра не является WPF-окном, и Window.GetWindow
+            // для неё владельца не даёт.
+            var selection = new SpecificationImportWindow(
+                specification,
+                item => _session.FindMaterialFor(item) is not null);
+
+            if (AcadUiHelper.ShowDialogOverAcad(selection))
+            {
+                var added = _session.AddSpecificationItemsToJournal(selection.SelectedItems);
+                SetStatus(
+                    $"Спецификация «{specification.FileName}»: в журнал добавлено позиций — {added} " +
+                    $"из {specification.Items.Count}. Спецификация действует до закрытия AutoCAD.");
+            }
+            else
+            {
+                SetStatus(
+                    $"Спецификация «{specification.FileName}» загружена: позиций {specification.Items.Count}. " +
+                    "Записи в журнал не добавлены; замеры будут привязываться к ней по наименованию материала.");
+            }
+
+            ApplyJournalFilter();
+            UpdateJournalHeader();
+        });
+    }
+
+    /// <summary>
+    /// Вывести события в командную строку AutoCAD.
+    ///
+    /// Отдельного лога у плагина нет, и заводить его ради нескольких строк
+    /// незачем: командная строка — то место, куда пользователь смотрит
+    /// после команды, и она сохраняет историю сессии.
+    /// </summary>
+    private static void WriteToCommandLine(IReadOnlyList<string> lines)
+    {
+        if (lines.Count == 0) return;
+
+        try
+        {
+            var editor = AcadApp.DocumentManager.MdiActiveDocument?.Editor;
+            if (editor is null) return;
+
+            foreach (var line in lines) editor.WriteMessage($"\n{line}");
+            editor.WriteMessage("\n");
+        }
+        catch
+        {
+            // Вывод в командную строку — вспомогательный: если документа нет
+            // или он занят, импорт из-за этого падать не должен.
+        }
+    }
+
+    /// <summary>
+    /// Обновить шапку блока спецификации: загружена ли она, из какого файла
+    /// и сколько в ней позиций. Путь к файлу тут не показывается — он длинный
+    /// и в работе не нужен; полный путь есть в «Диагностике».
+    /// </summary>
+    private void UpdateSpecificationHeader()
+    {
+        var specification = _session.Specification;
+
+        if (specification is null)
+        {
+            SpecificationStatusText.Text = "Не загружена — журнал ведётся только по чертежу";
+            ReloadSpecificationButton.IsEnabled = false;
+            return;
+        }
+
+        var measured = _session.Journal.Records.Count(r => r.IsFromSpecification);
+        SpecificationStatusText.Text =
+            $"{specification.FileName} — позиций {specification.Items.Count}, в журнале {measured}";
+        ReloadSpecificationButton.IsEnabled = true;
+    }
+
+    /// <summary>
+    /// Показать колонки спецификации. До загрузки они скрыты: в проектах,
+    /// где спецификации нет, это были бы пять пустых столбцов.
+    /// </summary>
+    private void ShowSpecificationColumns() => ApplySpecificationColumnVisibility();
 
     // ======================= Слои =======================
 

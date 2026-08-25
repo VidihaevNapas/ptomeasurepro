@@ -44,6 +44,11 @@ public sealed class PluginExtensionApplication : IExtensionApplication
                 $"Позиций в реестре: {repository.Materials.Count}\n" +
                 $"Данные пользователя: {PluginPaths.UserDataDirectory}\n" +
                 $"Команды: CMP (палитра), CMPRELOAD (перечитать реестр), CMPHELP (справка).\n");
+
+            // Реестр не прочитался и был заменён — это нельзя показать
+            // одной строкой в общем блоке, иначе сообщение потеряется.
+            if (repository.WasRecovered)
+                editor?.WriteMessage($"\nВНИМАНИЕ. {repository.RecoveryMessage}\n");
         }
         catch (System.Exception ex)
         {

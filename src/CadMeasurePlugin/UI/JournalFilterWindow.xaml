@@ -1,0 +1,52 @@
+<Window x:Class="CadMeasurePlugin.UI.JournalFilterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Фильтр журнала"
+        Height="260"
+        Width="560"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        FontFamily="Segoe UI"
+        FontSize="12">
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   Text="Фильтр сужает только показ в таблице. В ведомость, таблицу чертежа и Excel по-прежнему попадают все записи."
+                   TextWrapping="Wrap"
+                   Foreground="#FF6B6B6B"
+                   Margin="0,0,0,10" />
+
+        <TextBlock Grid.Row="1" Text="Материал:" VerticalAlignment="Center" Margin="0,0,8,6" />
+        <ComboBox Grid.Row="1" Grid.Column="1"
+                  x:Name="MaterialBox"
+                  Height="24"
+                  IsEditable="True"
+                  IsTextSearchEnabled="True"
+                  Margin="0,0,0,6" />
+
+        <TextBlock Grid.Row="2" x:Name="PositionLabel" Text="Позиция спецификации:" VerticalAlignment="Center" Margin="0,0,8,0" />
+        <ComboBox Grid.Row="2" Grid.Column="1"
+                  x:Name="PositionBox"
+                  Height="24"
+                  IsEditable="True"
+                  IsTextSearchEnabled="True" />
+
+        <WrapPanel Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Content="Показать все" Width="120" Height="28" Margin="0,0,6,0" Click="ShowAll_Click" />
+            <Button Content="Применить" Width="110" Height="28" Margin="0,0,6,0" IsDefault="True" Click="Ok_Click" />
+            <Button Content="Отмена" Width="110" Height="28" IsCancel="True" />
+        </WrapPanel>
+    </Grid>
+</Window>

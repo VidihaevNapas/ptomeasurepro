@@ -36,8 +36,22 @@ public sealed class MeasureCommands
         }
         catch (System.Exception ex)
         {
-            editor?.WriteMessage($"\nНе удалось открыть палитру: {ex.Message}\n");
+            // Внешнее сообщение у ошибок разбора XAML бесполезно («Задание
+            // значения connectionId вызвало исключение»), причина всегда
+            // во вложенном исключении — печатаем всю цепочку.
+            editor?.WriteMessage($"\nНе удалось открыть палитру: {DescribeChain(ex)}\n");
         }
+    }
+
+    /// <summary>Сообщения исключения и всех вложенных — по одному на строку.</summary>
+    private static string DescribeChain(System.Exception exception)
+    {
+        var lines = new List<string>();
+
+        for (var current = exception; current is not null; current = current.InnerException)
+            lines.Add($"{current.GetType().Name}: {current.Message}");
+
+        return string.Join("\n  → ", lines);
     }
 
     /// <summary>Русский синоним команды открытия палитры.</summary>

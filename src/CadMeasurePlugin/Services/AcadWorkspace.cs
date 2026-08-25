@@ -35,6 +35,45 @@ public sealed class AcadWorkspace : ICadWorkspace
 
     public double DrawingUnitsPerMeter => PluginSettings.DrawingUnitsPerMeter;
 
+    /// <summary>
+    /// Выделить в чертеже всё, что лежит на слое записи, — чтобы по строке
+    /// журнала можно было найти геометрию глазами.
+    ///
+    /// Здесь выборка уместна, в отличие от обмера: пользователь смотрит
+    /// на видимую графику, и объекты выключенного или замороженного слоя
+    /// выделять всё равно бессмысленно. Ноль в ответе означает ровно это —
+    /// слой пуст либо не показан.
+    /// </summary>
+    /// <returns>Сколько объектов выделено.</returns>
+    public int SelectLayerEntities(string layerName)
+    {
+        if (string.IsNullOrWhiteSpace(layerName)) return 0;
+
+        var document = AcadApp.DocumentManager.MdiActiveDocument;
+        if (document is null) return 0;
+
+        try
+        {
+            var editor = document.Editor;
+            var filter = new Autodesk.AutoCAD.EditorInput.SelectionFilter(
+                new[] { new TypedValue((int)DxfCode.LayerName, layerName) });
+
+            var selection = editor.SelectAll(filter);
+            if (selection.Status != Autodesk.AutoCAD.EditorInput.PromptStatus.OK || selection.Value is null)
+                return 0;
+
+            var ids = selection.Value.GetObjectIds();
+            editor.SetImpliedSelection(ids);
+            return ids.Length;
+        }
+        catch (Autodesk.AutoCAD.Runtime.Exception)
+        {
+            // Выделение — вспомогательное действие: чертёж мог быть занят
+            // командой, и ронять из-за этого палитру незачем.
+            return 0;
+        }
+    }
+
     /// <summary>Имя активного DWG без пути. Для несохранённого чертежа — «Drawing1.dwg».</summary>
     public string CurrentDrawingFileName
     {

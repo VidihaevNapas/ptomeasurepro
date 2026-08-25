@@ -1,0 +1,60 @@
+<Window x:Class="CadMeasurePlugin.UI.ExportResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Экспорт завершён"
+        SizeToContent="Height"
+        Width="620"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        FontFamily="Segoe UI"
+        FontSize="12">
+
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Ведомость экспортирована в:"
+                   FontWeight="Bold"
+                   Margin="0,0,0,6" />
+
+        <!-- Путь выделяется мышью: иногда его нужно просто скопировать. -->
+        <TextBox Grid.Row="1"
+                 x:Name="PathText"
+                 IsReadOnly="True"
+                 TextWrapping="Wrap"
+                 BorderThickness="0"
+                 Background="Transparent"
+                 Padding="0"
+                 Margin="0,0,0,8" />
+
+        <TextBlock Grid.Row="2"
+                   x:Name="DetailsText"
+                   TextWrapping="Wrap"
+                   Foreground="#FF6B6B6B"
+                   Margin="0,0,0,12" />
+
+        <WrapPanel Grid.Row="3" HorizontalAlignment="Right">
+            <Button Content="Открыть ведомость"
+                    Width="160"
+                    Height="28"
+                    Margin="0,0,6,0"
+                    IsDefault="True"
+                    Click="OpenFile_Click" />
+            <Button Content="Открыть папку"
+                    Width="140"
+                    Height="28"
+                    Margin="0,0,6,0"
+                    Click="OpenFolder_Click" />
+            <Button Content="Закрыть"
+                    Width="110"
+                    Height="28"
+                    IsCancel="True"
+                    Click="Close_Click" />
+        </WrapPanel>
+    </Grid>
+</Window>

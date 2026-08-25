@@ -29,6 +29,31 @@ public static class AcadUiHelper
         return window.ShowDialog() == true;
     }
 
+    /// <summary>
+    /// Показать немодальное окно поверх AutoCAD.
+    ///
+    /// Нужно там, где окно сообщает результат и не требует ответа: работу
+    /// в чертеже оно блокировать не должно, но и потеряться за главным окном
+    /// не имеет права — отсюда владелец по хэндлу.
+    /// </summary>
+    public static void ShowOverAcad(Window window)
+    {
+        ArgumentNullException.ThrowIfNull(window);
+
+        try
+        {
+            var mainWindowHandle = AcadApp.MainWindow?.Handle ?? IntPtr.Zero;
+            if (mainWindowHandle != IntPtr.Zero)
+                new WindowInteropHelper(window).Owner = mainWindowHandle;
+        }
+        catch
+        {
+            // Если AutoCAD не отдал хэндл — покажем окно без владельца, это не критично.
+        }
+
+        window.Show();
+    }
+
     /// <summary>Вернуть фокус в область чертежа, чтобы сразу можно было указывать точки.</summary>
     public static void FocusDrawingArea()
     {

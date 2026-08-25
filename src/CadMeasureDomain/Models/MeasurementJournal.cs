@@ -105,6 +105,120 @@ public sealed class MeasurementJournal
         return record;
     }
 
+    /// <summary>
+    /// Завести запись по позиции спецификации — до всякого замера.
+    ///
+    /// Такая запись существует, даже когда в чертеже ещё ничего не начерчено:
+    /// это план, по которому предстоит работать. Класс материала берётся
+    /// из реестра, если позиция там нашлась; если нет — выводится из единицы
+    /// измерения спецификации, чтобы строка хотя бы знала, чем её мерить.
+    /// </summary>
+    /// <param name="item">Позиция спецификации.</param>
+    /// <param name="specificationFileName">Файл спецификации.</param>
+    /// <param name="drawingFileName">Чертёж, к которому привязывается запись.</param>
+    /// <param name="material">Материал реестра, если наименование совпало.</param>
+    public MeasurementRecord AddFromSpecification(
+        SpecificationItem item,
+        string specificationFileName,
+        string drawingFileName,
+        Material? material)
+    {
+        ArgumentNullException.ThrowIfNull(item);
+
+        var key = MeasurementRecord.BuildKey(item.Name, string.Empty, drawingFileName);
+        if (!_index.TryGetValue(key, out var record))
+        {
+            record = new MeasurementRecord
+            {
+                MaterialName = item.Name,
+                DrawingFileName = drawingFileName ?? string.Empty
+            };
+            _index[key] = record;
+            Records.Add(record);
+        }
+
+        record.MaterialClass = material?.Class
+            ?? (item.MeasurementType == MeasurementType.Pieces ? MaterialClasses.Piece : MaterialClasses.Pipe);
+        record.Characteristic = material?.Characteristic ?? string.Empty;
+        record.PieceKind = material?.PieceKind ?? string.Empty;
+        record.Unit = item.Unit;
+        record.MaterialMissing = material is null;
+        record.UpdatedAt = DateTime.Now;
+
+        BindToSpecification(record, item, specificationFileName);
+        return record;
+    }
+
+    /// <summary>
+    /// Привязать существующую запись к позиции спецификации.
+    ///
+    /// Вызывается и при импорте, и после замера: если замеренный материал
+    /// нашёлся в спецификации, строка журнала должна знать свою позицию,
+    /// иначе подсчёт некуда положить.
+    /// </summary>
+    public static void BindToSpecification(
+        MeasurementRecord record,
+        SpecificationItem item,
+        string specificationFileName)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        ArgumentNullException.ThrowIfNull(item);
+
+        record.SpecificationItemId = item.Number;
+        record.SpecificationFileName = specificationFileName ?? string.Empty;
+        record.SpecificationQuantity = item.Quantity;
+        record.Mark = item.Mark;
+        record.EquipmentCode = item.EquipmentCode;
+        record.Manufacturer = item.Manufacturer;
+    }
+
+    /// <summary>
+    /// Перепривязать журнал к другой спецификации — при её перезагрузке.
+    ///
+    /// Выбранная стратегия: СОХРАНЯТЬ ЗАПИСИ И ПЕРЕПРИВЯЗЫВАТЬ ПО НАИМЕНОВАНИЮ
+    /// МАТЕРИАЛА, а если позиции с таким наименованием в новом файле нет —
+    /// снимать привязку, оставляя запись в журнале.
+    ///
+    /// Почему так, а не удаление записей: замер сделан по чертежу и от смены
+    /// файла спецификации не перестаёт быть верным. Потерять его из-за того,
+    /// что проектировщик прислал новую редакцию, было бы худшим из возможных
+    /// поведений. Номера позиций при этом не переносятся: в новой редакции
+    /// нумерация другая, и старый номер указывал бы не на ту строку.
+    ///
+    /// Записи, заведённые из спецификации и не имеющие геометрии, тоже
+    /// остаются — просто уже без привязки; лишние строки пользователь удалит
+    /// сам, а восстановить случайно стёртые нечем.
+    /// </summary>
+    /// <param name="specification">Новая спецификация; null — снять все привязки.</param>
+    /// <returns>Сколько записей перепривязано и сколько потеряло привязку.</returns>
+    public (int Rebound, int Unbound) RebindToSpecification(Specification? specification)
+    {
+        var rebound = 0;
+        var unbound = 0;
+
+        foreach (var record in Records)
+        {
+            if (!record.IsFromSpecification) continue;
+
+            var item = specification?.FindByName(record.MaterialName);
+            if (item is null)
+            {
+                record.ClearSpecificationBinding();
+                unbound++;
+                continue;
+            }
+
+            BindToSpecification(record, item, specification!.FileName);
+            rebound++;
+        }
+
+        return (rebound, unbound);
+    }
+
+    /// <summary>Записи, привязанные к позиции спецификации, по всем чертежам.</summary>
+    public IReadOnlyList<MeasurementRecord> FindBySpecificationItem(int itemNumber) =>
+        Records.Where(r => r.SpecificationItemId == itemNumber).ToList();
+
     /// <summary>Найти запись по «материал + участок + DWG».</summary>
     public MeasurementRecord? Find(string materialName, string section, string drawingFileName) =>
         _index.TryGetValue(MeasurementRecord.BuildKey(materialName, section, drawingFileName), out var r) ? r : null;

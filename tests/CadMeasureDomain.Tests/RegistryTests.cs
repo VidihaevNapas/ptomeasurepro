@@ -155,6 +155,226 @@ public class MaterialRepositoryTests
     }
 
     [Fact]
+    public void Load_KeepsExistingUserRegistryInsteadOfTemplate()
+    {
+        // Главная гарантия обновления: рабочий реестр старше шаблона по праву.
+        // Если шаблон перекроет его, пользователь потеряет свою номенклатуру.
+        using var temp = new TempDirectory();
+        var userDirectory = temp.Combine("user");
+        var userRegistry = Path.Combine(userDirectory, MaterialRepository.FileName);
+        MaterialRepository.Save(new[] { TestData.Pipe("Труба заказчика") }, userRegistry);
+        var userBefore = File.ReadAllText(userRegistry);
+
+        var templatePath = temp.Combine("bundle", MaterialRepository.FileName);
+        MaterialRepository.Save(MaterialCatalog.CreateDefault(), templatePath);
+
+        var repository = new MaterialRepository();
+        repository.Load(new MaterialRegistryLocations
+        {
+            UserDataDirectory = userDirectory,
+            TemplatePath = templatePath
+        });
+
+        Assert.Equal(MaterialRegistrySource.UserData, repository.Source);
+        Assert.Equal("Труба заказчика", repository.Materials.Single().Name);
+        Assert.Equal(userBefore, File.ReadAllText(userRegistry));
+        Assert.False(repository.WasRecovered);
+    }
+
+    [Fact]
+    public void Load_RepeatedLoadsNeverTouchUserRegistry()
+    {
+        // Обновление плагина — это повторный первый запуск новой версии:
+        // Load вызывается снова, и файл обязан остаться прежним.
+        using var temp = new TempDirectory();
+        var templatePath = temp.Combine("bundle", MaterialRepository.FileName);
+        MaterialRepository.Save(new[] { TestData.Pipe() }, templatePath);
+
+        var locations = new MaterialRegistryLocations
+        {
+            UserDataDirectory = temp.Combine("user"),
+            TemplatePath = templatePath
+        };
+
+        var first = new MaterialRepository();
+        first.Load(locations);
+        first.Add(TestData.Cable("Кабель, добавленный пользователем"));
+        var afterUserEdit = File.ReadAllText(first.LoadedFrom!);
+
+        var second = new MaterialRepository();
+        second.Load(locations);
+
+        Assert.Equal(MaterialRegistrySource.UserData, second.Source);
+        Assert.Equal(afterUserEdit, File.ReadAllText(second.LoadedFrom!));
+        Assert.Contains(second.Materials, m => m.Name == "Кабель, добавленный пользователем");
+    }
+
+    [Fact]
+    public void Load_MigratesRegistryFoundNextToThePluginOnlyOnce()
+    {
+        // Сценарий обновления вручную: пользователь правил реестр, лежавший
+        // рядом с dll старой версии. При первом запуске новой версии этот файл
+        // забирается в данные пользователя — дальше папка плагина больше
+        // ни на что не влияет и может быть удалена.
+        using var temp = new TempDirectory();
+        var oldPluginFolder = temp.Combine("PTOMeasurePro.bundle", "Contents");
+        var oldRegistry = Path.Combine(oldPluginFolder, MaterialRepository.FileName);
+        MaterialRepository.Save(new[] { TestData.Pipe(), TestData.Cable("Кабель пользователя") }, oldRegistry);
+
+        var userDirectory = temp.Combine("user");
+        var locations = new MaterialRegistryLocations
+        {
+            UserDataDirectory = userDirectory,
+            TemplatePath = oldRegistry
+        };
+
+        var first = new MaterialRepository();
+        first.Load(locations);
+
+        Assert.Equal(MaterialRegistrySource.SeededFromTemplate, first.Source);
+        Assert.Contains(first.Materials, m => m.Name == "Кабель пользователя");
+        Assert.Equal(Path.Combine(userDirectory, MaterialRepository.FileName), first.LoadedFrom);
+
+        // Второй запуск: в папке плагина файл уже другой, но верх берёт
+        // пользовательский — иначе правки пользователя откатывались бы
+        // при каждом обновлении.
+        MaterialRepository.Save(new[] { TestData.Pipe() }, oldRegistry);
+
+        var second = new MaterialRepository();
+        second.Load(locations);
+
+        Assert.Equal(MaterialRegistrySource.UserData, second.Source);
+        Assert.Contains(second.Materials, m => m.Name == "Кабель пользователя");
+    }
+
+    [Fact]
+    public void Add_WritesOutsideThePluginFolder()
+    {
+        // Папку плагина заменяют целиком при каждом обновлении, поэтому
+        // запись туда означала бы потерю данных на ровном месте.
+        using var temp = new TempDirectory();
+        var pluginFolder = temp.Combine("PTOMeasurePro.bundle", "Contents");
+        var templatePath = Path.Combine(pluginFolder, MaterialRepository.FileName);
+        MaterialRepository.Save(new[] { TestData.Pipe() }, templatePath);
+        var templateBefore = File.ReadAllText(templatePath);
+
+        var userDirectory = temp.Combine("user");
+        var repository = new MaterialRepository();
+        repository.Load(new MaterialRegistryLocations
+        {
+            UserDataDirectory = userDirectory,
+            TemplatePath = templatePath
+        });
+
+        repository.Add(TestData.Cable("Кабель, добавленный пользователем"));
+
+        Assert.StartsWith(userDirectory, repository.LoadedFrom);
+        Assert.DoesNotContain("bundle", repository.LoadedFrom);
+        Assert.Equal(templateBefore, File.ReadAllText(templatePath));
+        Assert.Contains(
+            "Кабель, добавленный пользователем",
+            File.ReadAllText(Path.Combine(userDirectory, MaterialRepository.FileName)));
+    }
+
+    [Fact]
+    public void Load_BacksUpCorruptedUserRegistryBeforeReplacingIt()
+    {
+        using var temp = new TempDirectory();
+        var userDirectory = temp.Combine("user");
+        var userRegistry = Path.Combine(userDirectory, MaterialRepository.FileName);
+        Directory.CreateDirectory(userDirectory);
+
+        const string broken = "[{\"Class\":\"Pipe\",\"Name\":\"Труба заказчика\""; // json оборван
+        File.WriteAllText(userRegistry, broken);
+
+        var templatePath = temp.Combine("bundle", MaterialRepository.FileName);
+        MaterialRepository.Save(new[] { TestData.Pipe() }, templatePath);
+
+        var repository = new MaterialRepository();
+        repository.Load(new MaterialRegistryLocations
+        {
+            UserDataDirectory = userDirectory,
+            TemplatePath = templatePath
+        });
+
+        // Испорченный файл не потерян: он лежит рядом целиком, как был.
+        var backups = Directory.GetFiles(userDirectory, "materials.broken-*.json");
+        Assert.Single(backups);
+        Assert.Equal(broken, File.ReadAllText(backups[0]));
+
+        // На его месте — свежий реестр из шаблона, и об этом сказано вслух.
+        Assert.True(File.Exists(userRegistry));
+        Assert.Equal(MaterialRegistrySource.SeededFromTemplate, repository.Source);
+        Assert.True(repository.WasRecovered);
+        Assert.Contains("не читается", repository.RecoveryMessage);
+        Assert.Contains(Path.GetFileName(backups[0]), repository.RecoveryMessage);
+    }
+
+    [Fact]
+    public void Load_FallsBackToUserRegistryWhenDrawingRegistryIsCorrupted()
+    {
+        // Реестр рядом с чертежом испорчен — это не повод терять
+        // пользовательский, который в порядке.
+        using var temp = new TempDirectory();
+        var drawingDirectory = temp.Combine("dwg");
+        Directory.CreateDirectory(drawingDirectory);
+        File.WriteAllText(Path.Combine(drawingDirectory, MaterialRepository.FileName), "не json вовсе");
+
+        var userDirectory = temp.Combine("user");
+        MaterialRepository.Save(
+            new[] { TestData.Pipe("Труба пользователя") },
+            Path.Combine(userDirectory, MaterialRepository.FileName));
+
+        var repository = new MaterialRepository();
+        repository.Load(new MaterialRegistryLocations
+        {
+            DrawingDirectory = drawingDirectory,
+            UserDataDirectory = userDirectory
+        });
+
+        Assert.Equal(MaterialRegistrySource.UserData, repository.Source);
+        Assert.Equal("Труба пользователя", repository.Materials.Single().Name);
+        Assert.Single(Directory.GetFiles(drawingDirectory, "materials.broken-*.json"));
+        Assert.True(repository.WasRecovered);
+    }
+
+    [Fact]
+    public void Reload_KeepsRegistryInMemoryWhenFileBecameUnreadable()
+    {
+        // Файл могли править в блокноте и на секунду оставить незакрытой скобку.
+        // Отбирать его в резервную копию в этот момент нельзя.
+        using var temp = new TempDirectory();
+        var repository = LoadEmpty(temp);
+        repository.Add(TestData.Pipe());
+
+        File.WriteAllText(repository.LoadedFrom!, "[{\"Name\": ");
+        repository.Reload();
+
+        Assert.Single(repository.Materials);
+        Assert.True(repository.WasRecovered);
+        Assert.Empty(Directory.GetFiles(temp.Path, "materials.broken-*.json"));
+        Assert.Equal("[{\"Name\": ", File.ReadAllText(repository.LoadedFrom!));
+    }
+
+    [Fact]
+    public void CreateBackup_NeverOverwritesAnEarlierCopy()
+    {
+        using var temp = new TempDirectory();
+        var path = temp.Combine(MaterialRepository.FileName);
+
+        File.WriteAllText(path, "первый");
+        var first = MaterialRepository.CreateBackup(path);
+
+        File.WriteAllText(path, "второй");
+        var second = MaterialRepository.CreateBackup(path);
+
+        Assert.NotEqual(first, second);
+        Assert.Equal("первый", File.ReadAllText(first));
+        Assert.Equal("второй", File.ReadAllText(second));
+        Assert.False(File.Exists(path));
+    }
+
+    [Fact]
     public void Load_SkipsEntriesWithoutName()
     {
         // По наименованию строится вся навигация: журнал, слои, поиск.
