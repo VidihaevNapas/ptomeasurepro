@@ -35,6 +35,9 @@ public partial class MeasurePaletteControl : UserControl
     // Пункты меню «Ещё», состояние которых меняется по ходу работы.
     private MenuItem? _showLabelsMenuItem;
     private MenuItem? _resetVerticalMenuItem;
+    private MenuItem? _deleteSpecificationMenuItem;
+    private MenuItem? _onlyMeasurementLayersMenuItem;
+    private MenuItem? _onlyCurrentLayerMenuItem;
 
     // Инициализируется значением true (а не в теле конструктора): разметка
     // задаёт Text ещё во время InitializeComponent, и события сработали бы
@@ -1166,8 +1169,31 @@ public partial class MeasurePaletteControl : UserControl
         menu.Items.Add(_resetVerticalMenuItem);
 
         menu.Items.Add(new Separator());
-        menu.Items.Add(MenuItemWith("Показать только слои замеров", IsolateLayers_Click));
-        menu.Items.Add(MenuItemWith("Показать все слои", RestoreLayers_Click));
+
+        _onlyMeasurementLayersMenuItem = new MenuItem
+        {
+            Header = "Показать только замерные слои",
+            IsCheckable = true,
+            ToolTip = "Гасит проектные слои чертежа и показывает все слои плагина. Снятие галочки возвращает исходную видимость"
+        };
+        _onlyMeasurementLayersMenuItem.Checked += OnlyMeasurementLayers_Changed;
+        _onlyMeasurementLayersMenuItem.Unchecked += OnlyMeasurementLayers_Changed;
+        menu.Items.Add(_onlyMeasurementLayersMenuItem);
+
+        _onlyCurrentLayerMenuItem = new MenuItem
+        {
+            Header = "Показать только слой текущего замера",
+            IsCheckable = true,
+            ToolTip = "Гасит остальные замерные слои. Проектные слои не трогает — за них отвечает галочка выше"
+        };
+        _onlyCurrentLayerMenuItem.Checked += OnlyCurrentLayer_Changed;
+        _onlyCurrentLayerMenuItem.Unchecked += OnlyCurrentLayer_Changed;
+        menu.Items.Add(_onlyCurrentLayerMenuItem);
+
+        menu.Items.Add(new Separator());
+        _deleteSpecificationMenuItem = MenuItemWith("Удалить спецификацию", DeleteSpecification_Click);
+        _deleteSpecificationMenuItem.IsEnabled = _session.HasSpecification;
+        menu.Items.Add(_deleteSpecificationMenuItem);
 
         menu.Items.Add(new Separator());
         menu.Items.Add(MenuItemWith("Настроить столбцы таблицы", ConfigureSpecificationColumns_Click));
@@ -1253,21 +1279,66 @@ public partial class MeasurePaletteControl : UserControl
 
     // ======================= Первоначальная спецификация =======================
 
-    private void LoadSpecification_Click(object sender, RoutedEventArgs e) => ImportSpecification();
-
-    private void ReloadSpecification_Click(object sender, RoutedEventArgs e)
+    /// <summary>
+    /// Единственная команда загрузки. Со второго раза она же заменяет текущую
+    /// спецификацию: отдельной кнопки «перезагрузить» нет — пользователю
+    /// незачем помнить, загружена спецификация или нет.
+    /// </summary>
+    private void LoadSpecification_Click(object sender, RoutedEventArgs e)
     {
-        // Пока спецификации не было, кнопка ведёт себя как обычная загрузка.
-        if (_session.HasSpecification &&
-            !AcadUiHelper.Confirm(
-                "Загрузить новую спецификацию поверх текущей? " +
-                "Текущие привязки позиций к журналу будут пересозданы."))
+        if (_session.HasSpecification)
         {
-            SetStatus("Перезагрузка спецификации отменена.");
-            return;
+            if (!AcadUiHelper.Confirm(
+                    "Загрузить новую спецификацию вместо текущей? " +
+                    "Текущие привязки записей к спецификации будут сняты, " +
+                    "результаты замеров останутся в журнале."))
+            {
+                SetStatus("Загрузка спецификации отменена — текущая осталась на месте.");
+                return;
+            }
+
+            // Старые номера позиций указывали бы не на те строки нового файла,
+            // поэтому привязки снимаются до импорта.
+            var (previousFile, unbound) = _session.ClearSpecification();
+            WriteToCommandLine(new[]
+            {
+                $"Спецификация удалена: {previousFile}; отвязано записей: {unbound}"
+            });
         }
 
         ImportSpecification();
+    }
+
+    private void DeleteSpecification_Click(object sender, RoutedEventArgs e)
+    {
+        Run("Удаление спецификации", () =>
+        {
+            if (!_session.HasSpecification)
+            {
+                SetStatus("Спецификация не загружена — удалять нечего.");
+                return;
+            }
+
+            if (!AcadUiHelper.Confirm(
+                    "Удалить текущую спецификацию? Позиции и результаты замеров останутся " +
+                    "в журнале, но связь со спецификацией будет снята."))
+            {
+                SetStatus("Удаление спецификации отменено.");
+                return;
+            }
+
+            var (fileName, unbound) = _session.ClearSpecification();
+
+            // Журнал возвращается к обычному виду: столбцы проекта уходят,
+            // столбцы чертежа возвращаются.
+            ApplySpecificationColumnVisibility();
+            UpdateSpecificationHeader();
+            UpdateJournalHeader();
+
+            var log = $"Спецификация удалена: {fileName}; отвязано записей: {unbound}";
+            WriteToCommandLine(new[] { log });
+            SetStatus($"{log}. Замеры, материалы и слои остались на месте.");
+        });
     }
 
     private void ImportSpecification()
@@ -1381,14 +1452,18 @@ public partial class MeasurePaletteControl : UserControl
         if (specification is null)
         {
             SpecificationStatusText.Text = "Не загружена — журнал ведётся только по чертежу";
-            ReloadSpecificationButton.IsEnabled = false;
+            LoadSpecificationButton.Content = "Загрузить";
+            if (_deleteSpecificationMenuItem is not null) _deleteSpecificationMenuItem.IsEnabled = false;
             return;
         }
 
         var measured = _session.Journal.Records.Count(r => r.IsFromSpecification);
         SpecificationStatusText.Text =
             $"{specification.FileName} — позиций {specification.Items.Count}, в журнале {measured}";
-        ReloadSpecificationButton.IsEnabled = true;
+
+        // Со второго раза та же кнопка заменяет спецификацию — и говорит об этом.
+        LoadSpecificationButton.Content = "Заменить";
+        if (_deleteSpecificationMenuItem is not null) _deleteSpecificationMenuItem.IsEnabled = true;
     }
 
     /// <summary>
@@ -1399,32 +1474,181 @@ public partial class MeasurePaletteControl : UserControl
 
     // ======================= Слои =======================
 
-    private void IsolateLayers_Click(object sender, RoutedEventArgs e)
+    private void IsolateRecordLayer_Click(object sender, RoutedEventArgs e)
     {
-        Run("Показать только слои замеров", () =>
+        Run("Показать только этот замерный слой", () =>
         {
-            _session.SyncCurrentDrawing();
+            var record = CurrentRecord();
+            if (record is null) return;
 
-            var layers = _session.Journal.GetUsedLayerNames(_session.Journal.CurrentDrawingFileName);
-            if (layers.Count == 0)
+            if (string.IsNullOrWhiteSpace(record.LayerName))
             {
-                AcadUiHelper.ShowWarning(this,
-                    "В журнале текущего чертежа нет ни одного слоя замеров.\n" +
-                    "Сначала выполни замер.");
+                AcadUiHelper.ShowInfo(this,
+                    "У строки нет слоя: она заведена из спецификации и ещё не замерена.");
                 return;
             }
 
-            var turnedOff = _session.LayerVisibility.ShowOnlyMeasurementLayers(layers);
-            SetStatus($"Оставлено видимыми слоёв замеров: {layers.Count}. Выключено прочих слоёв: {turnedOff}.");
+            // Изоляция по строке — тот же режим, что и галочка «только слой
+            // текущего замера», просто слой берётся из записи. Поэтому она
+            // и отмечается: снятие галочки вернёт остальные слои.
+            var visibility = _session.LayerVisibility;
+
+            var plan = MeasurementLayerVisibility.PlanEnableCurrentLayerOnly(
+                visibility.GetLayerNames(),
+                visibility.GetHiddenLayerNames(),
+                _session.LayerNames,
+                record.LayerName);
+
+            if (plan.IsEmpty)
+            {
+                SetStatus($"Слоя «{record.LayerName}» в этом чертеже нет.");
+                return;
+            }
+
+            var result = visibility.Apply(plan);
+            WriteToCommandLine(result.Log);
+
+            _hiddenByCurrentLayerOnly.Clear();
+            _hiddenByCurrentLayerOnly.AddRange(plan.TurnOff);
+
+            if (_onlyCurrentLayerMenuItem is not null)
+            {
+                _suppressEvents = true;
+                _onlyCurrentLayerMenuItem.IsChecked = true;
+                _suppressEvents = false;
+            }
+
+            SetStatus($"Показан только слой «{record.LayerName}». Выключено замерных слоёв: {result.TurnedOff}. " +
+                      "Вернуть остальные — снять галочку «Показать только слой текущего замера» в меню «Ещё».");
         });
     }
 
-    private void RestoreLayers_Click(object sender, RoutedEventArgs e)
+    // Слои, погашенные каждым из режимов. Возврат идёт ровно по этим спискам:
+    // слой, выключенный пользователем до включения режима, обязан остаться
+    // выключенным и после выхода.
+    private readonly List<string> _hiddenByMeasurementOnly = new();
+    private readonly List<string> _hiddenByCurrentLayerOnly = new();
+
+    /// <summary>
+    /// Режим «только замерные слои». Отвечает за ПРОЕКТНЫЕ слои: гасит их
+    /// при включении и возвращает при снятии. Замерные слои не трогает —
+    /// ими распоряжается вторая галочка, поэтому режимы независимы.
+    /// </summary>
+    private void OnlyMeasurementLayers_Changed(object sender, RoutedEventArgs e)
     {
-        Run("Показать все слои", () =>
+        if (_suppressEvents || _onlyMeasurementLayersMenuItem is null) return;
+
+        var enabled = _onlyMeasurementLayersMenuItem.IsChecked;
+
+        Run("Показать только замерные слои", () =>
         {
-            _session.LayerVisibility.RestoreAllLayers();
-            SetStatus("Исходная видимость слоёв восстановлена.");
+            if (!enabled)
+            {
+                var restore = MeasurementLayerVisibility.PlanDisableMode(_hiddenByMeasurementOnly);
+                var restored = _session.LayerVisibility.Apply(restore);
+                WriteToCommandLine(restored.Log);
+
+                SetStatus($"Проектные слои возвращены: {restored.TurnedOn}.");
+                _hiddenByMeasurementOnly.Clear();
+                return;
+            }
+
+            var visibility = _session.LayerVisibility;
+            var all = visibility.GetLayerNames();
+
+            var measurement = MeasurementLayerVisibility.SelectMeasurementLayers(all, _session.LayerNames);
+            if (measurement.Count == 0)
+            {
+                // Гасить весь чертёж ради пустого результата нельзя.
+                _suppressEvents = true;
+                _onlyMeasurementLayersMenuItem.IsChecked = false;
+                _suppressEvents = false;
+
+                AcadUiHelper.ShowWarning(this,
+                    "В чертеже нет ни одного замерного слоя.\nСначала выполни замер.");
+                return;
+            }
+
+            var plan = MeasurementLayerVisibility.PlanEnableOnlyMeasurement(
+                all, visibility.GetHiddenLayerNames(), _session.LayerNames);
+
+            // Замерные слои включает только этот режим и только когда вторая
+            // галочка не изолирует один слой: иначе он бы её отменял.
+            if (_onlyCurrentLayerMenuItem?.IsChecked == true)
+                plan = new LayerVisibilityPlan(Array.Empty<string>(), plan.TurnOff);
+
+            var result = _session.LayerVisibility.Apply(plan);
+            WriteToCommandLine(result.Log);
+
+            _hiddenByMeasurementOnly.Clear();
+            _hiddenByMeasurementOnly.AddRange(plan.TurnOff);
+
+            SetStatus($"Показаны только замерные слои. Выключено проектных: {result.TurnedOff}. " +
+                      "Снять галочку — вернуть их обратно.");
+        });
+    }
+
+    /// <summary>
+    /// Режим «только слой текущего замера». Отвечает за ЗАМЕРНЫЕ слои: гасит
+    /// все, кроме слоя выбранного материала и участка, и возвращает их при
+    /// снятии. Проектные слои не трогает, поэтому режим работает и поверх
+    /// галочки «только замерные слои», и сам по себе.
+    /// </summary>
+    private void OnlyCurrentLayer_Changed(object sender, RoutedEventArgs e)
+    {
+        if (_suppressEvents || _onlyCurrentLayerMenuItem is null) return;
+
+        var enabled = _onlyCurrentLayerMenuItem.IsChecked;
+
+        Run("Показать только слой текущего замера", () =>
+        {
+            if (!enabled)
+            {
+                var restore = MeasurementLayerVisibility.PlanDisableMode(_hiddenByCurrentLayerOnly);
+                var restored = _session.LayerVisibility.Apply(restore);
+                WriteToCommandLine(restored.Log);
+
+                SetStatus($"Замерные слои возвращены: {restored.TurnedOn}.");
+                _hiddenByCurrentLayerOnly.Clear();
+                return;
+            }
+
+            var material = _session.ActiveTool.CurrentMaterial;
+            if (material is null)
+            {
+                _suppressEvents = true;
+                _onlyCurrentLayerMenuItem.IsChecked = false;
+                _suppressEvents = false;
+
+                AcadUiHelper.ShowInfo(this, "Выберите материал или позицию для изоляции слоя.");
+                SetStatus("Материал не выбран — изолировать нечего.");
+                return;
+            }
+
+            var visibility = _session.LayerVisibility;
+            var layerName = _session.LayerNames.GetLayerName(material, _session.Section);
+
+            var plan = MeasurementLayerVisibility.PlanEnableCurrentLayerOnly(
+                visibility.GetLayerNames(), visibility.GetHiddenLayerNames(), _session.LayerNames, layerName);
+
+            if (plan.IsEmpty)
+            {
+                _suppressEvents = true;
+                _onlyCurrentLayerMenuItem.IsChecked = false;
+                _suppressEvents = false;
+
+                SetStatus($"Слоя «{layerName}» в этом чертеже ещё нет — по нему не было замеров.");
+                return;
+            }
+
+            var result = visibility.Apply(plan);
+            WriteToCommandLine(result.Log);
+
+            _hiddenByCurrentLayerOnly.Clear();
+            _hiddenByCurrentLayerOnly.AddRange(plan.TurnOff);
+
+            SetStatus($"Показан только слой «{layerName}». Выключено замерных слоёв: {result.TurnedOff}. " +
+                      "Снять галочку — вернуть остальные.");
         });
     }
 

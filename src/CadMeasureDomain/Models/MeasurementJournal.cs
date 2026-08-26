@@ -215,6 +215,16 @@ public sealed class MeasurementJournal
         return (rebound, unbound);
     }
 
+    /// <summary>
+    /// Снять привязки к спецификации со всех записей.
+    ///
+    /// Замеры, материалы, участки, слои и чертежи остаются нетронутыми:
+    /// удаление спецификации — это отказ от сверки с проектом, а не отказ
+    /// от проделанной работы.
+    /// </summary>
+    /// <returns>Сколько записей потеряло привязку.</returns>
+    public int ClearSpecificationBindings() => RebindToSpecification(null).Unbound;
+
     /// <summary>Записи, привязанные к позиции спецификации, по всем чертежам.</summary>
     public IReadOnlyList<MeasurementRecord> FindBySpecificationItem(int itemNumber) =>
         Records.Where(r => r.SpecificationItemId == itemNumber).ToList();

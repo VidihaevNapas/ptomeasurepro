@@ -379,6 +379,16 @@ public sealed class MeasurementRecord : INotifyPropertyChanged
         Mark = string.Empty;
         EquipmentCode = string.Empty;
         Manufacturer = string.Empty;
+
+        // Пометки тоже про спецификацию: «правилось вручную» относится
+        // к её полям, а «материал не найден» — к позиции проекта, которой
+        // больше нет. Без привязки обе теряют смысл и только красили бы строку.
+        SpecificationEditedManually = false;
+        MaterialMissing = false;
+
+        // Единица измерения намеренно НЕ очищается: это поле самого журнала,
+        // оно заполняется из реестра материалов при каждом пересчёте, и его
+        // обнуление оставило бы пустую колонку у замеренных строк.
     }
 
     /// <summary>

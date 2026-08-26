@@ -143,6 +143,103 @@ public class SpecificationExportOptionsTests
     }
 
     [Fact]
+    public void EverySheet_CentersHeadersAndFilledCells()
+    {
+        using var temp = new TempDirectory();
+        var specification = BuildSpecification();
+        var journal = BuildJournalWithOneMeasuredItem(specification);
+        journal.AddOrUpdatePiece(TestData.Piece("Кран шаровой Dn80"), "", "PIECE_Dn80", 4, Drawing);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"), specification);
+
+        using var workbook = new XLWorkbook(path);
+
+        foreach (var sheet in workbook.Worksheets)
+        {
+            // Шапка целиком и данные — по центру в обоих направлениях.
+            // Наименование материала выровнено влево, у него отдельный тест.
+            foreach (var cell in new[] { sheet.Cell(2, 1), sheet.Cell(2, 2), sheet.Cell(3, 1) })
+            {
+                Assert.Equal(XLAlignmentHorizontalValues.Center, cell.Style.Alignment.Horizontal);
+                Assert.Equal(XLAlignmentVerticalValues.Center, cell.Style.Alignment.Vertical);
+            }
+        }
+    }
+
+    [Fact]
+    public void MaterialNameColumn_IsLeftAlignedAndStillWraps()
+    {
+        // Наименование — единственный столбец со связным текстом: по центру
+        // длинные названия читаются рвано. По вертикали — как везде, по центру.
+        using var temp = new TempDirectory();
+        var specification = BuildSpecification();
+        var journal = BuildJournalWithOneMeasuredItem(specification);
+        journal.AddOrUpdatePiece(TestData.Piece("Кран шаровой Dn80"), "", "PIECE_Dn80", 4, Drawing);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"), specification);
+
+        using var workbook = new XLWorkbook(path);
+
+        var columns = new (string Sheet, int Column)[]
+        {
+            (ExcelExportService.SheetName, 2),
+            (ExcelExportService.LinearSheetName, 3),
+            (ExcelExportService.PieceSheetName, 3),
+            (ExcelExportService.SpecificationSheetName, 2)
+        };
+
+        foreach (var (sheetName, column) in columns)
+        {
+            var cell = workbook.Worksheet(sheetName).Cell(3, column);
+
+            Assert.Equal(XLAlignmentHorizontalValues.Left, cell.Style.Alignment.Horizontal);
+            Assert.Equal(XLAlignmentVerticalValues.Center, cell.Style.Alignment.Vertical);
+            Assert.True(cell.Style.Alignment.WrapText);
+        }
+    }
+
+    [Fact]
+    public void OtherColumnsStayCenteredWhenNameIsLeftAligned()
+    {
+        using var temp = new TempDirectory();
+        var specification = BuildSpecification();
+        var journal = BuildJournalWithOneMeasuredItem(specification);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"), specification);
+
+        using var workbook = new XLWorkbook(path);
+        var sheet = workbook.Worksheet(ExcelExportService.SheetName);
+
+        // Соседние столбцы и шапка самого наименования не тронуты.
+        Assert.Equal(XLAlignmentHorizontalValues.Center, sheet.Cell(3, 1).Style.Alignment.Horizontal);
+        Assert.Equal(XLAlignmentHorizontalValues.Center, sheet.Cell(3, 3).Style.Alignment.Horizontal);
+        Assert.Equal(XLAlignmentHorizontalValues.Center, sheet.Cell(2, 2).Style.Alignment.Horizontal);
+    }
+
+    [Fact]
+    public void Centering_DoesNotBreakWrapNumbersOrFormulas()
+    {
+        using var temp = new TempDirectory();
+        var specification = BuildSpecification();
+        var journal = BuildJournalWithOneMeasuredItem(specification);
+
+        var path = new ExcelExportService().Export(journal, Drawing, temp.Combine("книга.xlsx"), specification);
+
+        using var workbook = new XLWorkbook(path);
+        var statement = workbook.Worksheet(ExcelExportService.SheetName);
+        var linear = workbook.Worksheet(ExcelExportService.LinearSheetName);
+
+        // Длинное наименование по-прежнему переносится по словам и стоит слева.
+        Assert.True(statement.Cell(3, 2).Style.Alignment.WrapText);
+        Assert.Equal(XLAlignmentHorizontalValues.Left, statement.Cell(3, 2).Style.Alignment.Horizontal);
+
+        // Формат чисел и формулы центрирование не задело.
+        Assert.Equal("0.00", statement.Cell(3, 4).Style.NumberFormat.Format);
+        Assert.Equal(XLDataType.Number, statement.Cell(3, 4).DataType);
+        Assert.StartsWith("SUM(", linear.Cell(4, 8).FormulaA1);
+    }
+
+    [Fact]
     public void SheetSelection_ControlsWorkbookContents()
     {
         using var temp = new TempDirectory();

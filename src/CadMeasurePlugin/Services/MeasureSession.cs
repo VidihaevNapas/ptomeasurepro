@@ -205,6 +205,31 @@ public sealed class MeasureSession
     }
 
     /// <summary>
+    /// Удалить текущую спецификацию: снять привязки со всех записей журнала
+    /// и забыть файл.
+    ///
+    /// Журнал, геометрия, материалы и участки остаются нетронутыми — как и
+    /// материалы, заведённые в реестре из этой спецификации: они уже могли
+    /// быть использованы в замерах, и удалять их значило бы рушить работу.
+    /// Настройки видимости столбцов сбрасываются, чтобы таблица вернулась
+    /// к обычному виду журнала.
+    /// </summary>
+    /// <returns>Имя удалённой спецификации и число отвязанных записей.</returns>
+    public (string FileName, int Unbound) ClearSpecification()
+    {
+        var previous = Specification;
+        if (previous is null) return (string.Empty, 0);
+
+        var unbound = Journal.ClearSpecificationBindings();
+
+        Specification = null;
+        JournalService.Specification = null;
+        SpecificationColumnVisibility.Clear();
+
+        return (previous.FileName, unbound);
+    }
+
+    /// <summary>
     /// Материал реестра, соответствующий позиции спецификации, либо null,
     /// если наименования не совпали. Пока материала нет, замерять позицию
     /// нечем: слой строится по материалу реестра.

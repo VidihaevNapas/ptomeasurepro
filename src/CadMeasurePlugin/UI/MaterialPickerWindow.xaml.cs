@@ -125,15 +125,13 @@ public partial class MaterialPickerWindow : Window
         UpdateFoundCount();
     }
 
-    /// <summary>Фильтр по вхождению подстроки в наименование.</summary>
-    private bool FilterByName(object item)
-    {
-        var query = SearchBox.Text?.Trim();
-        if (string.IsNullOrEmpty(query)) return true;
-
-        return item is Material material &&
-               material.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase);
-    }
+    /// <summary>
+    /// Фильтр по первым буквам нескольких слов: «тр 88» находит
+    /// «Труба стальная электросварная Dn80 (⌀88,9x3,5)».
+    /// Правило одно на весь плагин — см. <see cref="MaterialSearch"/>.
+    /// </summary>
+    private bool FilterByName(object item) =>
+        item is Material material && MaterialSearch.Matches(material.Name, SearchBox.Text);
 
     private void ClassTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {

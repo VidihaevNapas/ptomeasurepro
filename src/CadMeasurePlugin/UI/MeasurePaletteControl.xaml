@@ -61,13 +61,11 @@
                             MinWidth="100"
                             ToolTip="Импорт спецификации из Excel. Материалы, которых нет в реестре, заводятся автоматически"
                             Click="LoadSpecification_Click" />
-                    <Button x:Name="ReloadSpecificationButton"
-                            Content="Перезагрузить"
-                            Style="{StaticResource ActionButton}"
-                            MinWidth="120"
-                            IsEnabled="False"
-                            ToolTip="Загрузить другую редакцию поверх текущей. Замеры сохраняются, привязки пересобираются по наименованию материала"
-                            Click="ReloadSpecification_Click" />
+                    <!--
+                        Кнопка одна: если спецификация уже загружена, она же
+                        с подтверждением заменяет её. Удаление спецификации —
+                        действие редкое, оно лежит в меню «Ещё».
+                    -->
                 </WrapPanel>
             </Grid>
         </GroupBox>
@@ -199,6 +197,7 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Показать в чертеже" Click="ShowInDrawing_Click" />
+                            <MenuItem Header="Показать только этот замерный слой" Click="IsolateRecordLayer_Click" />
                             <Separator />
                             <MenuItem Header="Редактировать данные спецификации" Click="EditSpecificationRow_Click" />
                             <MenuItem Header="Привязать к позиции спецификации…" Click="BindToSpecification_Click" />

@@ -1,99 +1,89 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
+using AcadException = Autodesk.AutoCAD.Runtime.Exception;
 using AcadApp = Autodesk.AutoCAD.ApplicationServices.Application;
 
 namespace CadMeasurePlugin.Services;
 
 /// <summary>
-/// Режим «показать только слои замеров» и возврат исходной видимости.
+/// Исполнитель планов видимости слоёв: читает состояние чертежа и включает
+/// или выключает ровно то, что перечислено в плане.
+///
+/// Что менять, решает домен (<see cref="CadMeasureDomain.Services.MeasurementLayerVisibility"/>);
+/// здесь только работа с базой чертежа.
 ///
 /// Гасим слои через IsOff, а не заморозкой: заморозка текущего слоя запрещена
-/// и вызывает исключение, а выключение — нет. Исходное состояние (вкл/выкл,
-/// заморожен/разморожен) запоминается на конкретную базу чертежа, поэтому
-/// возврат работает даже после переключения между DWG.
+/// и вызывает исключение, а выключение — нет. Возврат делается не по снимку
+/// всего чертежа, а по списку слоёв, которые погасил сам режим: слой,
+/// выключенный пользователем до включения режима, обязан остаться выключенным.
 /// </summary>
 public sealed class LayerVisibilityService
 {
-    private readonly record struct LayerState(bool IsOff, bool IsFrozen);
+    /// <summary>Итог изменения видимости замерных слоёв.</summary>
+    /// <param name="TurnedOn">Сколько слоёв включено.</param>
+    /// <param name="TurnedOff">Сколько выключено.</param>
+    /// <param name="Log">Что не получилось и почему — для командной строки.</param>
+    public readonly record struct VisibilityResult(int TurnedOn, int TurnedOff, IReadOnlyList<string> Log);
 
-    private readonly Dictionary<Database, Dictionary<string, LayerState>> _snapshots = new();
+    /// <summary>Все слои текущего чертежа — сырые имена, без разбора.</summary>
+    public IReadOnlyList<string> GetLayerNames() => ReadLayers().Select(l => l.Name).ToList();
 
     /// <summary>
-    /// Оставить видимыми только перечисленные слои замеров.
-    /// Возвращает количество выключенных слоёв.
+    /// Слои, выключенные прямо сейчас. Нужны, чтобы режим видимости запоминал
+    /// только то, что погасил он сам: слой, выключенный пользователем до
+    /// включения режима, должен остаться выключенным и после выхода из него.
     /// </summary>
-    public int ShowOnlyMeasurementLayers(IEnumerable<string> measurementLayers)
+    public IReadOnlyList<string> GetHiddenLayerNames() =>
+        ReadLayers().Where(l => l.IsOff).Select(l => l.Name).ToList();
+
+    private List<(string Name, bool IsOff)> ReadLayers()
     {
         var doc = AcadApp.DocumentManager.MdiActiveDocument
                   ?? throw new InvalidOperationException("Нет активного чертежа.");
-        var db = doc.Database;
 
-        var keep = new HashSet<string>(measurementLayers ?? Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase);
-        if (keep.Count == 0)
-            throw new InvalidOperationException("В журнале нет ни одного слоя замеров — нечего оставлять видимым.");
-
-        var turnedOff = 0;
+        var layers = new List<(string, bool)>();
 
         using (doc.LockDocument())
-        using (var tr = db.TransactionManager.StartTransaction())
+        using (var tr = doc.Database.TransactionManager.StartTransaction())
         {
-            var layerTable = (LayerTable)tr.GetObject(db.LayerTableId, OpenMode.ForRead);
-
-            // Снимок делаем один раз: повторное нажатие не должно затирать
-            // исходное состояние уже выключенными слоями.
-            if (!_snapshots.TryGetValue(db, out var snapshot))
-            {
-                snapshot = new Dictionary<string, LayerState>(StringComparer.OrdinalIgnoreCase);
-                foreach (ObjectId layerId in layerTable)
-                {
-                    var layer = (LayerTableRecord)tr.GetObject(layerId, OpenMode.ForRead);
-                    snapshot[layer.Name] = new LayerState(layer.IsOff, layer.IsFrozen);
-                }
-
-                _snapshots[db] = snapshot;
-            }
-
+            var layerTable = (LayerTable)tr.GetObject(doc.Database.LayerTableId, OpenMode.ForRead);
             foreach (ObjectId layerId in layerTable)
             {
                 var layer = (LayerTableRecord)tr.GetObject(layerId, OpenMode.ForRead);
-
-                if (keep.Contains(layer.Name))
-                {
-                    // Слой замеров должен быть виден.
-                    if (layer.IsOff || layer.IsFrozen)
-                    {
-                        layer.UpgradeOpen();
-                        layer.IsOff = false;
-                        layer.IsFrozen = false;
-                    }
-
-                    continue;
-                }
-
-                if (layer.IsOff) continue;
-
-                layer.UpgradeOpen();
-                layer.IsOff = true;
-                turnedOff++;
+                layers.Add((layer.Name, layer.IsOff));
             }
 
             tr.Commit();
         }
 
-        doc.Editor.Regen();
-        return turnedOff;
+        return layers;
     }
 
     /// <summary>
-    /// Вернуть исходную видимость слоёв. Если снимка нет (режим не включался),
-    /// просто включает все слои.
+    /// Исполнить план видимости: включить и выключить перечисленные слои.
+    ///
+    /// Слои, которых в плане нет, не трогаются вовсе — план составляет домен
+    /// (<see cref="CadMeasureDomain.Services.MeasurementLayerVisibility"/>),
+    /// и в нём только те слои, которые режим намерен изменить.
+    ///
+    /// Каждый слой обрабатывается отдельно и в своём try: чертежи бывают
+    /// с внешними ссылками и заблокированными слоями, и отказ на одном слое
+    /// не повод бросать остальные.
     /// </summary>
-    public void RestoreAllLayers()
+    public VisibilityResult Apply(CadMeasureDomain.Services.LayerVisibilityPlan plan)
     {
+        ArgumentNullException.ThrowIfNull(plan);
+
         var doc = AcadApp.DocumentManager.MdiActiveDocument
                   ?? throw new InvalidOperationException("Нет активного чертежа.");
         var db = doc.Database;
 
-        _snapshots.TryGetValue(db, out var snapshot);
+        var turnOn = new HashSet<string>(plan.TurnOn, StringComparer.OrdinalIgnoreCase);
+        var turnOff = new HashSet<string>(plan.TurnOff, StringComparer.OrdinalIgnoreCase);
+
+        var log = new List<string>();
+        var turnedOn = 0;
+        var turnedOff = 0;
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         using (doc.LockDocument())
         using (var tr = db.TransactionManager.StartTransaction())
@@ -103,30 +93,58 @@ public sealed class LayerVisibilityService
             foreach (ObjectId layerId in layerTable)
             {
                 var layer = (LayerTableRecord)tr.GetObject(layerId, OpenMode.ForRead);
+                seen.Add(layer.Name);
 
-                bool targetOff = false;
-                bool targetFrozen = layer.IsFrozen;
+                var shouldBeOn = turnOn.Contains(layer.Name);
+                var shouldBeOff = turnOff.Contains(layer.Name);
+                if (!shouldBeOn && !shouldBeOff) continue;
 
-                if (snapshot is not null && snapshot.TryGetValue(layer.Name, out var state))
+                // Слой внешней ссылки принадлежит другому чертежу: менять его
+                // видимость отсюда нельзя.
+                if (layer.IsDependent)
                 {
-                    targetOff = state.IsOff;
-                    targetFrozen = state.IsFrozen;
+                    log.Add($"Слой «{layer.Name}» пришёл из внешней ссылки — видимость не менялась");
+                    continue;
                 }
 
-                // Текущий слой заморозить нельзя — AutoCAD бросит eCannotFreezeCurrentLayer.
-                if (targetFrozen && layerId == db.Clayer) targetFrozen = layer.IsFrozen;
+                try
+                {
+                    if (shouldBeOn)
+                    {
+                        if (!layer.IsOff && !layer.IsFrozen) continue;
 
-                if (layer.IsOff == targetOff && layer.IsFrozen == targetFrozen) continue;
+                        layer.UpgradeOpen();
+                        layer.IsOff = false;
 
-                layer.UpgradeOpen();
-                layer.IsOff = targetOff;
-                layer.IsFrozen = targetFrozen;
+                        // Замороженный слой не показать одним IsOff; текущий
+                        // слой размораживать не нужно — он и так не заморожен.
+                        if (layer.IsFrozen && layerId != db.Clayer) layer.IsFrozen = false;
+
+                        turnedOn++;
+                        continue;
+                    }
+
+                    if (layer.IsOff) continue;
+
+                    layer.UpgradeOpen();
+                    layer.IsOff = true;
+                    turnedOff++;
+                }
+                catch (AcadException ex)
+                {
+                    // Чаще всего это текущий слой либо слой, защищённый чертежом.
+                    var reason = layerId == db.Clayer ? "это текущий слой чертежа" : ex.Message;
+                    log.Add($"Слой «{layer.Name}» оставлен без изменений: {reason}");
+                }
             }
 
             tr.Commit();
         }
 
-        _snapshots.Remove(db);
+        foreach (var missing in turnOn.Concat(turnOff).Where(name => !seen.Contains(name)))
+            log.Add($"Слоя «{missing}» в чертеже нет — пропущен");
+
         doc.Editor.Regen();
+        return new VisibilityResult(turnedOn, turnedOff, log);
     }
 }

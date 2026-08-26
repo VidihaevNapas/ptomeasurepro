@@ -46,7 +46,7 @@
             <TextBox Grid.Column="1"
                      x:Name="SearchBox"
                      Padding="4,3"
-                     ToolTip="Поиск по наименованию внутри активной вкладки"
+                     ToolTip="Поиск по первым буквам слов внутри активной вкладки: «тр 88» найдёт «Труба стальная электросварная Dn80 (⌀88,9x3,5)»"
                      TextChanged="SearchBox_TextChanged" />
             <Button Grid.Column="2" Content="Сброс" MinWidth="70" Click="ResetSearch_Click" />
             <TextBlock Grid.Column="3"

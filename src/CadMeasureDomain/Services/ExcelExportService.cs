@@ -189,18 +189,14 @@ public sealed class ExcelExportService
 
         FinishSheet(sheet, rows.Count, ColumnCount, hasTotals: false);
 
-        if (rows.Count > 0)
-        {
-            sheet.Range(3, 1, rows.Count + 2, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-            sheet.Range(3, 3, rows.Count + 2, 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-            sheet.Range(3, 4, rows.Count + 2, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
-        }
-
         sheet.Column(1).Width = 6;
         sheet.Column(2).Width = 60;
         sheet.Column(3).Width = 10;
         sheet.Column(4).Width = 12;
         sheet.Column(2).Style.Alignment.WrapText = true;
+
+        CenterFilledRange(sheet, rows.Count + 2, ColumnCount);
+        AlignNameColumnLeft(sheet, column: 2, rows.Count + 2);
     }
 
     // ======================= Линейные материалы =======================
@@ -247,9 +243,6 @@ public sealed class ExcelExportService
         WriteTotals(sheet, linear.Count, LinearHeaders.Length, firstNumericColumn: 6, lastNumericColumn: 10);
         FinishSheet(sheet, linear.Count, LinearHeaders.Length, hasTotals: true);
 
-        foreach (var column in new[] { 1, 5, 10, 14 })
-            sheet.Column(column).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
         sheet.Column(1).Width = 6;
         sheet.Column(2).Width = 16;
         sheet.Column(3).Width = 50;
@@ -262,6 +255,10 @@ public sealed class ExcelExportService
         sheet.Column(13).Width = 24;
         sheet.Column(14).Width = 12;
         sheet.Column(3).Style.Alignment.WrapText = true;
+
+        var linearLastRow = LastFilledRow(linear.Count, hasTotals: true);
+        CenterFilledRange(sheet, linearLastRow, LinearHeaders.Length);
+        AlignNameColumnLeft(sheet, column: 3, linearLastRow);
     }
 
     // ======================= Штучные изделия =======================
@@ -303,9 +300,6 @@ public sealed class ExcelExportService
         WriteTotals(sheet, pieces.Count, PieceHeaders.Length, firstNumericColumn: 6, lastNumericColumn: 6);
         FinishSheet(sheet, pieces.Count, PieceHeaders.Length, hasTotals: true);
 
-        foreach (var column in new[] { 1, 5, 6, 10 })
-            sheet.Column(column).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-
         sheet.Column(1).Width = 6;
         sheet.Column(2).Width = 32;
         sheet.Column(3).Width = 50;
@@ -317,6 +311,10 @@ public sealed class ExcelExportService
         sheet.Column(9).Width = 24;
         sheet.Column(10).Width = 12;
         sheet.Column(3).Style.Alignment.WrapText = true;
+
+        var pieceLastRow = LastFilledRow(pieces.Count, hasTotals: true);
+        CenterFilledRange(sheet, pieceLastRow, PieceHeaders.Length);
+        AlignNameColumnLeft(sheet, column: 3, pieceLastRow);
     }
 
     // ======================= Спецификация =======================
@@ -436,6 +434,10 @@ public sealed class ExcelExportService
 
         var nameColumn = columns.FindIndex(c => c.Header == "Наименование материала");
         if (nameColumn >= 0) sheet.Column(nameColumn + 1).Style.Alignment.WrapText = true;
+
+        var specificationLastRow = LastFilledRow(summary.Count, hasTotals: firstNumeric >= 0);
+        CenterFilledRange(sheet, specificationLastRow, columns.Count);
+        if (nameColumn >= 0) AlignNameColumnLeft(sheet, nameColumn + 1, specificationLastRow);
     }
 
     // ======================= Общее оформление =======================
@@ -502,7 +504,7 @@ public sealed class ExcelExportService
         var totals = sheet.Range(totalsRow, 1, totalsRow, columnCount);
         totals.Style.Font.Bold = true;
         totals.Style.Border.TopBorder = XLBorderStyleValues.Medium;
-        sheet.Cell(totalsRow, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+        // Выравнивание строки итогов задаётся общим центрированием листа.
     }
 
     private static void FinishSheet(IXLWorksheet sheet, int dataRowCount, int columnCount, bool hasTotals)
@@ -522,5 +524,47 @@ public sealed class ExcelExportService
     {
         cell.Value = value;
         cell.Style.NumberFormat.Format = format;
+    }
+
+    /// <summary>Последняя занятая строка листа: шапка, данные и, если есть, «ИТОГО».</summary>
+    private static int LastFilledRow(int dataRowCount, bool hasTotals) =>
+        dataRowCount == 0 ? 2 : dataRowCount + 2 + (hasTotals ? 1 : 0);
+
+    /// <summary>
+    /// Центрировать текст по горизонтали и вертикали во всей заполненной части
+    /// листа — заголовок, шапка, данные, «ИТОГО».
+    ///
+    /// Задаются ровно два свойства выравнивания, поэтому перенос текста,
+    /// форматы чисел, формулы, границы, заливки, ширины и объединения ячеек
+    /// остаются как были. Вызывается последним: ширины и перенос назначаются
+    /// на столбцы целиком, и стиль столбца, применённый после, перекрыл бы
+    /// выравнивание ячеек.
+    /// </summary>
+    private static void CenterFilledRange(IXLWorksheet sheet, int lastRow, int columnCount)
+    {
+        if (lastRow < 1 || columnCount < 1) return;
+
+        var filled = sheet.Range(1, 1, lastRow, columnCount);
+        filled.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+        filled.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+    }
+
+    /// <summary>
+    /// Наименование материала — единственный столбец, выровненный по левому
+    /// краю: это единственная колонка со связным текстом, и по центру длинные
+    /// наименования читаются рвано, особенно когда переносятся на две строки.
+    /// По вертикали остаётся по центру, как везде, перенос текста сохраняется.
+    ///
+    /// Применяется к строкам данных; шапка остаётся отцентрованной вместе
+    /// с остальными заголовками.
+    /// </summary>
+    private static void AlignNameColumnLeft(IXLWorksheet sheet, int column, int lastRow)
+    {
+        if (column < 1 || lastRow < 3) return;
+
+        var cells = sheet.Range(3, column, lastRow, column);
+        cells.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+        cells.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+        cells.Style.Alignment.WrapText = true;
     }
 }
